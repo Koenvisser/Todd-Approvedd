@@ -4,7 +4,8 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/KoenV/source/repos/UITest/UITest/Content/left.png</File>
-    <File>C:/Users/KoenV/source/repos/UITest/UITest/Content/right.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/left.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/right.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/fonts/Krona.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

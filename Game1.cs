@@ -11,10 +11,10 @@ namespace UITest
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Texture2D backgroundleft;
-        private Texture2D backgroundright;
-        private int backgroundposition;
-        private bool loadingdone = false;
+        private Texture2D loadingleft, loadingright, rectangle;
+        private SpriteFont KronaFont;
+        private float menuposition;
+        private bool loadingdone = false, menuanimationdone = false;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -43,9 +43,13 @@ namespace UITest
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            backgroundleft = Content.Load<Texture2D>("left");
-            backgroundright = Content.Load<Texture2D>("right");
+            loadingleft = Content.Load<Texture2D>("images/left");
+            loadingright = Content.Load<Texture2D>("images/right");
+            KronaFont = Content.Load<SpriteFont>("fonts/Krona");
+            rectangle = new Texture2D(GraphicsDevice, 1, 1);
+            rectangle.SetData(new[] { Color.White });
             // TODO: use this.Content to load your game content here
+            loadingdone = true;
         }
 
         /// <summary>
@@ -54,6 +58,9 @@ namespace UITest
         /// </summary>
         protected override void UnloadContent()
         {
+            base.UnloadContent();
+            spriteBatch.Dispose();
+            rectangle.Dispose();
             // TODO: Unload any non ContentManager content here
         }
 
@@ -67,13 +74,26 @@ namespace UITest
             IsMouseVisible = true;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                loadingdone = true;
+
             }
             // TODO: Add your update logic here
-            if (loadingdone == true)
+            if (loadingdone == true && menuposition < 500 && menuanimationdone == false)
             {
-                backgroundposition += 7;
+                menuposition *= 1.015f;
+                menuposition += 2;
             }
+            if (menuposition >= 500 && menuanimationdone == false)
+            {
+                menuanimationdone = true;
+                menuposition = 550;
+            }
+            if (menuanimationdone == true && menuposition > 0)
+            {
+                menuposition *= 0.95f;
+                menuposition -= 2;
+            }
+            else if (menuanimationdone == true && menuposition < 0)
+            { menuposition = 0; }
                 base.Update(gameTime);
         }
 
@@ -81,14 +101,27 @@ namespace UITest
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(backgroundleft, new Rectangle(backgroundposition * -1, 0, 800, 480), Color.White);
-            spriteBatch.Draw(backgroundright, new Rectangle(backgroundposition, 0, 800, 480), Color.White);
+            if (menuanimationdone == true)
+            {
+                spriteBatch.Draw(rectangle, new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y), new Color(0,0,0,0.2f));
+                spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
+                spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
+                spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
+            }
+
+            if (menuanimationdone == false)
+            {
+                spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
+                spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, 800, 480), Color.White);
+            }
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }
