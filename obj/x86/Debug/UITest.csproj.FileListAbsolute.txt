@@ -23,8 +23,6 @@ C:\Users\KoenV\source\repos\UITest\UITest\obj\x86\Debug\UITest.csproj.CoreCompil
 C:\Users\KoenV\source\repos\UITest\UITest\obj\x86\Debug\UITest.csproj.CopyComplete
 C:\Users\KoenV\source\repos\UITest\UITest\obj\x86\Debug\UITest.exe
 C:\Users\KoenV\source\repos\UITest\UITest\obj\x86\Debug\UITest.pdb
-C:\Users\KoenV\source\repos\UITest\UITest\bin\Windows\x86\Debug\Content\left.xnb
-C:\Users\KoenV\source\repos\UITest\UITest\bin\Windows\x86\Debug\Content\right.xnb
 C:\Users\KoenV\source\repos\UITest\bin\Windows\x86\Debug\UITest.exe
 C:\Users\KoenV\source\repos\UITest\bin\Windows\x86\Debug\UITest.pdb
 C:\Users\KoenV\source\repos\UITest\bin\Windows\x86\Debug\MonoGame.Framework.dll
@@ -53,3 +51,6 @@ C:\Users\KoenV\source\repos\UITest\obj\x86\Debug\UITest.pdb
 C:\Users\KoenV\source\repos\UITest\bin\Windows\x86\Debug\Content\images\left.xnb
 C:\Users\KoenV\source\repos\UITest\bin\Windows\x86\Debug\Content\images\right.xnb
 C:\Users\KoenV\source\repos\UITest\bin\Windows\x86\Debug\Content\fonts\Krona.xnb
+C:\Users\KoenV\source\repos\UITest\UITest\bin\Windows\x86\Debug\Content\images\left.xnb
+C:\Users\KoenV\source\repos\UITest\UITest\bin\Windows\x86\Debug\Content\images\right.xnb
+C:\Users\KoenV\source\repos\UITest\UITest\bin\Windows\x86\Debug\Content\fonts\Krona.xnb

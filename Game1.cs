@@ -79,8 +79,8 @@ namespace UITest
             // TODO: Add your update logic here
             if (loadingdone == true && menuposition < 500 && menuanimationdone == false)
             {
-                menuposition *= 1.015f;
-                menuposition += 2;
+                menuposition *= 1.02f;
+                menuposition += 3;
             }
             if (menuposition >= 500 && menuanimationdone == false)
             {
@@ -89,7 +89,7 @@ namespace UITest
             }
             if (menuanimationdone == true && menuposition > 0)
             {
-                menuposition *= 0.95f;
+                menuposition *= 0.96f;
                 menuposition -= 2;
             }
             else if (menuanimationdone == true && menuposition < 0)
