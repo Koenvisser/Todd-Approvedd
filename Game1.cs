@@ -9,7 +9,7 @@ namespace OakHeart
     /// </summary>
     public class Game1 : Game
     {
-        private enum GameState { MainMenu, Game };
+        private enum GameState { MainMenu, Game, Pause };
         GameState _state = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -120,9 +120,20 @@ namespace OakHeart
                     var mouseState = Mouse.GetState();
                     var mousePosition = new Point(mouseState.X, mouseState.Y);
                     Rectangle PlayButton = new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y);
+                    Rectangle SettingsButton = new Rectangle(360 + (int)menuposition - (int)KronaFont.MeasureString("Settings").X / 2, 302 - (int)KronaFont.MeasureString("Settings").Y / 2, (int)KronaFont.MeasureString("Settings").X + 80, (int)KronaFont.MeasureString("Settings").Y);
+                    Rectangle QuitButton = new Rectangle(360 - (int)KronaFont.MeasureString("Quit").X / 2, 402 + (int)menuposition - (int)KronaFont.MeasureString("Quit").Y / 2, (int)KronaFont.MeasureString("Quit").X + 80, (int)KronaFont.MeasureString("Quit").Y);
+
                     if (PlayButton.Contains(mousePosition))
                     {
                         spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
+                    }
+                    if (SettingsButton.Contains(mousePosition))
+                    {
+                        spriteBatch.Draw(rectangle, SettingsButton, new Color(0, 0, 0, 0.1f));
+                    }
+                    if (QuitButton.Contains(mousePosition))
+                    {
+                        spriteBatch.Draw(rectangle, QuitButton, new Color(0, 0, 0, 0.1f));
                     }
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
                     spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
