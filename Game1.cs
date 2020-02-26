@@ -2,13 +2,14 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace UITest
+namespace OakHeart
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     public class Game1 : Game
     {
+        private enum GameState { MainMenu, Game };
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D loadingleft, loadingright, rectangle;
@@ -19,8 +20,8 @@ namespace UITest
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
-    }
+
+        }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -94,7 +95,7 @@ namespace UITest
             }
             else if (menuanimationdone == true && menuposition < 0)
             { menuposition = 0; }
-                base.Update(gameTime);
+            base.Update(gameTime);
         }
 
         /// <summary>
@@ -110,7 +111,13 @@ namespace UITest
             spriteBatch.Begin();
             if (menuanimationdone == true)
             {
-                spriteBatch.Draw(rectangle, new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y), new Color(0,0,0,0.2f));
+                var mouseState = Mouse.GetState();
+                var mousePosition = new Point(mouseState.X, mouseState.Y);
+                Rectangle PlayButton = new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y);
+                if (PlayButton.Contains(mousePosition))
+                {
+                    spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
+                }
                 spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
                 spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
                 spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
@@ -121,7 +128,7 @@ namespace UITest
                 spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
                 spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, 800, 480), Color.White);
             }
-            
+
             spriteBatch.End();
             base.Draw(gameTime);
         }

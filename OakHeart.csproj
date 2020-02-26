@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{948C47F9-11F7-4C14-AF12-52298DA778F3}</ProjectGuid>
+    <ProjectGuid>{565B6D11-9D14-4138-BB19-14AA9E606422}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UITest</RootNamespace>
-    <AssemblyName>UITest</AssemblyName>
+    <RootNamespace>OakHeart</RootNamespace>
+    <AssemblyName>OakHeart</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
