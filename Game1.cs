@@ -126,6 +126,11 @@ namespace OakHeart
                     if (PlayButton.Contains(mousePosition))
                     {
                         spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            _state = GameState.Game;
+                        }
+
                     }
                     if (SettingsButton.Contains(mousePosition))
                     {
@@ -134,6 +139,10 @@ namespace OakHeart
                     if (QuitButton.Contains(mousePosition))
                     {
                         spriteBatch.Draw(rectangle, QuitButton, new Color(0, 0, 0, 0.1f));
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            Exit();
+                        }
                     }
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
                     spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
