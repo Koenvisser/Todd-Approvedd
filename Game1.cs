@@ -16,7 +16,8 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle;
         private SpriteFont KronaFont;
         private float menuposition;
-        private bool loadingdone = false, menuanimationdone = false;
+        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -125,25 +126,43 @@ namespace OakHeart
 
                     if (PlayButton.Contains(mousePosition))
                     {
-                        spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
                         if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            PlayButtonClicked = true;
+                            spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.3f));
+                        }
+                        else if (PlayButtonClicked == true)
                         {
                             _state = GameState.Game;
                         }
+                        else
+                        {
+                            spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
+                        }
 
                     }
+                    else { PlayButtonClicked = false; }
                     if (SettingsButton.Contains(mousePosition))
                     {
                         spriteBatch.Draw(rectangle, SettingsButton, new Color(0, 0, 0, 0.1f));
                     }
                     if (QuitButton.Contains(mousePosition))
                     {
-                        spriteBatch.Draw(rectangle, QuitButton, new Color(0, 0, 0, 0.1f));
                         if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            QuitButtonClicked = true;
+                            spriteBatch.Draw(rectangle, QuitButton, new Color(0, 0, 0, 0.3f));
+                        }
+                        else if (QuitButtonClicked == true)
                         {
                             Exit();
                         }
+                        else
+                        {
+                            spriteBatch.Draw(rectangle, QuitButton, new Color(0, 0, 0, 0.1f));
+                        }
                     }
+                    else { QuitButtonClicked = false; }
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
                     spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
                     spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
