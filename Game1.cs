@@ -10,6 +10,7 @@ namespace OakHeart
     public class Game1 : Game
     {
         private enum GameState { MainMenu, Game };
+        GameState _state = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D loadingleft, loadingright, rectangle;
@@ -72,29 +73,32 @@ namespace OakHeart
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            IsMouseVisible = true;
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (_state == GameState.MainMenu)
             {
+                IsMouseVisible = true;
+                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                {
 
+                }
+                // TODO: Add your update logic here
+                if (loadingdone == true && menuposition < 500 && menuanimationdone == false)
+                {
+                    menuposition *= 1.02f;
+                    menuposition += 3;
+                }
+                if (menuposition >= 500 && menuanimationdone == false)
+                {
+                    menuanimationdone = true;
+                    menuposition = 550;
+                }
+                if (menuanimationdone == true && menuposition > 0)
+                {
+                    menuposition *= 0.96f;
+                    menuposition -= 2;
+                }
+                else if (menuanimationdone == true && menuposition < 0)
+                { menuposition = 0; }
             }
-            // TODO: Add your update logic here
-            if (loadingdone == true && menuposition < 500 && menuanimationdone == false)
-            {
-                menuposition *= 1.02f;
-                menuposition += 3;
-            }
-            if (menuposition >= 500 && menuanimationdone == false)
-            {
-                menuanimationdone = true;
-                menuposition = 550;
-            }
-            if (menuanimationdone == true && menuposition > 0)
-            {
-                menuposition *= 0.96f;
-                menuposition -= 2;
-            }
-            else if (menuanimationdone == true && menuposition < 0)
-            { menuposition = 0; }
             base.Update(gameTime);
         }
 
@@ -109,26 +113,28 @@ namespace OakHeart
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            if (menuanimationdone == true)
+            if (_state == GameState.MainMenu)
             {
-                var mouseState = Mouse.GetState();
-                var mousePosition = new Point(mouseState.X, mouseState.Y);
-                Rectangle PlayButton = new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y);
-                if (PlayButton.Contains(mousePosition))
+                if (menuanimationdone == true)
                 {
-                    spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
+                    var mouseState = Mouse.GetState();
+                    var mousePosition = new Point(mouseState.X, mouseState.Y);
+                    Rectangle PlayButton = new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y);
+                    if (PlayButton.Contains(mousePosition))
+                    {
+                        spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
+                    }
+                    spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
+                    spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
+                    spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
                 }
-                spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
-                spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
-                spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
-            }
 
-            if (menuanimationdone == false)
-            {
-                spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
-                spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, 800, 480), Color.White);
+                if (menuanimationdone == false)
+                {
+                    spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
+                    spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, 800, 480), Color.White);
+                }
             }
-
             spriteBatch.End();
             base.Draw(gameTime);
         }
