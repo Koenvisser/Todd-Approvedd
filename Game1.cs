@@ -9,7 +9,7 @@ namespace OakHeart
     /// </summary>
     public class Game1 : Game
     {
-        private enum GameState { MainMenu, Game, Pause };
+        private enum GameState { MainMenu, LevelSelect , Game, Pause };
         GameState _state = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -133,7 +133,7 @@ namespace OakHeart
                         }
                         else if (PlayButtonClicked == true)
                         {
-                            _state = GameState.Game;
+                            _state = GameState.LevelSelect;
                         }
                         else
                         {
@@ -167,7 +167,10 @@ namespace OakHeart
                     spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
                     spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
                 }
+                else if (_state == GameState.LevelSelect)
+                {
 
+                }
                 if (menuanimationdone == false)
                 {
                     spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
