@@ -190,7 +190,7 @@ namespace OakHeart
                 while (i <= LevelCompleted && i <= 4)
                 {
                     if (i == 0)
-                    { LevelSelectPosition = new Vector2(0, 0); }
+                    { LevelSelectPosition = new Vector2(300, 200); }
                     else if (i == 1)
                     { LevelSelectPosition = new Vector2(0, 0); }
                     else if (i == 2)
@@ -201,7 +201,12 @@ namespace OakHeart
                     { LevelSelectPosition = new Vector2(0, 0); }
 
                     i++;
-                    spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition - KronaFont.MeasureString(i.ToString()) / 2, Color.White);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y - 35, 10, 70), Color.ForestGreen);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 25, (int)LevelSelectPosition.Y - 35, 10, 70), Color.ForestGreen);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y - 35, 70, 10), Color.ForestGreen);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y + 25, 70, 10), Color.ForestGreen);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 25, (int)LevelSelectPosition.Y - 25, 50, 50), new Color(0, 0, 0, 0.15f));
+                    spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition - LevelSelectFont.MeasureString(i.ToString()) / 2, Color.White);
                 }
             }
             spriteBatch.End();
