@@ -56,3 +56,6 @@ monodroid*.msi
 *.cachefile
 *.dll
 *.lock
+.vs/OakHeart/v15/Server/sqlite3/storage.ide
+.vs/OakHeart/v15/Server/sqlite3/storage.ide-shm
+.vs/OakHeart/v15/Server/sqlite3/storage.ide-wal
