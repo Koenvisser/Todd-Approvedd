@@ -17,7 +17,6 @@ namespace OakHeart
         SpriteBatch spriteBatch;
         private Texture2D loadingleft, loadingright, rectangle;
         private SpriteFont KronaFont, LevelSelectFont;
-        private Vector2 LevelSelectPosition = new Vector2();
         private float menuposition;
         private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false;
         private int LevelCompleted;
@@ -187,6 +186,8 @@ namespace OakHeart
             else if (_state == GameState.LevelSelect)
             {
                 int i = 0;
+                Color LevelColor = Color.ForestGreen;
+                Vector2 LevelSelectPosition = new Vector2();
                 while (i <= LevelCompleted && i <= 4)
                 {
                     if (i == 0)
@@ -199,12 +200,15 @@ namespace OakHeart
                     { LevelSelectPosition = new Vector2(0, 0); }
                     else
                     { LevelSelectPosition = new Vector2(0, 0); }
-
+                    if (i >= LevelCompleted)
+                    {
+                        LevelColor = Color.Red;
+                    }
                     i++;
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y - 35, 10, 70), Color.ForestGreen);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 25, (int)LevelSelectPosition.Y - 35, 10, 70), Color.ForestGreen);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y - 35, 70, 10), Color.ForestGreen);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y + 25, 70, 10), Color.ForestGreen);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y - 35, 10, 70), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 25, (int)LevelSelectPosition.Y - 35, 10, 70), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y - 35, 70, 10), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 35, (int)LevelSelectPosition.Y + 25, 70, 10), LevelColor);
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 25, (int)LevelSelectPosition.Y - 25, 50, 50), new Color(0, 0, 0, 0.15f));
                     spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition - LevelSelectFont.MeasureString(i.ToString()) / 2, Color.White);
                 }
