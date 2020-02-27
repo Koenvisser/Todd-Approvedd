@@ -44,3 +44,10 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/Krona.spritefont
 
+#begin fonts/Krona2.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/Krona2.spritefont
+
