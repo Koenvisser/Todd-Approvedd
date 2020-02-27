@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.IO;
 
 namespace OakHeart
 {
@@ -14,9 +16,11 @@ namespace OakHeart
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D loadingleft, loadingright, rectangle;
-        private SpriteFont KronaFont;
+        private SpriteFont KronaFont, LevelSelectFont;
+        private Vector2 LevelSelectPosition = new Vector2();
         private float menuposition;
         private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false;
+        private int LevelCompleted;
 
         public Game1()
         {
@@ -49,6 +53,7 @@ namespace OakHeart
             loadingleft = Content.Load<Texture2D>("images/left");
             loadingright = Content.Load<Texture2D>("images/right");
             KronaFont = Content.Load<SpriteFont>("fonts/Krona");
+            LevelSelectFont = Content.Load<SpriteFont>("fonts/Krona2");
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             rectangle.SetData(new[] { Color.White });
             // TODO: use this.Content to load your game content here
@@ -134,6 +139,11 @@ namespace OakHeart
                         else if (PlayButtonClicked == true)
                         {
                             _state = GameState.LevelSelect;
+                            bool success = Int32.TryParse(File.ReadAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt"), out LevelCompleted);
+                            if (success == false)
+                            {
+                                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
+                            }
                         }
                         else
                         {
@@ -167,14 +177,31 @@ namespace OakHeart
                     spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
                     spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
                 }
-                else if (_state == GameState.LevelSelect)
-                {
 
-                }
                 if (menuanimationdone == false)
                 {
                     spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
                     spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, 800, 480), Color.White);
+                }
+            }
+            else if (_state == GameState.LevelSelect)
+            {
+                int i = 0;
+                while (i <= LevelCompleted && i <= 4)
+                {
+                    if (i == 0)
+                    { LevelSelectPosition = new Vector2(0,0); }
+                    else if (i == 1)
+                    { LevelSelectPosition = new Vector2(0,0); }
+                    else if (i == 2)
+                    { LevelSelectPosition = new Vector2(0,0); }
+                    else if (i == 3)
+                    { LevelSelectPosition = new Vector2(0,0); }
+                    else
+                    { LevelSelectPosition = new Vector2(0,0); }
+
+                    i++;
+                    spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition - KronaFont.MeasureString(i.ToString()) / 2, Color.White);
                 }
             }
             spriteBatch.End();
