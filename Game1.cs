@@ -55,7 +55,7 @@ namespace OakHeart
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             circle = Content.Load<Texture2D>("images/circle");
             rectangle.SetData(new[] { Color.White });
-            SliderPosition = GraphicsDevice.Viewport.Width / 2 - 150;
+            SliderPosition = GraphicsDevice.Viewport.Width / 4 * 3 - 150;
             // TODO: use this.Content to load your game content here
             loadingdone = true;
         }
@@ -202,26 +202,33 @@ namespace OakHeart
             }
             else if (_state == GameState.Settings)
             {
-                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width / 2, 100) - KronaFont.MeasureString("Volume") / 2, Color.White);
-                Rectangle SlideBar = new Rectangle(GraphicsDevice.Viewport.Width / 2 - 150, 150, 300, 14);
+                int volumeheight = 100;
+                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, 100) - KronaFont.MeasureString("Volume") / 2, Color.White);
+                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, 100) - KronaFont.MeasureString("Volume") / 2, Color.White);
+                int width = (int)(GraphicsDevice.Viewport.Width * 0.75f);
+                Rectangle SlideBar = new Rectangle(width - 150, 100, 300, 14);
+                Color DragColor = Color.White;
                 if ((SlideBar.Contains(mousePosition) || (DragSlider == true)) && mouseState.LeftButton == ButtonState.Pressed)
                 {
+                    DragColor = new Color(230,230,230);
                     SliderPosition = mousePosition.X - 15;
-                    if (SliderPosition < GraphicsDevice.Viewport.Width / 2 - 150)
+                    if (SliderPosition < width - 150)
                     {
-                        SliderPosition = GraphicsDevice.Viewport.Width / 2 - 150;
+                        SliderPosition = width - 150;
                     }
-                    if (SliderPosition > GraphicsDevice.Viewport.Width / 2 + 120)
+                    if (SliderPosition > width + 120)
                     {
-                        SliderPosition = GraphicsDevice.Viewport.Width / 2 + 120;
+                        SliderPosition = width + 120;
                     }
-                    volume = (SliderPosition - (GraphicsDevice.Viewport.Width / 2 - 150)) / 270;
+                    volume = SliderPosition - (width - 150);
+                    volume /= 270;
                     DragSlider = true;
                 }
                 else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
                 { DragSlider = false; }
-                spriteBatch.Draw(rectangle, SlideBar, Color.Gray);
-                spriteBatch.Draw(circle, new Rectangle(SliderPosition, 143, 30, 30), Color.White);
+                spriteBatch.Draw(rectangle, SlideBar, new Color(200,200,200));
+                spriteBatch.Draw(rectangle, new Rectangle(width - 150, 100, SliderPosition + 165 - width, 14), Color.Gray);
+                spriteBatch.Draw(circle, new Rectangle(SliderPosition, 93, 30, 30), DragColor);
 
             }
             else if (_state == GameState.LevelSelect)
