@@ -201,6 +201,7 @@ namespace OakHeart
             }
             else if (_state == GameState.Settings)
             {
+                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(0,0) - KronaFont.MeasureString("Volume") / 2, Color.White);
                 spriteBatch.Draw(rectangle, new Rectangle(100, 100, 300, 14), Color.Gray);
                 spriteBatch.Draw(circle, new Rectangle(85, 92, 30, 30), Color.White);
 
