@@ -11,16 +11,15 @@ namespace OakHeart
     /// </summary>
     public class Game1 : Game
     {
-        private enum GameState { MainMenu, LevelSelect, Game, Pause };
+        private enum GameState { MainMenu, Settings,LevelSelect, Game, Pause };
         GameState _state = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Texture2D loadingleft, loadingright, rectangle;
+        private Texture2D loadingleft, loadingright, rectangle, circle;
         private SpriteFont KronaFont, LevelSelectFont;
-        private float menuposition;
+        private float menuposition, volume;
         private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false;
         private int LevelCompleted;
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -54,6 +53,7 @@ namespace OakHeart
             KronaFont = Content.Load<SpriteFont>("fonts/Krona");
             LevelSelectFont = Content.Load<SpriteFont>("fonts/Krona2");
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
+            circle = Content.Load<Texture2D>("images/circle");
             rectangle.SetData(new[] { Color.White });
             // TODO: use this.Content to load your game content here
             loadingdone = true;
@@ -124,7 +124,7 @@ namespace OakHeart
             {
                 if (menuanimationdone == true)
                 {
-                    
+
                     Rectangle PlayButton = new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y);
                     Rectangle SettingsButton = new Rectangle(360 + (int)menuposition - (int)KronaFont.MeasureString("Settings").X / 2, 302 - (int)KronaFont.MeasureString("Settings").Y / 2, (int)KronaFont.MeasureString("Settings").X + 80, (int)KronaFont.MeasureString("Settings").Y);
                     Rectangle QuitButton = new Rectangle(360 - (int)KronaFont.MeasureString("Quit").X / 2, 402 + (int)menuposition - (int)KronaFont.MeasureString("Quit").Y / 2, (int)KronaFont.MeasureString("Quit").X + 80, (int)KronaFont.MeasureString("Quit").Y);
@@ -152,10 +152,25 @@ namespace OakHeart
 
                     }
                     else { PlayButtonClicked = false; }
+
                     if (SettingsButton.Contains(mousePosition))
                     {
-                        spriteBatch.Draw(rectangle, SettingsButton, new Color(0, 0, 0, 0.1f));
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            SettingsButtonClicked = true;
+                            spriteBatch.Draw(rectangle, SettingsButton, new Color(0, 0, 0, 0.3f));
+                        }
+                        else if (SettingsButtonClicked == true)
+                        {
+                            _state = GameState.Settings;
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(rectangle, SettingsButton, new Color(0, 0, 0, 0.1f));
+                        }
                     }
+                    else { SettingsButtonClicked = false; }
+
                     if (QuitButton.Contains(mousePosition))
                     {
                         if (mouseState.LeftButton == ButtonState.Pressed)
@@ -183,6 +198,12 @@ namespace OakHeart
                     spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
                     spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, 800, 480), Color.White);
                 }
+            }
+            else if (_state == GameState.Settings)
+            {
+                spriteBatch.Draw(rectangle, new Rectangle(100, 100, 300, 14), Color.Gray);
+                spriteBatch.Draw(circle, new Rectangle(85, 92, 30, 30), Color.White);
+
             }
             else if (_state == GameState.LevelSelect)
             {
@@ -219,11 +240,13 @@ namespace OakHeart
                             _state = GameState.Game;
                             // level = i
                         }
-                        else {
+                        else
+                        {
                             spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 25, (int)LevelSelectPosition.Y - 25, 50, 50), new Color(0, 0, 0, 0.3f));
                         }
                     }
-                    else {
+                    else
+                    {
                         spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 25, (int)LevelSelectPosition.Y - 25, 50, 50), new Color(0, 0, 0, 0.15f));
                     }
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 31, (int)LevelSelectPosition.Y - 31, 6, 62), LevelColor);
