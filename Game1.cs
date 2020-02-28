@@ -18,8 +18,8 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle, circle;
         private SpriteFont KronaFont, LevelSelectFont;
         private float menuposition, volume;
-        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false;
-        private int LevelCompleted;
+        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false;
+        private int LevelCompleted, SliderPosition;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -55,6 +55,7 @@ namespace OakHeart
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             circle = Content.Load<Texture2D>("images/circle");
             rectangle.SetData(new[] { Color.White });
+            SliderPosition = GraphicsDevice.Viewport.Width / 2 - 150;
             // TODO: use this.Content to load your game content here
             loadingdone = true;
         }
@@ -201,9 +202,26 @@ namespace OakHeart
             }
             else if (_state == GameState.Settings)
             {
-                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(0,0) - KronaFont.MeasureString("Volume") / 2, Color.White);
-                spriteBatch.Draw(rectangle, new Rectangle(100, 100, 300, 14), Color.Gray);
-                spriteBatch.Draw(circle, new Rectangle(85, 92, 30, 30), Color.White);
+                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width / 2, 100) - KronaFont.MeasureString("Volume") / 2, Color.White);
+                Rectangle SlideBar = new Rectangle(GraphicsDevice.Viewport.Width / 2 - 150, 150, 300, 14);
+                if ((SlideBar.Contains(mousePosition) || (DragSlider == true)) && mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    SliderPosition = mousePosition.X - 15;
+                    if (SliderPosition < GraphicsDevice.Viewport.Width / 2 - 150)
+                    {
+                        SliderPosition = GraphicsDevice.Viewport.Width / 2 - 150;
+                    }
+                    if (SliderPosition > GraphicsDevice.Viewport.Width / 2 + 120)
+                    {
+                        SliderPosition = GraphicsDevice.Viewport.Width / 2 + 120;
+                    }
+                    volume = (SliderPosition - (GraphicsDevice.Viewport.Width / 2 - 150)) / 270;
+                    DragSlider = true;
+                }
+                else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
+                { DragSlider = false; }
+                spriteBatch.Draw(rectangle, SlideBar, Color.Gray);
+                spriteBatch.Draw(circle, new Rectangle(SliderPosition, 143, 30, 30), Color.White);
 
             }
             else if (_state == GameState.LevelSelect)
