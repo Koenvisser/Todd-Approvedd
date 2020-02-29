@@ -24,7 +24,10 @@ namespace OakHeart
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.IsFullScreen = false;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -79,23 +82,31 @@ namespace OakHeart
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                if (_state == GameState.MainMenu)
+                {
+                    Exit();
+                }
+                else if (_state == GameState.Settings)
+                {
+                    _state = GameState.MainMenu;
+                }
+            }
             if (_state == GameState.MainMenu)
             {
                 IsMouseVisible = true;
-                if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                {
-
-                }
+                
                 // TODO: Add your update logic here
-                if (loadingdone == true && menuposition < 500 && menuanimationdone == false)
+                if (loadingdone == true && menuposition < graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false)
                 {
                     menuposition *= 1.02f;
                     menuposition += 3;
                 }
-                if (menuposition >= 500 && menuanimationdone == false)
+                if (menuposition >= graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false)
                 {
                     menuanimationdone = true;
-                    menuposition = 550;
+                    menuposition = graphics.PreferredBackBufferWidth * 0.6f;
                 }
                 if (menuanimationdone == true && menuposition > 0)
                 {
@@ -126,9 +137,9 @@ namespace OakHeart
                 if (menuanimationdone == true)
                 {
 
-                    Rectangle PlayButton = new Rectangle(360 - (int)menuposition - (int)KronaFont.MeasureString("Play").X / 2, 202 - (int)KronaFont.MeasureString("Play").Y / 2, (int)KronaFont.MeasureString("Play").X + 80, (int)KronaFont.MeasureString("Play").Y);
-                    Rectangle SettingsButton = new Rectangle(360 + (int)menuposition - (int)KronaFont.MeasureString("Settings").X / 2, 302 - (int)KronaFont.MeasureString("Settings").Y / 2, (int)KronaFont.MeasureString("Settings").X + 80, (int)KronaFont.MeasureString("Settings").Y);
-                    Rectangle QuitButton = new Rectangle(360 - (int)KronaFont.MeasureString("Quit").X / 2, 402 + (int)menuposition - (int)KronaFont.MeasureString("Quit").Y / 2, (int)KronaFont.MeasureString("Quit").X + 80, (int)KronaFont.MeasureString("Quit").Y);
+                    Rectangle PlayButton = new Rectangle();
+                    Rectangle SettingsButton = new Rectangle();
+                    Rectangle QuitButton = new Rectangle();
 
                     if (PlayButton.Contains(mousePosition))
                     {
@@ -189,15 +200,15 @@ namespace OakHeart
                         }
                     }
                     else { QuitButtonClicked = false; }
-                    spriteBatch.DrawString(KronaFont, "Play", new Vector2(400 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
-                    spriteBatch.DrawString(KronaFont, "Settings", new Vector2(400 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
-                    spriteBatch.DrawString(KronaFont, "Quit", new Vector2(400, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
+                    spriteBatch.DrawString(KronaFont, "Play", new Vector2(graphics.PreferredBackBufferWidth / 2 - menuposition, 200) - KronaFont.MeasureString("Play") / 2, Color.White);
+                    spriteBatch.DrawString(KronaFont, "Settings", new Vector2(graphics.PreferredBackBufferWidth / 2 + menuposition, 300) - KronaFont.MeasureString("Settings") / 2, Color.White);
+                    spriteBatch.DrawString(KronaFont, "Quit", new Vector2(graphics.PreferredBackBufferWidth / 2, 400 + menuposition) - KronaFont.MeasureString("Quit") / 2, Color.White);
                 }
 
                 if (menuanimationdone == false)
                 {
-                    spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, 800, 480), Color.White);
-                    spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, 800, 480), Color.White);
+                    spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+                    spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
                 }
             }
             else if (_state == GameState.Settings)

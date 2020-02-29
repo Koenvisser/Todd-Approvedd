@@ -4,10 +4,10 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/KoenV/source/repos/UITest/Content/images/left.png</File>
-    <File>C:/Users/KoenV/source/repos/UITest/Content/images/right.png</File>
-    <File>C:/Users/KoenV/source/repos/UITest/Content/fonts/Krona.spritefont</File>
-    <File>C:/Users/KoenV/source/repos/UITest/Content/fonts/Krona2.spritefont</File>
-    <File>C:/Users/KoenV/source/repos/UITest/Content/images/circle.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/UITest/Content/images/left.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/UITest/Content/images/right.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/UITest/Content/fonts/Krona.spritefont</File>
+    <File>C:/Users/KoenV/source/repos/UITest/UITest/Content/fonts/Krona2.spritefont</File>
+    <File>C:/Users/KoenV/source/repos/UITest/UITest/Content/images/circle.png</File>
   </SourceFiles>
 </SourceFileCollection>
