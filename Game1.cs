@@ -203,10 +203,11 @@ namespace OakHeart
             else if (_state == GameState.Settings)
             {
                 int volumeheight = 100;
-                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, 100) - KronaFont.MeasureString("Volume") / 2, Color.White);
-                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, 100) - KronaFont.MeasureString("Volume") / 2, Color.White);
+                int fullscreenheight = 150 + (int)KronaFont.MeasureString("Fullscreen").Y; 
+                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, volumeheight) - KronaFont.MeasureString("Volume") / 2, Color.White);
+                spriteBatch.DrawString(KronaFont, "Fullscreen", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, fullscreenheight) - KronaFont.MeasureString("Fullscreen") / 2, Color.White);
                 int width = (int)(GraphicsDevice.Viewport.Width * 0.75f);
-                Rectangle SlideBar = new Rectangle(width - 150, 100, 300, 14);
+                Rectangle SlideBar = new Rectangle(width - 150, volumeheight, 300, 14);
                 Color DragColor = Color.White;
                 if ((SlideBar.Contains(mousePosition) || (DragSlider == true)) && mouseState.LeftButton == ButtonState.Pressed)
                 {
@@ -227,8 +228,8 @@ namespace OakHeart
                 else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
                 { DragSlider = false; }
                 spriteBatch.Draw(rectangle, SlideBar, new Color(200,200,200));
-                spriteBatch.Draw(rectangle, new Rectangle(width - 150, 100, SliderPosition + 165 - width, 14), Color.Gray);
-                spriteBatch.Draw(circle, new Rectangle(SliderPosition, 93, 30, 30), DragColor);
+                spriteBatch.Draw(rectangle, new Rectangle(width - 150, volumeheight, SliderPosition + 165 - width, 14), Color.Gray);
+                spriteBatch.Draw(circle, new Rectangle(SliderPosition, volumeheight - 7, 30, 30), DragColor);
 
             }
             else if (_state == GameState.LevelSelect)
