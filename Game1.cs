@@ -93,6 +93,7 @@ namespace OakHeart
                     }
                     else if (_state == GameState.Settings)
                     {
+                        SettingsButtonClicked = false;
                         _state = GameState.MainMenu;
                     }
                     escdown = true;
