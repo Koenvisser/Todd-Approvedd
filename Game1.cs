@@ -258,7 +258,7 @@ namespace OakHeart
                 while (i <= LevelCompleted && i <= 4)
                 {
                     if (i == 0)
-                    { LevelSelectPosition = new Vector2(300, 200); }
+                    { LevelSelectPosition = new Vector2(.5f * graphics.PreferredBackBufferWidth, .5f * graphics.PreferredBackBufferHeight); }
                     else if (i == 1)
                     { LevelSelectPosition = new Vector2(0, 0); }
                     else if (i == 2)
@@ -277,7 +277,7 @@ namespace OakHeart
                     {
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 25, (int)LevelSelectPosition.Y - 25, 50, 50), new Color(0, 0, 0, 0.6f));
+                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.6f));
                             LevelButtonClicked = true;
                         }
                         else if (LevelButtonClicked == true)
@@ -287,17 +287,17 @@ namespace OakHeart
                         }
                         else
                         {
-                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 25, (int)LevelSelectPosition.Y - 25, 50, 50), new Color(0, 0, 0, 0.3f));
+                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.3f));
                         }
                     }
                     else
                     {
-                        spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 25, (int)LevelSelectPosition.Y - 25, 50, 50), new Color(0, 0, 0, 0.15f));
+                        spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.15f));
                     }
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 31, (int)LevelSelectPosition.Y - 31, 6, 62), LevelColor);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 25, (int)LevelSelectPosition.Y - 31, 6, 62), LevelColor);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 31, (int)LevelSelectPosition.Y - 31, 62, 6), LevelColor);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 31, (int)LevelSelectPosition.Y + 25, 62, 6), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 38, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 96, 10), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y + 38, 96, 10), LevelColor);
                     spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition - LevelSelectFont.MeasureString(i.ToString()) / 2, Color.White);
 
                 }
