@@ -26,7 +26,7 @@ namespace OakHeart
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferHeight = 1080;
             graphics.PreferredBackBufferWidth = 1920;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
         }
 
@@ -91,8 +91,9 @@ namespace OakHeart
                     {
                         Exit();
                     }
-                    else if (_state == GameState.Settings)
+                    else if (_state == GameState.Settings || _state == GameState.LevelSelect)
                     {
+                        PlayButtonClicked = false;
                         SettingsButtonClicked = false;
                         _state = GameState.MainMenu;
                     }
