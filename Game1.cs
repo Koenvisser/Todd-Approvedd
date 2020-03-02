@@ -24,10 +24,7 @@ namespace OakHeart
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.IsFullScreen = true;
-            graphics.ApplyChanges();
+            
         }
 
         /// <summary>
@@ -41,6 +38,10 @@ namespace OakHeart
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -133,7 +134,9 @@ namespace OakHeart
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
 
         protected override void Draw(GameTime gameTime)
-        {
+        {            
+            int width = graphics.PreferredBackBufferWidth;
+            int height = graphics.PreferredBackBufferHeight;
             var mouseState = Mouse.GetState();
             var mousePosition = new Point(mouseState.X, mouseState.Y);
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -145,9 +148,9 @@ namespace OakHeart
                 if (menuanimationdone == true)
                 {
 
-                    Rectangle PlayButton = new Rectangle(graphics.PreferredBackBufferWidth / 2 - (int)(KronaFont.MeasureString("Play").X * 0.6f + menuposition), (int)(graphics.PreferredBackBufferHeight * .35f),(int)(KronaFont.MeasureString("Play").X * 1.2f), (int)KronaFont.MeasureString("Play").Y);
-                    Rectangle SettingsButton = new Rectangle(graphics.PreferredBackBufferWidth / 2 - (int)(KronaFont.MeasureString("Settings").X * 0.6f - menuposition), (int)(graphics.PreferredBackBufferHeight * .4f + KronaFont.MeasureString("Play").Y), (int)(KronaFont.MeasureString("Settings").X * 1.2f), (int)KronaFont.MeasureString("Settings").Y);
-                    Rectangle QuitButton = new Rectangle(graphics.PreferredBackBufferWidth / 2 - (int)(KronaFont.MeasureString("Quit").X * 0.6f), (int)(graphics.PreferredBackBufferHeight * .45f + KronaFont.MeasureString("Play").Y + KronaFont.MeasureString("Settings").Y + menuposition), (int)(KronaFont.MeasureString("Quit").X * 1.2f), (int)KronaFont.MeasureString("Quit").Y);
+                    Rectangle PlayButton = new Rectangle(width / 2 - (int)(KronaFont.MeasureString("Play").X * 0.6f + menuposition), (int)(height * .35f),(int)(KronaFont.MeasureString("Play").X * 1.2f), (int)KronaFont.MeasureString("Play").Y);
+                    Rectangle SettingsButton = new Rectangle(width / 2 - (int)(KronaFont.MeasureString("Settings").X * 0.6f - menuposition), (int)(height * .4f + KronaFont.MeasureString("Play").Y), (int)(KronaFont.MeasureString("Settings").X * 1.2f), (int)KronaFont.MeasureString("Settings").Y);
+                    Rectangle QuitButton = new Rectangle(width / 2 - (int)(KronaFont.MeasureString("Quit").X * 0.6f), (int)(height * .45f + KronaFont.MeasureString("Play").Y + KronaFont.MeasureString("Settings").Y + menuposition), (int)(KronaFont.MeasureString("Quit").X * 1.2f), (int)KronaFont.MeasureString("Quit").Y);
 
                     if (PlayButton.Contains(mousePosition))
                     {
@@ -225,22 +228,22 @@ namespace OakHeart
                 int fullscreenheight = 250 + (int)KronaFont.MeasureString("Volume").Y; 
                 spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, volumeheight) - KronaFont.MeasureString("Volume") / 2, Color.White);
                 spriteBatch.DrawString(KronaFont, "Fullscreen", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, fullscreenheight) - KronaFont.MeasureString("Fullscreen") / 2, Color.White);
-                int width = (int)(GraphicsDevice.Viewport.Width * 0.75f);
-                Rectangle SlideBar = new Rectangle(width - 150, volumeheight, (int)(graphics.PreferredBackBufferWidth * .3f), 26);
+                int sliderwidth = (int)(GraphicsDevice.Viewport.Width * 0.75f);
+                Rectangle SlideBar = new Rectangle(sliderwidth - 150, volumeheight, (int)(graphics.PreferredBackBufferWidth * .3f), 26);
                 Color DragColor = Color.White;
                 if ((SlideBar.Contains(mousePosition) || (DragSlider == true)) && mouseState.LeftButton == ButtonState.Pressed)
                 {
                     DragColor = new Color(230,230,230);
                     SliderPosition = mousePosition.X - 15;
-                    if (SliderPosition < width - 150)
+                    if (SliderPosition < sliderwidth - 150)
                     {
-                        SliderPosition = width - 150;
+                        SliderPosition = sliderwidth - 150;
                     }
-                    if (SliderPosition > width - 196 + (int)(graphics.PreferredBackBufferWidth * .3f))
+                    if (SliderPosition > sliderwidth - 196 + (int)(graphics.PreferredBackBufferWidth * .3f))
                     {
-                        SliderPosition = width - 196 + (int)(graphics.PreferredBackBufferWidth * .3f);
+                        SliderPosition = sliderwidth - 196 + (int)(graphics.PreferredBackBufferWidth * .3f);
                     }
-                    volume = SliderPosition - (width - 150);
+                    volume = SliderPosition - (sliderwidth - 150);
                     volume /= 270;
                     DragSlider = true;
                 }
