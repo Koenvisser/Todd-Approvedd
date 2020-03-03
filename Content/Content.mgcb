@@ -87,3 +87,10 @@
 /processorParam:TextureFormat=Color
 /build:images/pause1.png
 
+#begin fonts/Pacifico.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/Pacifico.spritefont
+

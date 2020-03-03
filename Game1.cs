@@ -16,7 +16,7 @@ namespace OakHeart
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2;
-        private SpriteFont KronaFont, LevelSelectFont;
+        private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume;
         private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked;
         private int LevelCompleted, SliderPosition;
@@ -36,12 +36,12 @@ namespace OakHeart
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-            base.Initialize();
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferHeight = 1080;
             graphics.PreferredBackBufferWidth = 1920;
             graphics.ApplyChanges();
+            base.Initialize();
+
         }
 
         /// <summary>
@@ -58,10 +58,11 @@ namespace OakHeart
             pause2 = Content.Load<Texture2D>("images/pause2");
             KronaFont = Content.Load<SpriteFont>("fonts/Krona");
             LevelSelectFont = Content.Load<SpriteFont>("fonts/Krona2");
+            PacificoFont = Content.Load<SpriteFont>("fonts/Pacifico");
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             circle = Content.Load<Texture2D>("images/circle");
             rectangle.SetData(new[] { Color.White });
-            SliderPosition = GraphicsDevice.Viewport.Width / 4 * 3 - 150;
+            SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 150);
             // TODO: use this.Content to load your game content here
             loadingdone = true;
         }
@@ -260,7 +261,7 @@ namespace OakHeart
                 else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
                 { DragSlider = false; }
                 spriteBatch.Draw(rectangle, SlideBar, new Color(200, 200, 200));
-                spriteBatch.Draw(rectangle, new Rectangle(width - 150, volumeheight, SliderPosition + 165 - width, 26), Color.Gray);
+                spriteBatch.Draw(rectangle, new Rectangle(sliderwidth - 150, volumeheight, SliderPosition + 165 - sliderwidth, 26), Color.Gray);
                 spriteBatch.Draw(circle, new Rectangle(SliderPosition, volumeheight - 10, 46, 46), DragColor);
 
             }
@@ -320,7 +321,8 @@ namespace OakHeart
             { }
             if (_state == GameState.Pause)
             {
-                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - 250,height / 2 - 375,500,750), new Color(0, 0, 0, 0.15f));
+                spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, 0, 0, 0.2f));
+                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - 250,height / 2 - 375,500,750), new Color(0, 0, 0, 0.35f));
                 spriteBatch.Draw(pause1, new Rectangle(width / 2 - 300,height / 2 - 400,120,800), Color.White);
                 spriteBatch.Draw(pause2, new Rectangle(width / 2 - 250, height / 2 - 430, 550, 120), Color.White);
                 spriteBatch.Draw(pause1, new Rectangle(width / 2 + 200, height / 2 - 400, 120, 800), Color.White);
@@ -331,7 +333,7 @@ namespace OakHeart
                     if (mouseState.LeftButton == ButtonState.Pressed)
                     {
                         MainMenuButtonClicked = true;
-                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.3f));
+                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.5f));
                     }
                     else if (MainMenuButtonClicked == true)
                     {
@@ -339,14 +341,14 @@ namespace OakHeart
                     }
                     else
                     {
-                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.2f));
+                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.4f));
                     }
                 }
                 else
                 {
                     MainMenuButtonClicked = false;
                 }
-                spriteBatch.DrawString(LevelSelectFont, "Main Menu", new Vector2((width - LevelSelectFont.MeasureString("Main Menu").X) / 2, (height - LevelSelectFont.MeasureString("Main Menu").Y) / 2 + 200), Color.White);
+                spriteBatch.DrawString(PacificoFont, "Main Menu", new Vector2((width - PacificoFont.MeasureString("Main Menu").X) / 2, (height - PacificoFont.MeasureString("Main Menu").Y) / 2 + 200), Color.White);
             }
             spriteBatch.End();
             base.Draw(gameTime);
