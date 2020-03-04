@@ -18,7 +18,7 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2;
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume;
-        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked;
+        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked, ResumeButtonClicked;
         private int LevelCompleted, SliderPosition;
         public Game1()
         {
@@ -178,6 +178,7 @@ namespace OakHeart
                             {
                                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
                             }
+                            PlayButtonClicked = false;
                         }
                         else
                         {
@@ -197,6 +198,7 @@ namespace OakHeart
                         else if (SettingsButtonClicked == true)
                         {
                             _state = GameState.Settings;
+                            SettingsButtonClicked = false;
                         }
                         else
                         {
@@ -215,6 +217,7 @@ namespace OakHeart
                         else if (QuitButtonClicked == true)
                         {
                             Exit();
+                            QuitButtonClicked = false;
                         }
                         else
                         {
@@ -299,6 +302,7 @@ namespace OakHeart
                         {
                             _state = GameState.Game;
                             // level = i
+                            LevelButtonClicked = false;
                         }
                         else
                         {
@@ -328,6 +332,7 @@ namespace OakHeart
                 spriteBatch.Draw(pause1, new Rectangle(width / 2 + 200, height / 2 - 400, 120, 800), Color.White);
                 spriteBatch.Draw(pause2, new Rectangle(width / 2 - 250, height / 2 + 300, 550, 120), Color.White);
                 Rectangle MainMenuButton = new Rectangle((int)(width - LevelSelectFont.MeasureString("Main Menu").X) / 2 - 10, (int)(height - LevelSelectFont.MeasureString("Main Menu").Y) / 2 + 200, (int)LevelSelectFont.MeasureString("Main Menu").X + 20, (int)LevelSelectFont.MeasureString("Main Menu").Y);
+                Rectangle ResumeButton = new Rectangle((int)(width - LevelSelectFont.MeasureString("Resume").X) / 2 - 10, (int)(height - LevelSelectFont.MeasureString("Resume").Y) / 2 - 200, (int)LevelSelectFont.MeasureString("Resume").X + 20, (int)LevelSelectFont.MeasureString("Resume").Y);
                 if (MainMenuButton.Contains(mousePosition))
                 {
                     if (mouseState.LeftButton == ButtonState.Pressed)
@@ -338,6 +343,7 @@ namespace OakHeart
                     else if (MainMenuButtonClicked == true)
                     {
                         _state = GameState.MainMenu;
+                        MainMenuButtonClicked = false;
                     }
                     else
                     {
@@ -348,7 +354,29 @@ namespace OakHeart
                 {
                     MainMenuButtonClicked = false;
                 }
+                if (ResumeButton.Contains(mousePosition))
+                {
+                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        ResumeButtonClicked = true;
+                        spriteBatch.Draw(rectangle, ResumeButton, new Color(0, 0, 0, 0.5f));
+                    }
+                    else if (ResumeButtonClicked == true)
+                    {
+                        _state = GameState.Game;
+                        ResumeButtonClicked = false;
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(rectangle, ResumeButton, new Color(0, 0, 0, 0.4f));
+                    }
+                }
+                else
+                {
+                    ResumeButtonClicked = false;
+                }
                 spriteBatch.DrawString(PacificoFont, "Main Menu", new Vector2((width - PacificoFont.MeasureString("Main Menu").X) / 2, (height - PacificoFont.MeasureString("Main Menu").Y) / 2 + 200), Color.White);
+                spriteBatch.DrawString(PacificoFont, "Resume", new Vector2((width - PacificoFont.MeasureString("Resume").X) / 2, (height - PacificoFont.MeasureString("Resume").Y) / 2 - 200), Color.White);
             }
             spriteBatch.End();
             base.Draw(gameTime);
