@@ -36,7 +36,7 @@ namespace OakHeart
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 1080;
             graphics.PreferredBackBufferWidth = 1920;
             graphics.ApplyChanges();
@@ -62,7 +62,32 @@ namespace OakHeart
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             circle = Content.Load<Texture2D>("images/circle");
             rectangle.SetData(new[] { Color.White });
-            SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 150);
+            SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 250);
+            string settingsline;
+            System.IO.StreamReader settingsfile = new System.IO.StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
+            bool success1 = true, success2 = true;
+            while ((settingsline = settingsfile.ReadLine()) != null)
+            {
+                if (settingsline.Contains("volume "))
+                {
+                    success1 = float.TryParse(settingsline.Replace("volume ", ""), out volume);
+                }
+                else if (settingsline.Contains("fullscreen "))
+                {
+                    bool fullscreen = false;
+                    success2 = bool.TryParse(settingsline.Replace("fullscreen ", ""), out fullscreen);
+                    if (fullscreen == true)
+                    {
+                        graphics.IsFullScreen = true;
+                        graphics.ApplyChanges();
+                    }
+                }
+            }
+            settingsfile.Close();
+            if (success1 == false || success2 == false)
+            {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume 1\nfullscreen true\n");
+            }
             // TODO: use this.Content to load your game content here
             loadingdone = true;
         }
@@ -78,7 +103,14 @@ namespace OakHeart
             rectangle.Dispose();
             // TODO: Unload any non ContentManager content here
         }
-
+        private void LoadSave()
+        {
+            bool success = Int32.TryParse(File.ReadAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt"), out LevelCompleted);
+            if (success == false)
+            {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
+            }
+        }
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -173,11 +205,7 @@ namespace OakHeart
                         else if (PlayButtonClicked == true)
                         {
                             _state = GameState.LevelSelect;
-                            bool success = Int32.TryParse(File.ReadAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt"), out LevelCompleted);
-                            if (success == false)
-                            {
-                                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
-                            }
+                            LoadSave();
                             PlayButtonClicked = false;
                         }
                         else
@@ -243,28 +271,28 @@ namespace OakHeart
                 spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, volumeheight) - KronaFont.MeasureString("Volume") / 2, Color.White);
                 spriteBatch.DrawString(KronaFont, "Fullscreen", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, fullscreenheight) - KronaFont.MeasureString("Fullscreen") / 2, Color.White);
                 int sliderwidth = (int)(GraphicsDevice.Viewport.Width * 0.75f);
-                Rectangle SlideBar = new Rectangle(sliderwidth - 150, volumeheight, (int)(graphics.PreferredBackBufferWidth * .3f), 26);
+                Rectangle SlideBar = new Rectangle(sliderwidth - 250, volumeheight, (int)(graphics.PreferredBackBufferWidth * .3f), 26);
                 Color DragColor = Color.White;
                 if ((SlideBar.Contains(mousePosition) || (DragSlider == true)) && mouseState.LeftButton == ButtonState.Pressed)
                 {
                     DragColor = new Color(230, 230, 230);
                     SliderPosition = mousePosition.X - 15;
-                    if (SliderPosition < sliderwidth - 150)
+                    if (SliderPosition < sliderwidth - 250)
                     {
-                        SliderPosition = sliderwidth - 150;
+                        SliderPosition = sliderwidth - 250;
                     }
-                    if (SliderPosition > sliderwidth - 196 + (int)(graphics.PreferredBackBufferWidth * .3f))
+                    if (SliderPosition > sliderwidth - 296 + (int)(graphics.PreferredBackBufferWidth * .3f))
                     {
-                        SliderPosition = sliderwidth - 196 + (int)(graphics.PreferredBackBufferWidth * .3f);
+                        SliderPosition = sliderwidth - 296 + (int)(graphics.PreferredBackBufferWidth * .3f);
                     }
-                    volume = SliderPosition - (sliderwidth - 150);
+                    volume = SliderPosition - (sliderwidth - 250);
                     volume /= 270;
                     DragSlider = true;
                 }
                 else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
                 { DragSlider = false; }
                 spriteBatch.Draw(rectangle, SlideBar, new Color(200, 200, 200));
-                spriteBatch.Draw(rectangle, new Rectangle(sliderwidth - 150, volumeheight, SliderPosition + 165 - sliderwidth, 26), Color.Gray);
+                spriteBatch.Draw(rectangle, new Rectangle(sliderwidth - 250, volumeheight, SliderPosition + 265 - sliderwidth, 26), Color.Gray);
                 spriteBatch.Draw(circle, new Rectangle(SliderPosition, volumeheight - 10, 46, 46), DragColor);
 
             }
