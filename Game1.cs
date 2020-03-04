@@ -70,7 +70,7 @@ namespace OakHeart
                 if (settingsline.Contains("volume "))
                 {
                     success1 = float.TryParse(settingsline.Replace("volume ", ""), out volume);
-                    SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 250 + 530 * volume);
+                    SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 250 + (int)(graphics.PreferredBackBufferWidth * .3f) * volume);
                     
                 }
                 else if (settingsline.Contains("fullscreen "))
@@ -289,8 +289,10 @@ namespace OakHeart
                     FullscreenColor = Color.Red;
                 }
                 Rectangle FullscreenSlider = new Rectangle(FullscreenSliderPos, fullscreenheight - 9, 46, 46);
-                Rectangle FullscreenRec = new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.65f), fullscreenheight, 100, 26);
-                if (FullscreenRec.Contains(mousePosition) || FullscreenSlider.Contains(mousePosition))
+                Rectangle FullscreenRec = new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.65f), fullscreenheight - 9, 100, 46);
+                Rectangle FullscreenRight = new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.65f) + 77, fullscreenheight - 9, 46, 46);
+                Rectangle FullscreenLeft = new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.65f) - 23, fullscreenheight - 9, 46, 46);
+                if (FullscreenRec.Contains(mousePosition) || FullscreenSlider.Contains(mousePosition) || FullscreenLeft.Contains(mousePosition) || FullscreenRight.Contains(mousePosition))
                 {
                     if (mouseState.LeftButton == ButtonState.Pressed)
                     {
@@ -302,6 +304,7 @@ namespace OakHeart
                         graphics.IsFullScreen = fullscreen;
                         graphics.ApplyChanges();
                         fullscreensliderclick = false;
+                        File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume "+ volume + "\nfullscreen "+ fullscreen + "\n");
                     }
                 }
                 else {
@@ -322,14 +325,18 @@ namespace OakHeart
                         SliderPosition = sliderwidth - 296 + (int)(graphics.PreferredBackBufferWidth * .3f);
                     }
                     volume = SliderPosition - (sliderwidth - 250);
-                    volume /= 270;
+                    volume /= (int)(graphics.PreferredBackBufferWidth * .3f);
                     DragSlider = true;
                 }
                 else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
-                { DragSlider = false; }
+                { DragSlider = false;
+                  File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume " + volume + "\nfullscreen " + fullscreen + "\n");
+                }
                 spriteBatch.Draw(rectangle, SlideBar, new Color(200, 200, 200));
                 spriteBatch.Draw(rectangle, new Rectangle(sliderwidth - 250, volumeheight, SliderPosition + 265 - sliderwidth, 26), Color.Gray);
                 spriteBatch.Draw(rectangle, FullscreenRec, FullscreenColor);
+                spriteBatch.Draw(circle, FullscreenRight, FullscreenColor);
+                spriteBatch.Draw(circle, FullscreenLeft, FullscreenColor);
                 spriteBatch.Draw(circle, FullscreenSlider, Color.White);
                 spriteBatch.Draw(circle, new Rectangle(SliderPosition, volumeheight - 10, 46, 46), DragColor);
 
