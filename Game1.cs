@@ -90,6 +90,7 @@ namespace OakHeart
             }
             // TODO: use this.Content to load your game content here
             loadingdone = true;
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -136,10 +137,12 @@ namespace OakHeart
                     else if (_state == GameState.Game)
                     {
                         _state = GameState.Pause;
+                        IsMouseVisible = true;
                     }
                     else if (_state == GameState.Pause)
                     {
                         _state = GameState.Game;
+                        IsMouseVisible = false;
                     }
                     escdown = true;
                 }
@@ -147,8 +150,6 @@ namespace OakHeart
             else { escdown = false; }
             if (_state == GameState.MainMenu)
             {
-                IsMouseVisible = true;
-
                 // TODO: Add your update logic here
                 if (loadingdone == true && menuposition < graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false && ElapsedTime > 500)
                 {
@@ -171,13 +172,6 @@ namespace OakHeart
                 }
                 else if (menuanimationdone == true && menuposition < 0)
                 { menuposition = 0; }
-            }
-            else if (_state == GameState.Game)
-            {
-                IsMouseVisible = false;
-            }
-            else {
-                IsMouseVisible = true;
             }
             base.Update(gameTime);
         }
@@ -373,6 +367,7 @@ namespace OakHeart
                         else if (LevelButtonClicked == true)
                         {
                             _state = GameState.Game;
+                            IsMouseVisible = false;
                             // level = i
                             LevelButtonClicked = false;
                         }
@@ -438,6 +433,7 @@ namespace OakHeart
                     else if (ResumeButtonClicked == true)
                     {
                         _state = GameState.Game;
+                        IsMouseVisible = false;
                         ResumeButtonClicked = false;
                     }
                     else
