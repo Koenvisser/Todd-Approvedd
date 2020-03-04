@@ -172,6 +172,13 @@ namespace OakHeart
                 else if (menuanimationdone == true && menuposition < 0)
                 { menuposition = 0; }
             }
+            else if (_state == GameState.Game)
+            {
+                IsMouseVisible = false;
+            }
+            else {
+                IsMouseVisible = true;
+            }
             base.Update(gameTime);
         }
 
