@@ -18,7 +18,7 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2;
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume;
-        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked, ResumeButtonClicked;
+        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false;
         private int LevelCompleted, SliderPosition;
         public Game1()
         {
@@ -74,7 +74,6 @@ namespace OakHeart
                 }
                 else if (settingsline.Contains("fullscreen "))
                 {
-                    bool fullscreen = false;
                     success2 = bool.TryParse(settingsline.Replace("fullscreen ", ""), out fullscreen);
                     if (fullscreen == true)
                     {
@@ -177,7 +176,7 @@ namespace OakHeart
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
 
         protected override void Draw(GameTime gameTime)
-        {            
+        {
             int width = graphics.PreferredBackBufferWidth;
             int height = graphics.PreferredBackBufferHeight;
             var mouseState = Mouse.GetState();
@@ -272,6 +271,37 @@ namespace OakHeart
                 spriteBatch.DrawString(KronaFont, "Fullscreen", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, fullscreenheight) - KronaFont.MeasureString("Fullscreen") / 2, Color.White);
                 int sliderwidth = (int)(GraphicsDevice.Viewport.Width * 0.75f);
                 Rectangle SlideBar = new Rectangle(sliderwidth - 250, volumeheight, (int)(graphics.PreferredBackBufferWidth * .3f), 26);
+                int FullscreenSliderPos = 0;
+                Color FullscreenColor = new Color();
+                if (fullscreen == true)
+                {
+                    FullscreenSliderPos = (int)(GraphicsDevice.Viewport.Width * 0.65f) + 77;
+                    FullscreenColor = Color.Green;
+                }
+                else {
+                    FullscreenSliderPos = (int)(GraphicsDevice.Viewport.Width * 0.65f) - 23;
+                    FullscreenColor = Color.Red;
+                }
+                Rectangle FullscreenSlider = new Rectangle(FullscreenSliderPos, fullscreenheight - 9, 46, 46);
+                Rectangle FullscreenRec = new Rectangle((int)(GraphicsDevice.Viewport.Width * 0.65f), fullscreenheight, 100, 26);
+                if (FullscreenRec.Contains(mousePosition) || FullscreenSlider.Contains(mousePosition))
+                {
+                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        fullscreensliderclick = true;
+                    }
+                    else if (fullscreensliderclick == true)
+                    {
+                        fullscreen = !fullscreen;
+                        graphics.IsFullScreen = fullscreen;
+                        graphics.ApplyChanges();
+                        fullscreensliderclick = false;
+                    }
+                }
+                else {
+                    fullscreensliderclick = false;
+                }
+
                 Color DragColor = Color.White;
                 if ((SlideBar.Contains(mousePosition) || (DragSlider == true)) && mouseState.LeftButton == ButtonState.Pressed)
                 {
@@ -293,6 +323,8 @@ namespace OakHeart
                 { DragSlider = false; }
                 spriteBatch.Draw(rectangle, SlideBar, new Color(200, 200, 200));
                 spriteBatch.Draw(rectangle, new Rectangle(sliderwidth - 250, volumeheight, SliderPosition + 265 - sliderwidth, 26), Color.Gray);
+                spriteBatch.Draw(rectangle, FullscreenRec, FullscreenColor);
+                spriteBatch.Draw(circle, FullscreenSlider, Color.White);
                 spriteBatch.Draw(circle, new Rectangle(SliderPosition, volumeheight - 10, 46, 46), DragColor);
 
             }
@@ -350,7 +382,9 @@ namespace OakHeart
                 }
             }
             else if (_state == GameState.Game || _state == GameState.Pause)
-            { }
+            {
+
+            }
             if (_state == GameState.Pause)
             {
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, 0, 0, 0.2f));
