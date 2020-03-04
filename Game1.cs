@@ -19,7 +19,7 @@ namespace OakHeart
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume;
         private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false;
-        private int LevelCompleted, SliderPosition;
+        private int LevelCompleted, SliderPosition, ElapsedTime;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -148,12 +148,16 @@ namespace OakHeart
             if (_state == GameState.MainMenu)
             {
                 IsMouseVisible = true;
-                
+
                 // TODO: Add your update logic here
-                if (loadingdone == true && menuposition < graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false)
+                if (loadingdone == true && menuposition < graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false && ElapsedTime > 500)
                 {
                     menuposition *= 1.02f;
                     menuposition += 3;
+                }
+                else if (ElapsedTime <= 500)
+                {
+                    ElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
                 }
                 if (menuposition >= graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false)
                 {
