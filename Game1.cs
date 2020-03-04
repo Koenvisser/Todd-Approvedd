@@ -62,7 +62,6 @@ namespace OakHeart
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             circle = Content.Load<Texture2D>("images/circle");
             rectangle.SetData(new[] { Color.White });
-            SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 250);
             string settingsline;
             System.IO.StreamReader settingsfile = new System.IO.StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
             bool success1 = true, success2 = true;
@@ -71,6 +70,8 @@ namespace OakHeart
                 if (settingsline.Contains("volume "))
                 {
                     success1 = float.TryParse(settingsline.Replace("volume ", ""), out volume);
+                    SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 250 + 530 * volume);
+                    
                 }
                 else if (settingsline.Contains("fullscreen "))
                 {
