@@ -70,8 +70,7 @@ namespace OakHeart
                 if (settingsline.Contains("volume "))
                 {
                     success1 = float.TryParse(settingsline.Replace("volume ", ""), out volume);
-                    SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 250 + (int)(graphics.PreferredBackBufferWidth * .3f) * volume);
-                    
+                    SliderPosition = (int)(graphics.PreferredBackBufferWidth * 0.75f - 250 + (GraphicsDevice.Viewport.Width * 0.75f - 296 + graphics.PreferredBackBufferWidth * .3f - (GraphicsDevice.Viewport.Width * 0.75f - 250)) * volume);                  
                 }
                 else if (settingsline.Contains("fullscreen "))
                 {
@@ -325,7 +324,7 @@ namespace OakHeart
                         SliderPosition = sliderwidth - 296 + (int)(graphics.PreferredBackBufferWidth * .3f);
                     }
                     volume = SliderPosition - (sliderwidth - 250);
-                    volume /= (int)(graphics.PreferredBackBufferWidth * .3f);
+                    volume /= sliderwidth - 296 + (int)(graphics.PreferredBackBufferWidth * .3f) - (sliderwidth - 250);
                     DragSlider = true;
                 }
                 else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
