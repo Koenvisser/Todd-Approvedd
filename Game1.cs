@@ -272,8 +272,11 @@ namespace OakHeart
             {
                 int volumeheight = 100;
                 int fullscreenheight = 250 + (int)KronaFont.MeasureString("Volume").Y;
-                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, volumeheight) - KronaFont.MeasureString("Volume") / 2, Color.White);
-                spriteBatch.DrawString(KronaFont, "Fullscreen", new Vector2(GraphicsDevice.Viewport.Width * 0.25f, fullscreenheight) - KronaFont.MeasureString("Fullscreen") / 2, Color.White);
+                spriteBatch.DrawString(KronaFont, "Volume", new Vector2(GraphicsDevice.Viewport.Width * 0.03f, volumeheight - KronaFont.MeasureString("Volume").Y / 2), Color.White);
+                spriteBatch.DrawString(KronaFont, "Fullscreen", new Vector2(GraphicsDevice.Viewport.Width * 0.03f, fullscreenheight - KronaFont.MeasureString("Fullscreen").Y / 2), Color.White);
+                spriteBatch.Draw(rectangle, new Rectangle(0,volumeheight - 3 + (fullscreenheight - volumeheight) / 2,graphics.PreferredBackBufferWidth,6), Color.Black);
+                spriteBatch.Draw(rectangle, new Rectangle(0, (volumeheight + (fullscreenheight - volumeheight) / 2) * 2 + 7, graphics.PreferredBackBufferWidth, 6), Color.Black);
+                spriteBatch.Draw(rectangle, new Rectangle(0, (volumeheight + (fullscreenheight - volumeheight) / 2) * 3 + 17, graphics.PreferredBackBufferWidth, 6), Color.Black);
                 int sliderwidth = (int)(GraphicsDevice.Viewport.Width * 0.75f);
                 Rectangle SlideBar = new Rectangle(sliderwidth - 250, volumeheight, (int)(graphics.PreferredBackBufferWidth * .3f), 26);
                 int FullscreenSliderPos = 0;
