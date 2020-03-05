@@ -18,7 +18,7 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2;
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume;
-        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false;
+        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false;
         private int LevelCompleted, SliderPosition, ElapsedTime;
         public Game1()
         {
@@ -63,7 +63,7 @@ namespace OakHeart
             circle = Content.Load<Texture2D>("images/circle");
             rectangle.SetData(new[] { Color.White });
             string settingsline;
-            System.IO.StreamReader settingsfile = new System.IO.StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
+            StreamReader settingsfile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
             bool success1 = true, success2 = true;
             while ((settingsline = settingsfile.ReadLine()) != null)
             {
@@ -338,7 +338,28 @@ namespace OakHeart
                 spriteBatch.Draw(circle, FullscreenLeft, FullscreenColor);
                 spriteBatch.Draw(circle, FullscreenSlider, Color.White);
                 spriteBatch.Draw(circle, new Rectangle(SliderPosition, volumeheight - 10, 46, 46), DragColor);
+                Rectangle BackButton = new Rectangle(width / 2 - (int)(KronaFont.MeasureString("Back").X * 0.6f), (int)(height * .8f), (int)(KronaFont.MeasureString("Back").X * 1.2f), (int)KronaFont.MeasureString("Back").Y);
 
+                if (BackButton.Contains(mousePosition))
+                {
+                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        BackButtonClicked = true;
+                        spriteBatch.Draw(rectangle, BackButton, new Color(0, 0, 0, 0.3f));
+                    }
+                    else if (BackButtonClicked == true)
+                    {
+                        _state = GameState.MainMenu;
+                        BackButtonClicked = false;
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(rectangle, BackButton, new Color(0, 0, 0, 0.1f));
+                    }
+
+                }
+                else { BackButtonClicked = false; }
+                spriteBatch.DrawString(KronaFont, "Back", new Vector2(width / 2 - (int)(KronaFont.MeasureString("Back").X * 0.5f), height * .8f), Color.White);
             }
             else if (_state == GameState.LevelSelect)
             {
@@ -400,8 +421,8 @@ namespace OakHeart
             }
             if (_state == GameState.Pause)
             {
-                spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, 0, 0, 0.2f));
-                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - 250,height / 2 - 375,500,750), new Color(0, 0, 0, 0.35f));
+                spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, .1f, 0, 0.25f));
+                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - 250,height / 2 - 375,500,750), new Color(0, .2f, 0, 0.3f));
                 spriteBatch.Draw(pause1, new Rectangle(width / 2 - 300,height / 2 - 400,120,800), Color.White);
                 spriteBatch.Draw(pause2, new Rectangle(width / 2 - 250, height / 2 - 430, 550, 120), Color.White);
                 spriteBatch.Draw(pause1, new Rectangle(width / 2 + 200, height / 2 - 400, 120, 800), Color.White);
@@ -413,7 +434,7 @@ namespace OakHeart
                     if (mouseState.LeftButton == ButtonState.Pressed)
                     {
                         MainMenuButtonClicked = true;
-                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.5f));
+                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.3f));
                     }
                     else if (MainMenuButtonClicked == true)
                     {
@@ -422,7 +443,7 @@ namespace OakHeart
                     }
                     else
                     {
-                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.4f));
+                        spriteBatch.Draw(rectangle, MainMenuButton, new Color(0, 0, 0, 0.2f));
                     }
                 }
                 else
@@ -434,7 +455,7 @@ namespace OakHeart
                     if (mouseState.LeftButton == ButtonState.Pressed)
                     {
                         ResumeButtonClicked = true;
-                        spriteBatch.Draw(rectangle, ResumeButton, new Color(0, 0, 0, 0.5f));
+                        spriteBatch.Draw(rectangle, ResumeButton, new Color(0, 0, 0, 0.3f));
                     }
                     else if (ResumeButtonClicked == true)
                     {
@@ -444,7 +465,7 @@ namespace OakHeart
                     }
                     else
                     {
-                        spriteBatch.Draw(rectangle, ResumeButton, new Color(0, 0, 0, 0.4f));
+                        spriteBatch.Draw(rectangle, ResumeButton, new Color(0, 0, 0, 0.2f));
                     }
                 }
                 else
