@@ -316,7 +316,7 @@ namespace OakHeart
                     else
                     {
                         FullscreenSliderPos = width / 2 - 73;
-                        FullscreenColor = Color.Red;
+                        FullscreenColor = new Color(200, 200, 200);
                     }
                     Rectangle FullscreenSlider = new Rectangle(FullscreenSliderPos, fullscreenheight + 70, 46, 46);
                     Rectangle FullscreenRec = new Rectangle(width / 2 - 50, fullscreenheight + 70, 100, 46);
