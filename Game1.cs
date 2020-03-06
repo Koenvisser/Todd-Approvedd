@@ -435,6 +435,7 @@ namespace OakHeart
                             File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
                             _state = GameState.MainMenu;
                             ConfirmButtonClicked = false;
+                            ResetGame = false;
                         }
                         else
                         {
