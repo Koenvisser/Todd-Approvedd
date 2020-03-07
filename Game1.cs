@@ -16,7 +16,7 @@ namespace OakHeart
         GameState _pausedstate = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2;
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave;
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume;
         private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
@@ -55,6 +55,7 @@ namespace OakHeart
             spriteBatch = new SpriteBatch(GraphicsDevice);
             loadingleft = Content.Load<Texture2D>("images/left");
             loadingright = Content.Load<Texture2D>("images/right");
+            menuleave = Content.Load<Texture2D>("images/menuleave");
             pause1 = Content.Load<Texture2D>("images/pause1");
             pause2 = Content.Load<Texture2D>("images/pause2");
             KronaFont = Content.Load<SpriteFont>("fonts/Krona");
@@ -215,11 +216,15 @@ namespace OakHeart
                         {
                             spriteBatch.Draw(rectangle, PlayButton, new Color(0, 0, 0, 0.1f));
                         }
-
                     }
                     else { PlayButtonClicked = false; }
 
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X / 2, graphics.PreferredBackBufferHeight * .5f + menuposition), Color.White);
+                    Random random = new Random();
+                    float angle = random.Next(0, 1000);
+                    angle *= .01f;
+                    spriteBatch.Draw(menuleave, new Vector2(200, 200), new Rectangle(0, 0, menuleave.Width, menuleave.Height), Color.White, angle, new Vector2(menuleave.Width / 2, menuleave.Height / 2), .1f, SpriteEffects.None, 1);
+
                 }
 
                 if (menuanimationdone == false)
