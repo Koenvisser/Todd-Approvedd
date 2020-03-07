@@ -198,7 +198,7 @@ namespace OakHeart
                 {
 
                     Rectangle PlayButton = new Rectangle(width / 2 - (int)(KronaFont.MeasureString("Play").X * 0.6f), (int)(height * .5f + menuposition), (int)(KronaFont.MeasureString("Play").X * 1.2f), (int)KronaFont.MeasureString("Play").Y);
-                    if (PlayButton.Contains(mousePosition))
+                    if (PlayButton.Contains(mousePosition) && _state == GameState.MainMenu)
                     {
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
@@ -252,7 +252,7 @@ namespace OakHeart
                     }
                     i++;
                     Rectangle LevelButton = new Rectangle((int)LevelSelectPosition.X - 31, (int)LevelSelectPosition.Y - 31, 62, 62);
-                    if (LevelButton.Contains(mousePosition))
+                    if (LevelButton.Contains(mousePosition) && _state == GameState.LevelSelect)
                     {
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
@@ -471,7 +471,7 @@ namespace OakHeart
                     spriteBatch.DrawString(PacificoFont, "No", new Vector2((width - PacificoFont.MeasureString("No").X) / 2, (height - PacificoFont.MeasureString("No").Y) / 2 + 130), Color.White);
                 }
             }
-            if (_state == GameState.Pause)
+            else if (_state == GameState.Pause)
             {
                 Rectangle ResumeButton = new Rectangle((int)(width - PacificoFont.MeasureString("Resume").X) / 2 - 10, (int)(height - PacificoFont.MeasureString("Resume").Y) / 2 - 210, (int)PacificoFont.MeasureString("Resume").X + 20, (int)PacificoFont.MeasureString("Resume").Y);
                 Rectangle QuitButton = new Rectangle((int)(width - PacificoFont.MeasureString("Quit").X) / 2 - 10, (int)(height - PacificoFont.MeasureString("Quit").Y) / 2 + 210, (int)PacificoFont.MeasureString("Quit").X + 20, (int)PacificoFont.MeasureString("Quit").Y);
