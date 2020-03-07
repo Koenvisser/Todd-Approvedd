@@ -291,9 +291,9 @@ namespace OakHeart
             {
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, .1f, 0, 0.4f));
                 spriteBatch.Draw(rectangle, new Rectangle(width / 2 - 250, height / 2 - 375, 500, 750), new Color(0, .2f, 0, 0.9f));
-                spriteBatch.Draw(pause1, new Rectangle(width / 2 - 300, height / 2 - 400, 120, 800), Color.White);
+                spriteBatch.Draw(pause1, new Rectangle(width / 2 - 310, height / 2 - 400, 120, 800), Color.White);
                 spriteBatch.Draw(pause2, new Rectangle(width / 2 - 250, height / 2 - 430, 550, 120), Color.White);
-                spriteBatch.Draw(pause1, new Rectangle(width / 2 + 200, height / 2 - 400, 120, 800), Color.White);
+                spriteBatch.Draw(pause1, new Rectangle(width / 2 + 190, height / 2 - 400, 120, 800), Color.White);
                 spriteBatch.Draw(pause2, new Rectangle(width / 2 - 250, height / 2 + 300, 550, 120), Color.White);
             }
             if (_state == GameState.Settings)
