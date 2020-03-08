@@ -11,16 +11,18 @@ namespace OakHeart
     /// </summary>
     public class Game1 : Game
     {
-        enum GameState { MainMenu, Settings,LevelSelect, Game, Pause };
+        enum GameState { MainMenu, Settings, LevelSelect, Game, Pause };
         GameState _state = GameState.MainMenu;
         GameState _pausedstate = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave;
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
-        private float menuposition, volume;
-        private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
-        private int LevelCompleted, SliderPosition, ElapsedTime;
+        private float menuposition, volume, timer;
+        private float[] angles = new float[30];
+        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
+        private int LevelCompleted, SliderPosition, ElapsedTime, anglesi;
+        private Vector2[] menuleavespos = new Vector2[30];
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -89,6 +91,7 @@ namespace OakHeart
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume 1\nfullscreen True\n");
             }
+            menuleavespos[29] = new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20, graphics.PreferredBackBufferHeight * .5f - 20);
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
@@ -139,7 +142,7 @@ namespace OakHeart
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            timer += gameTime.ElapsedGameTime.Milliseconds;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 
@@ -172,8 +175,45 @@ namespace OakHeart
                     menuposition *= 0.96f;
                     menuposition -= 2;
                 }
-                else if (menuanimationdone == true && menuposition < 0)
-                { menuposition = 0; }
+                else if (menuanimationdone == true && menuposition < 0 && menuanimationdone2 == false)
+                {
+                    menuposition = 0;
+                    menuanimationdone2 = true;
+                    timer = 0;
+                }
+                if (menuanimationdone2 == true && timer >= 100)
+                {
+                    Random random = new Random();
+                    float angle = random.Next(0, 1000);
+                    angle *= .01f;
+                    for (int i = 0; i < 29; i++)
+                    {
+                        angles[i] = angles[i + 1];
+                        menuleavespos[i] = menuleavespos[i + 1];
+                    }
+                    angles[29] = angle;
+                    if (menuleavespos[29].X <= graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y > graphics.PreferredBackBufferHeight * .5f - 15)
+                    {
+                        menuleavespos[29].X = graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20;
+                        menuleavespos[29].Y = menuleavespos[28].Y - 25;
+                    }
+                    if (menuleavespos[29].X > graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y >= graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y)
+                    {
+                        menuleavespos[29].X = menuleavespos[28].X - 20;
+                        menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y;
+                    }
+                    if (menuleavespos[29].X >= graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 15 && menuleavespos[29].Y < graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y)
+                    {
+                        menuleavespos[29].X = graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 20;
+                        menuleavespos[29].Y = menuleavespos[28].Y + 25;
+                    }
+                    if (menuleavespos[29].X < graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 20 && menuleavespos[29].Y <= graphics.PreferredBackBufferHeight * .5f - 20)
+                    {
+                        menuleavespos[29].X = menuleavespos[28].X + 20;
+                        menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f - 20;
+                    }
+                    timer = 0;
+                }
             }
             base.Update(gameTime);
         }
@@ -220,11 +260,28 @@ namespace OakHeart
                     else { PlayButtonClicked = false; }
 
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X / 2, graphics.PreferredBackBufferHeight * .5f + menuposition), Color.White);
-                    Random random = new Random();
-                    float angle = random.Next(0, 1000);
-                    angle *= .01f;
-                    spriteBatch.Draw(menuleave, new Vector2(200, 200), new Rectangle(0, 0, menuleave.Width, menuleave.Height), Color.White, angle, new Vector2(menuleave.Width / 2, menuleave.Height / 2), .1f, SpriteEffects.None, 1);
-
+                    if (menuanimationdone2 == true)
+                    {
+                        Color leavecolor = Color.White;
+                        for (int i = 0; i < 30; i++)
+                        {
+                            if (menuleavespos[i].X != 0 && menuleavespos[i].Y != 0)
+                            {
+                                if (i == 0)
+                                {
+                                    leavecolor = Color.White * (1 - timer / 100);
+                                }
+                                else if (i == 29)
+                                {
+                                    leavecolor = Color.White * (timer / 100);
+                                }
+                                else {
+                                    leavecolor = Color.White;
+                                }
+                                spriteBatch.Draw(menuleave, menuleavespos[i], new Rectangle(0, 0, menuleave.Width, menuleave.Height), leavecolor, angles[i], new Vector2(menuleave.Width / 2, menuleave.Height / 2), .08f, SpriteEffects.None, 1);
+                            }
+                        }
+                    }
                 }
 
                 if (menuanimationdone == false)
