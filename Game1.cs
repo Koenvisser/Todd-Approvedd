@@ -181,7 +181,7 @@ namespace OakHeart
                     menuanimationdone2 = true;
                     timer = 0;
                 }
-                if (menuanimationdone2 == true && timer >= 150)
+                if (menuanimationdone2 == true && timer >= 40)
                 {
                     Random random = new Random();
                     float angle = random.Next(0, 1000);
@@ -279,11 +279,11 @@ namespace OakHeart
                             {
                                 if (i == 0)
                                 {
-                                    leavecolor = Color.White * (1 - timer / 150);
+                                    leavecolor = Color.White * (1 - timer / 40);
                                 }
                                 else if (i == 29)
                                 {
-                                    leavecolor = Color.White * (timer / 150);
+                                    leavecolor = Color.White * (timer / 40);
                                 }
                                 else {
                                     leavecolor = Color.White;
