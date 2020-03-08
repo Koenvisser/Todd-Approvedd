@@ -181,7 +181,7 @@ namespace OakHeart
                     menuanimationdone2 = true;
                     timer = 0;
                 }
-                if (menuanimationdone2 == true && timer >= 100)
+                if (menuanimationdone2 == true && timer >= 150)
                 {
                     Random random = new Random();
                     float angle = random.Next(0, 1000);
@@ -211,6 +211,16 @@ namespace OakHeart
                     {
                         menuleavespos[29].X = menuleavespos[28].X + 20;
                         menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f - 20;
+                    }
+                    if (menuleavespos[29].X <= graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y > graphics.PreferredBackBufferHeight * .5f - 15)
+                    {
+                        menuleavespos[29].X = graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20;
+                        menuleavespos[29].Y = menuleavespos[28].Y - 25;
+                    }
+                    if (menuleavespos[29].X > graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y >= graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y)
+                    {
+                        menuleavespos[29].X = menuleavespos[28].X - 20;
+                        menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y;
                     }
                     timer = 0;
                 }
@@ -269,11 +279,11 @@ namespace OakHeart
                             {
                                 if (i == 0)
                                 {
-                                    leavecolor = Color.White * (1 - timer / 100);
+                                    leavecolor = Color.White * (1 - timer / 150);
                                 }
                                 else if (i == 29)
                                 {
-                                    leavecolor = Color.White * (timer / 100);
+                                    leavecolor = Color.White * (timer / 150);
                                 }
                                 else {
                                     leavecolor = Color.White;
