@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace OakHeart
 {
@@ -21,13 +23,16 @@ namespace OakHeart
         private float menuposition, volume, timer;
         private float[] angles = new float[30];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
-        private int LevelCompleted, SliderPosition, ElapsedTime, anglesi;
+        private int LevelCompleted, SliderPosition, ElapsedTime;
+        private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30];
+        List<SoundEffect> soundEffects;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
+            soundEffects = new List<SoundEffect>();
         }
 
         /// <summary>
@@ -65,6 +70,7 @@ namespace OakHeart
             PacificoFont = Content.Load<SpriteFont>("fonts/Pacifico");
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
             circle = Content.Load<Texture2D>("images/circle");
+            soundEffects.Add(Content.Load<SoundEffect>("sounds/backgroundmenu"));
             rectangle.SetData(new[] { Color.White });
             string settingsline;
             StreamReader settingsfile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
@@ -180,6 +186,14 @@ namespace OakHeart
                     menuposition = 0;
                     menuanimationdone2 = true;
                     timer = 0;
+                    backgroundsongmenu = soundEffects[0].CreateInstance();
+                    backgroundsongmenu.IsLooped = true;
+                    backgroundsongmenu.Volume = 0;
+                    backgroundsongmenu.Play();
+                }
+                if (menuanimationdone2 == true && backgroundsongmenu.Volume <= 0.995f)
+                {
+                    backgroundsongmenu.Volume += 0.005f;
                 }
                 if (menuanimationdone2 == true && timer >= 40)
                 {
@@ -337,6 +351,7 @@ namespace OakHeart
                             IsMouseVisible = false;
                             // level = i
                             LevelButtonClicked = false;
+                            backgroundsongmenu.Stop();
                         }
                         else
                         {
@@ -430,6 +445,7 @@ namespace OakHeart
                         volume = SliderPosition - (sliderwidth - 173);
                         volume /= 300;
                         DragSlider = true;
+                        SoundEffect.MasterVolume = volume;
                     }
                     else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
                     {

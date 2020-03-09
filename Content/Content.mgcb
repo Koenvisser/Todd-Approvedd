@@ -106,3 +106,9 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/Pacifico.spritefont
 
+#begin sounds/backgroundmenu.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/backgroundmenu.wav
+
