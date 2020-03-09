@@ -197,17 +197,17 @@ namespace OakHeart
                         menuleavespos[29].X = graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20;
                         menuleavespos[29].Y = menuleavespos[28].Y - 25;
                     }
-                    if (menuleavespos[29].X > graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y >= graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y)
+                    if (menuleavespos[29].X > graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y >= graphics.PreferredBackBufferHeight * .5f + 40 + KronaFont.MeasureString("Play").Y)
                     {
                         menuleavespos[29].X = menuleavespos[28].X - 20;
-                        menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y;
+                        menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f + 40 + KronaFont.MeasureString("Play").Y;
                     }
-                    if (menuleavespos[29].X >= graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 15 && menuleavespos[29].Y < graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y)
+                    if (menuleavespos[29].X >= graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 15 && menuleavespos[29].Y < graphics.PreferredBackBufferHeight * .5f + 40 + KronaFont.MeasureString("Play").Y)
                     {
                         menuleavespos[29].X = graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 20;
                         menuleavespos[29].Y = menuleavespos[28].Y + 25;
                     }
-                    if (menuleavespos[29].X < graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 20 && menuleavespos[29].Y <= graphics.PreferredBackBufferHeight * .5f - 20)
+                    if (menuleavespos[29].X < graphics.PreferredBackBufferWidth / 2 + KronaFont.MeasureString("Play").X * 0.6f + 20 && menuleavespos[29].Y <= graphics.PreferredBackBufferHeight * .5f - 15)
                     {
                         menuleavespos[29].X = menuleavespos[28].X + 20;
                         menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f - 20;
@@ -217,10 +217,10 @@ namespace OakHeart
                         menuleavespos[29].X = graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20;
                         menuleavespos[29].Y = menuleavespos[28].Y - 25;
                     }
-                    if (menuleavespos[29].X > graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y >= graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y)
+                    if (menuleavespos[29].X > graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20 && menuleavespos[29].Y >= graphics.PreferredBackBufferHeight * .5f + 40 + KronaFont.MeasureString("Play").Y)
                     {
                         menuleavespos[29].X = menuleavespos[28].X - 20;
-                        menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f + 20 + KronaFont.MeasureString("Play").Y;
+                        menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f + 40 + KronaFont.MeasureString("Play").Y;
                     }
                     timer = 0;
                 }
@@ -248,7 +248,7 @@ namespace OakHeart
                 if (menuanimationdone == true)
                 {
 
-                    Rectangle PlayButton = new Rectangle(width / 2 - (int)(KronaFont.MeasureString("Play").X * 0.6f), (int)(height * .5f + menuposition), (int)(KronaFont.MeasureString("Play").X * 1.2f), (int)KronaFont.MeasureString("Play").Y);
+                    Rectangle PlayButton = new Rectangle(width / 2 - (int)(KronaFont.MeasureString("Play").X * 0.6f), (int)(height * .5f + menuposition), (int)(KronaFont.MeasureString("Play").X * 1.2f), (int)KronaFont.MeasureString("Play").Y + 20);
                     if (PlayButton.Contains(mousePosition) && _state == GameState.MainMenu)
                     {
                         if (mouseState.LeftButton == ButtonState.Pressed)
