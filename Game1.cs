@@ -22,8 +22,9 @@ namespace OakHeart
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade;
         private float[] angles = new float[30];
+        private int[] LevelsProgress = new int[5];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
-        private int LevelCompleted, SliderPosition, ElapsedTime;
+        private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30];
         List<SoundEffect> soundEffects;
@@ -118,11 +119,30 @@ namespace OakHeart
         }
         private void LoadSave()
         {
-            bool success = Int32.TryParse(File.ReadAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt"), out LevelCompleted);
-            if (success == false)
+            int i = 0;
+            string saveline;
+            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
+            while ((saveline = savefile.ReadLine()) != null)
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
+                bool success = false;
+                if (i == 0)
+                {
+                    success = Int32.TryParse(saveline, out LevelCompleted);
+                }
+                else if (i == 1)
+                {
+                    success = Int32.TryParse(saveline, out EasterEgssFound);
+                }
+                else if(i <= 6){
+                    success = Int32.TryParse(saveline, out LevelsProgress[i - 2]);
+                }
+                if (success == false)
+                {
+                    File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+                }
+                i++;
             }
+            
         }
 
         private void Pause() {
@@ -345,7 +365,7 @@ namespace OakHeart
                 int percentage = LevelCompleted * 20;
                 spriteBatch.Draw(rectangle,new Rectangle(0,0,width,height / 10), Color.Black * .3f);
                 spriteBatch.DrawString(LevelSelectFont,percentage + "% Levels Completed",new Vector2(width / 4,height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
-                spriteBatch.DrawString(LevelSelectFont,"0% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString("0% Easter Eggs Found") / 2, Color.White);
+                spriteBatch.DrawString(LevelSelectFont,EasterEgssFound / 4 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString("0% Easter Eggs Found") / 2, Color.White);
 
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
@@ -371,7 +391,7 @@ namespace OakHeart
                     if (bottombarfade > 0)
                     {
                         spriteBatch.Draw(rectangle, new Rectangle(0, height - height / 10, width, height / 10), Color.Black * .3f * bottombarfade);
-                        spriteBatch.DrawString(LevelSelectFont, "0% Fungus Cleared", new Vector2(width / 2, height - height / 20) - LevelSelectFont.MeasureString("0% Fungus Cleared") / 2, Color.White * bottombarfade);
+                        spriteBatch.DrawString(LevelSelectFont, LevelsProgress[i - 1] + "% Fungus Cleared", new Vector2(width / 2, height - height / 20) - LevelSelectFont.MeasureString("0% Fungus Cleared") / 2, Color.White * bottombarfade);
                     }
                     if (LevelButton.Contains(mousePosition) && _state == GameState.LevelSelect)
                     {
@@ -563,7 +583,7 @@ namespace OakHeart
                         }
                         else if (ConfirmButtonClicked == true)
                         {
-                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
+                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
                             _state = GameState.MainMenu;
                             if (backgroundsongmenu.State == SoundState.Stopped)
                             {
