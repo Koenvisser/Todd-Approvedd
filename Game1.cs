@@ -22,7 +22,7 @@ namespace OakHeart
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer;
         private float[] angles = new float[30];
-        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
+        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
         private int LevelCompleted, SliderPosition, ElapsedTime;
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30];
@@ -72,6 +72,8 @@ namespace OakHeart
             circle = Content.Load<Texture2D>("images/circle");
             soundEffects.Add(Content.Load<SoundEffect>("sounds/backgroundmenu"));
             rectangle.SetData(new[] { Color.White });
+            backgroundsongmenu = soundEffects[0].CreateInstance();
+            backgroundsongmenu.IsLooped = true;
             string settingsline;
             StreamReader settingsfile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
             bool success1 = false, success2 = false;
@@ -129,6 +131,10 @@ namespace OakHeart
                 _pausedstate = _state;
                 _state = GameState.Pause;
                 IsMouseVisible = true;
+                if (_pausedstate == GameState.MainMenu || _pausedstate == GameState.LevelSelect)
+                {
+                    menusongfadout = true;
+                }
             }
             else if (_state == GameState.Settings)
             {
@@ -139,7 +145,17 @@ namespace OakHeart
                 _state = _pausedstate;
                 if (_state == GameState.Game)
                 { IsMouseVisible = false; }
+                else if (_pausedstate == GameState.MainMenu || _pausedstate == GameState.LevelSelect)
+                {
+                    menusongfadout = false;
+                    if (backgroundsongmenu.State == SoundState.Stopped)
+                    {
+                        backgroundsongmenu.Play();
+                    }
+                }
             }
+
+            
         }
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -186,12 +202,10 @@ namespace OakHeart
                     menuposition = 0;
                     menuanimationdone2 = true;
                     timer = 0;
-                    backgroundsongmenu = soundEffects[0].CreateInstance();
-                    backgroundsongmenu.IsLooped = true;
                     backgroundsongmenu.Volume = 0;
                     backgroundsongmenu.Play();
                 }
-                if (menuanimationdone2 == true && backgroundsongmenu.Volume <= 0.995f)
+                if (menuanimationdone2 == true && backgroundsongmenu.Volume <= 0.995f && menusongfadout == false)
                 {
                     backgroundsongmenu.Volume += 0.005f;
                 }
@@ -237,6 +251,17 @@ namespace OakHeart
                         menuleavespos[29].Y = graphics.PreferredBackBufferHeight * .5f + 40 + KronaFont.MeasureString("Play").Y;
                     }
                     timer = 0;
+                }
+            }
+            else
+            {
+                if (menusongfadout == true && backgroundsongmenu.Volume >= 0.01f)
+                {
+                    backgroundsongmenu.Volume -= 0.01f;
+                }
+                else if (backgroundsongmenu.State == SoundState.Playing && backgroundsongmenu.Volume < 0.01f)
+                {
+                    backgroundsongmenu.Stop();
                 }
             }
             base.Update(gameTime);
@@ -351,7 +376,7 @@ namespace OakHeart
                             IsMouseVisible = false;
                             // level = i
                             LevelButtonClicked = false;
-                            backgroundsongmenu.Stop();
+                            menusongfadout = true;
                         }
                         else
                         {
@@ -522,6 +547,11 @@ namespace OakHeart
                         {
                             File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0");
                             _state = GameState.MainMenu;
+                            if (backgroundsongmenu.State == SoundState.Stopped)
+                            {
+                                backgroundsongmenu.Play();
+                            }
+                            menusongfadout = false;
                             ConfirmButtonClicked = false;
                             ResetGame = false;
                         }
@@ -617,6 +647,11 @@ namespace OakHeart
                     else if (MainMenuButtonClicked == true)
                     {
                         _state = GameState.MainMenu;
+                        if (backgroundsongmenu.State == SoundState.Stopped)
+                        {
+                            backgroundsongmenu.Play();
+                        }      
+                        menusongfadout = false;
                         MainMenuButtonClicked = false;
                     }
                     else
