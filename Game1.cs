@@ -20,7 +20,7 @@ namespace OakHeart
         SpriteBatch spriteBatch;
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave;
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
-        private float menuposition, volume, timer;
+        private float menuposition, volume, timer, bottombarfade;
         private float[] angles = new float[30];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
         private int LevelCompleted, SliderPosition, ElapsedTime;
@@ -342,6 +342,11 @@ namespace OakHeart
             
             else if (_state == GameState.LevelSelect || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.LevelSelect))
             {
+                int percentage = LevelCompleted * 20;
+                spriteBatch.Draw(rectangle,new Rectangle(0,0,width,height / 10), Color.Black * .3f);
+                spriteBatch.DrawString(LevelSelectFont,percentage + "% Levels Completed",new Vector2(width / 4,height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
+                spriteBatch.DrawString(LevelSelectFont,"0% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString("0% Easter Eggs Found") / 2, Color.White);
+
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
                 Vector2 LevelSelectPosition = new Vector2();
@@ -363,8 +368,17 @@ namespace OakHeart
                     }
                     i++;
                     Rectangle LevelButton = new Rectangle((int)LevelSelectPosition.X - 31, (int)LevelSelectPosition.Y - 31, 62, 62);
+                    if (bottombarfade > 0)
+                    {
+                        spriteBatch.Draw(rectangle, new Rectangle(0, height - height / 10, width, height / 10), Color.Black * .3f * bottombarfade);
+                        spriteBatch.DrawString(LevelSelectFont, "0% Fungus Cleared", new Vector2(width / 2, height - height / 20) - LevelSelectFont.MeasureString("0% Fungus Cleared") / 2, Color.White * bottombarfade);
+                    }
                     if (LevelButton.Contains(mousePosition) && _state == GameState.LevelSelect)
                     {
+                        if (bottombarfade <= .95f)
+                        {
+                            bottombarfade += .05f;
+                        }
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
                             spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.6f));
@@ -386,6 +400,10 @@ namespace OakHeart
                     else
                     {
                         spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.15f));
+                        if (bottombarfade >= .05f)
+                        {
+                            bottombarfade -= .05f;
+                        }
                     }
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 38, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
