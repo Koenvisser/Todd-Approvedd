@@ -11,7 +11,7 @@ namespace OakHeart
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GameWorld : Game
     {
         enum GameState { MainMenu, Settings, LevelSelect, Game, Pause };
         GameState _state = GameState.MainMenu;
@@ -29,7 +29,7 @@ namespace OakHeart
         private Vector2[] menuleavespos = new Vector2[30];
         List<SoundEffect> soundEffects;
 
-        public Game1()
+        public GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -142,9 +142,37 @@ namespace OakHeart
                 }
                 i++;
             }
-            
+            savefile.Close();
         }
 
+        private void LevelComplete(int level, int fungusclearedpercent) {
+            string saveline;
+            int i = 0;
+            bool success;
+            int previouslevelcompleted;
+            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
+            while ((saveline = savefile.ReadLine()) != null)
+            {
+                if (i == 0)
+                {
+                    success = Int32.TryParse(saveline, out previouslevelcompleted);
+                }
+                i++;
+            }
+            savefile.Close();
+        }
+
+        private void FoundEasterEgg() {
+            string saveline;
+            int i = 0;
+            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
+            while ((saveline = savefile.ReadLine()) != null)
+            {
+
+                i++;
+            }
+            savefile.Close();
+        }
         private void Pause() {
             if (_state != GameState.Pause && _state != GameState.Settings)
             {
@@ -424,6 +452,7 @@ namespace OakHeart
                         {
                             bottombarfade -= .05f;
                         }
+                        LevelButtonClicked = false;
                     }
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 38, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
