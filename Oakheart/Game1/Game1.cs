@@ -11,7 +11,6 @@ namespace OakHeart
     /// </summary>
     public class Game1 : Game
     {
-        Camera camera;
         private enum GameState { MainMenu, Settings, LevelSelect, Game, Pause };
         GameState _state = GameState.MainMenu;
         GraphicsDeviceManager graphics;
@@ -22,6 +21,7 @@ namespace OakHeart
         private bool loadingdone = false, menuanimationdone = false, PlayButtonClicked = false, SettingsButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, MainMenuButtonClicked, ResumeButtonClicked;
         private int LevelCompleted, SliderPosition;
         Player player;
+        Camera camera;
         public int levelint;
         public Game1()
         {
@@ -141,9 +141,6 @@ namespace OakHeart
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
-            camera = new Camera(player);
-            camera.camera(gameTime, levelint);
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 if (escdown == false)
@@ -192,6 +189,11 @@ namespace OakHeart
                 }
                 else if (menuanimationdone == true && menuposition < 0)
                 { menuposition = 0; }
+            }
+            if (_state == GameState.Game)
+            {
+                camera = new Camera(player);
+                camera.camera(gameTime, levelint);
             }
             base.Update(gameTime);
         }
