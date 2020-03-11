@@ -191,16 +191,43 @@ namespace OakHeart
             }
         }
 
-        private void FoundEasterEgg() {
-            string saveline;
-            int i = 0;
+        private void FoundEasterEgg(string eastereggname) {
+            string eastereggfiletext = "";
+            string[] alleastereggsfound  = File.ReadAllLines(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt");
+            foreach (string x in alleastereggsfound)
+            {
+                if (x == eastereggname)
+                { return; }
+                else {
+                    eastereggfiletext += x + "\n";
+                }
+            }
+                string saveline, previoustext = "", level = "";
+            int i = 0, previouseastereggs = 0;
+            bool success = false;
             StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
             while ((saveline = savefile.ReadLine()) != null)
             {
-
+                if (i == 0)
+                {
+                    level = saveline;
+                }
+                else if (i == 1)
+                {
+                    success = Int32.TryParse(saveline, out previouseastereggs);
+                }
+                else { previoustext += saveline + "\n"; }
                 i++;
             }
             savefile.Close();
+            if (success == false)
+            {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+            }
+            else {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", level + previouseastereggs++ + "\n" + previoustext);
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt",eastereggfiletext + eastereggname + "\n");
+            }
         }
         private void Pause() {
             if (_state != GameState.Pause && _state != GameState.Settings)
