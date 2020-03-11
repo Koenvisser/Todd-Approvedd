@@ -4,13 +4,15 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/images/left.png</File>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/images/right.png</File>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/fonts/Krona.spritefont</File>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/fonts/Krona2.spritefont</File>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/images/circle.png</File>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/images/pause2.png</File>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/images/pause1.png</File>
-    <File>C:/Users/rprov/Source/Repos/Koenvisser/Todd-Approvedd/Content/fonts/Pacifico.spritefont</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/left.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/right.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/fonts/Krona.spritefont</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/fonts/Krona2.spritefont</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/circle.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/pause2.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/pause1.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/images/menuleave.png</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/fonts/Pacifico.spritefont</File>
+    <File>C:/Users/KoenV/source/repos/UITest/Content/sounds/backgroundmenu.wav</File>
   </SourceFiles>
 </SourceFileCollection>
