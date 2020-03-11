@@ -22,7 +22,7 @@ namespace OakHeart
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade;
         private float[] angles = new float[30];
-        private int[] LevelsProgress = new int[5];
+        private int[] LevelsProgress = new int[4];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
         private SoundEffectInstance backgroundsongmenu;
@@ -155,13 +155,13 @@ namespace OakHeart
                 {
                     success = Int32.TryParse(saveline, out EasterEgssFound);
                 }
-                else if (i <= 6)
+                else if (i <= 5)
                 {
                     success = Int32.TryParse(saveline, out LevelsProgress[i - 2]);
                 }
                 if (success == false)
                 {
-                    File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+                    File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
                 }
                 i++;
             }
@@ -210,7 +210,7 @@ namespace OakHeart
             }
             else if (success == false)
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
             }
             else
             {
@@ -484,7 +484,7 @@ namespace OakHeart
 
             else if (_state == GameState.LevelSelect || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.LevelSelect))
             {
-                int percentage = LevelCompleted * 20;
+                int percentage = LevelCompleted * 25;
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height / 10), Color.Black * .3f);
                 spriteBatch.DrawString(LevelSelectFont, percentage + "% Levels Completed", new Vector2(width / 4, height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
                 spriteBatch.DrawString(LevelSelectFont, EasterEgssFound / 4 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString("0% Easter Eggs Found") / 2, Color.White);
@@ -492,7 +492,7 @@ namespace OakHeart
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
                 Vector2 LevelSelectPosition = new Vector2();
-                while (i <= LevelCompleted && i <= 4)
+                while (i <= LevelCompleted && i <= 3)
                 {
                     if (i == 0)
                     { LevelSelectPosition = new Vector2(.5f * graphics.PreferredBackBufferWidth, .5f * graphics.PreferredBackBufferHeight); }
@@ -501,8 +501,6 @@ namespace OakHeart
                     else if (i == 2)
                     { LevelSelectPosition = new Vector2(0, 0); }
                     else if (i == 3)
-                    { LevelSelectPosition = new Vector2(0, 0); }
-                    else
                     { LevelSelectPosition = new Vector2(0, 0); }
                     if (i >= LevelCompleted)
                     {

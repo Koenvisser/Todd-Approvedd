@@ -61,3 +61,6 @@ monodroid*.msi
 .vs/OakHeart/v15/Server/sqlite3/storage.ide-wal
 *.ide-shm
 *.ide-wal
+Oakheart/.vs/Oakheart/v15/Server/sqlite3/storage.ide-wal
+Oakheart/.vs/Oakheart/v15/Server/sqlite3/storage.ide-shm
+Oakheart/.vs/Oakheart/v15/Server/sqlite3/storage.ide
