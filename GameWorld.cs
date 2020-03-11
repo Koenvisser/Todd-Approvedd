@@ -11,7 +11,7 @@ namespace OakHeart
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GameWorld : Game
     {
         enum GameState { MainMenu, Settings, LevelSelect, Game, Pause };
         GameState _state = GameState.MainMenu;
@@ -29,7 +29,7 @@ namespace OakHeart
         private Vector2[] menuleavespos = new Vector2[30];
         List<SoundEffect> soundEffects;
 
-        public Game1()
+        public GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
