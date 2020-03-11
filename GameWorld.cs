@@ -104,7 +104,6 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            LevelComplete(3,10);
         }
 
         /// <summary>
