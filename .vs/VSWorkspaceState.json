@@ -1,10 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Oakheart",
-    "\\Oakheart\\Game1",
-    "\\Oakheart\\Game1\\Content"
+    "\\GameManagement",
+    "\\Level",
+    "\\Properties"
   ],
-  "SelectedNode": "\\OakHeart.csproj",
+  "SelectedNode": "\\Level\\Platform.cs",
   "PreviewInSolutionExplorer": false
 }

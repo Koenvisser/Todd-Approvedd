@@ -42,6 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enemy.cs" />
+    <Compile Include="Map\Fungus.cs" />
+    <Compile Include="Map\Platform.cs" />
     <Compile Include="Physics\Bounding box.cs" />
     <Compile Include="Physics\MTV.cs" />
     <Compile Include="Physics\SAT.cs" />
