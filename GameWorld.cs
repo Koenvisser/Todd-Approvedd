@@ -104,6 +104,7 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
+            LevelComplete(3,10);
         }
 
         /// <summary>
@@ -146,10 +147,10 @@ namespace OakHeart
         }
 
         private void LevelComplete(int level, int fungusclearedpercent) {
-            string saveline;
+            string saveline, previoustext = "";
             int i = 0;
-            bool success;
-            int previouslevelcompleted;
+            bool success = false, success2 = false;
+            int previouslevelcompleted = 0, previousfunguscleared = 0;
             StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
             while ((saveline = savefile.ReadLine()) != null)
             {
@@ -157,9 +158,38 @@ namespace OakHeart
                 {
                     success = Int32.TryParse(saveline, out previouslevelcompleted);
                 }
+                else if (i == level + 1)
+                {
+                    success2 = Int32.TryParse(saveline, out previousfunguscleared);
+                    if (fungusclearedpercent > previousfunguscleared)
+                    {
+                        previoustext += fungusclearedpercent + "\n";
+                    }
+                    else { previoustext += saveline + "\n"; }
+                }
+                else {
+                    previoustext += saveline + "\n";
+                }
                 i++;
             }
             savefile.Close();
+            if (level <= previouslevelcompleted)
+            {
+                if (fungusclearedpercent > previousfunguscleared)
+                {
+                    File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", previouslevelcompleted + "\n" + previoustext);
+                }
+                else {
+                    return;
+                }
+            }
+            else if (success == false)
+            {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+            }
+            else {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", level + "\n" + previoustext);
+            }
         }
 
         private void FoundEasterEgg() {
