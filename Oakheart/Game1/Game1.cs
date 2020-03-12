@@ -220,6 +220,11 @@ namespace OakHeart
 
         private void FoundEasterEgg(string eastereggname)
         {
+            if (File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt") == false)
+            {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", "");
+                FoundEasterEgg(eastereggname);
+            }
             string eastereggfiletext = "";
             string[] alleastereggsfound = File.ReadAllLines(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt");
             foreach (string x in alleastereggsfound)
@@ -507,7 +512,7 @@ namespace OakHeart
                         LevelColor = Color.Red;
                     }
                     i++;
-                    Rectangle LevelButton = new Rectangle((int)LevelSelectPosition.X - 31, (int)LevelSelectPosition.Y - 31, 62, 62);
+                    Rectangle LevelButton = new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 96, 96);
                     if (bottombarfade > 0)
                     {
                         spriteBatch.Draw(rectangle, new Rectangle(0, height - height / 10, width, height / 10), Color.Black * .3f * bottombarfade);
