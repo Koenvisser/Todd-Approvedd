@@ -98,6 +98,10 @@ namespace OakHeart
             backgroundsongmenu = soundEffects[0].CreateInstance();
             backgroundsongmenu.IsLooped = true;
             string settingsline;
+            if (File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt") == false)
+            {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume 1\nfullscreen True\n");
+            }
             StreamReader settingsfile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
             bool success1 = false, success2 = false;
             while ((settingsline = settingsfile.ReadLine()) != null)
@@ -143,6 +147,10 @@ namespace OakHeart
         {
             int i = 0;
             string saveline;
+            if (File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt") == false)
+            {
+                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+            }
             StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
             while ((saveline = savefile.ReadLine()) != null)
             {
@@ -223,7 +231,6 @@ namespace OakHeart
             if (File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt") == false)
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", "");
-                FoundEasterEgg(eastereggname);
             }
             string eastereggfiletext = "";
             string[] alleastereggsfound = File.ReadAllLines(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt");
