@@ -143,6 +143,7 @@ namespace OakHeart
             rectangle.Dispose();
             // TODO: Unload any non ContentManager content here
         }
+
         private void LoadSave()
         {
             int i = 0;
@@ -271,6 +272,7 @@ namespace OakHeart
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", eastereggfiletext + eastereggname + "\n");
             }
         }
+
         private void Pause()
         {
             if (_state != GameState.Pause && _state != GameState.Settings)
