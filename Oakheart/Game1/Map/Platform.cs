@@ -25,7 +25,7 @@ class Platform : SpriteGameObject
             for (int i = 0; boundingBox.Width / player.Sprite.Width > fungusList.Count; i++)
             {
                 fungusList.Add(new Fungus(rotation, "fungus", i, position, player));
-            }
+            } 
         }
 
     }
@@ -33,14 +33,14 @@ class Platform : SpriteGameObject
     {
         spriteBatch.Draw(sprite.Sprite, boundingBox, null, Color.White, rotation, new Vector2(0), SpriteEffects.None, 0);
 
-        if (fungusList != null)
+        if(fungusList != null)
         {
-            for (int i = 0; i < fungusList.Count; i++)
+            for(int i = 0; i < fungusList.Count; i++)
             {
                 fungusList[i].Draw(gameTime, spriteBatch);
             }
         }
     }
 }
-
-
+    
+    

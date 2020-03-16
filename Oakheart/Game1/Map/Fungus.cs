@@ -23,7 +23,7 @@ class Fungus : SpriteGameObject
     {
         if (!cleansed)
         {
-           // if (player.position.X - position.X < 10 && && player)
+            if (player.position.X - position.X < 10 && && player)
         }
     }
 
@@ -32,6 +32,7 @@ class Fungus : SpriteGameObject
         if (!cleansed)
         {
             spriteBatch.Draw(sprite.Sprite, position, null, Color.White, rotation, origin, 1, SpriteEffects.None, 0);
-        }
+        }        
     }
 }
+
