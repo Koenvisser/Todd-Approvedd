@@ -26,7 +26,7 @@ public class Player : SpriteGameObject
     private GameTime gameTime;
     public char characterType;
 
-    public Player(Vector2 start, string AssetName, float mass) : base(0, AssetName, 2) // initializes a player character
+    public Player(Vector2 start, string AssetName) : base(0, AssetName, 2) // initializes a player character
     {
         startPosition = start;
         position = startPosition;
@@ -54,6 +54,7 @@ public class Player : SpriteGameObject
 
     public override void HandleInput(InputHelper inputHelper) // player controls
     {
+        Console.WriteLine(position);
         if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && isOnFloor)
         {
             Jump(300);
@@ -78,18 +79,6 @@ public class Player : SpriteGameObject
         if (velocity.X != 0.0f)
         {
             Mirror = velocity.X < 0;
-        }
-        if (inputHelper.KeyPressed(Keys.R) && characterType != '#' && isOnFloor) // switches to the Agile character if available
-        {
-            characterType = '#';
-        }
-        else if (inputHelper.KeyPressed(Keys.F) && characterType != 'X' && isOnFloor) // switches to the Shooting character if available
-        {
-            characterType = 'X';
-        }
-        else if (inputHelper.KeyPressed(Keys.V) && characterType != '*' && isOnFloor) // switches to the Strong character if available
-        {
-            characterType = '*';
         }
     }
 

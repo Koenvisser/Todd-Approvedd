@@ -41,13 +41,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Background.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Map\Fungus.cs" />
     <Compile Include="Map\Platform.cs" />
-    <Compile Include="Physics\Bounding box.cs" />
+    <Compile Include="Physics\Collision.cs" />
     <Compile Include="Physics\MTV.cs" />
     <Compile Include="Physics\SAT.cs" />
-    <Compile Include="Physics\Collision.cs" />
+    <Compile Include="Physics\Bounding box.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Gamemanagement\Assetmanager.cs" />
     <Compile Include="Gamemanagement\Spritesheet.cs" />

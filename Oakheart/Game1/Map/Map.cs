@@ -16,10 +16,10 @@ public class Map
     public static List<int> levelWidth = new List<int>();
     public static List<int> levelHeight = new List<int>();
     List<string> textLines;
+    List<Platform> platform = new List<Platform>();
 
     public Map(int level) // loads level
     {
-
         textLines = new List<string>();
         streamreader = new StreamReader("Content/Levels/" + level + ".txt");
         string line = streamreader.ReadLine();
@@ -54,7 +54,7 @@ public class Map
                     switch (lines[0]) // retrieves the tile based on the given type in the level text file
                     {
                         case "Bark":
-                            
+                            //platform.Add(new Platform())
                             break;
                     }
                 });
@@ -68,6 +68,11 @@ public class Map
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch) // draws the level
     {
+        foreach (Platform platform in platform)
+        {
+            platform.Draw(gameTime, spriteBatch);
+        }
+
     }
 
     public void Clear() // Clears these lists to free up memory, happens when traversing levels
