@@ -18,6 +18,8 @@ namespace OakHeart
         GameState _pausedstate = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Background background;
+        InputHelper inputHelper;
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave;
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade;
@@ -55,6 +57,7 @@ namespace OakHeart
             graphics.ApplyChanges();
             assetManager = new AssetManager(Content);
             base.Initialize();
+            inputHelper = new InputHelper();
 
         }
 
@@ -130,6 +133,8 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
+            //background = new Background(Content, new Vector2(0, 0), "name");
+            player = new Player(new Vector2(0, 600), "BPlayertrans");
         }
 
         /// <summary>
@@ -313,7 +318,6 @@ namespace OakHeart
                  /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
             timer += gameTime.ElapsedGameTime.Milliseconds;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -416,10 +420,19 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
+                player.Update(gameTime);
+                HandleInput(gameTime);
+                player.HandleInput(inputHelper);
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
             }
             base.Update(gameTime);
+        }
+
+        protected void HandleInput(GameTime gameTime)
+        {
+            inputHelper.Update();
+
         }
 
         /// <summary>
@@ -570,7 +583,8 @@ namespace OakHeart
             }
             else if (_state == GameState.Game || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.Game))
             {
-
+                //background.Draw(gameTime, spriteBatch); // draws background
+                player.Draw(gameTime, spriteBatch);
             }
             if (_state == GameState.Pause || _state == GameState.Settings)
             {

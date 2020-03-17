@@ -100,6 +100,9 @@ partial class SpriteGameObject : GameObject
         obj.positionlijnlist = new List<Vector2>();
         positionlijnlist = new List<Vector2>();
 
+
+        
+
         if (!triangle)
         {
             lijnlist.Insert(0, new Vector2(tlx - trx, tly - trY));
@@ -135,6 +138,48 @@ partial class SpriteGameObject : GameObject
             lines = 3;
         }
 
+        /*if (trx > obj.tlx && tlx < obj.trx)
+        {
+        obj.lijnlist.Insert(0, new Vector2((obj.tlx + "circlewidth") - (obj.trx - "circlewidth"), obj.tly - obj.trY));
+        obj.lijnlist.Insert(1, new Vector2((obj.tlx + "circlewidth") - (obj.blx - "circlewidth"), obj.tly - obj.bly));
+
+
+        }
+
+        else{
+
+            if (circlemiddel < trx && circlemiddel > tlx)
+            {
+                obj.lijnlist.Insert(0, new Vector2(0, (circlemiddel + straal - circlemiddel - straal)));
+                obj.positionlijnlist.Insert(0, new Vector2(circlemiddel.x, circlemiddel - straal));
+                obj.positionlijnlist.Insert(0, new Vector2(circlemiddel.x, circlemiddel + straal));
+            }
+            else if (circlemiddel < tly && circlemiddel > bly)
+            {
+                obj.lijnlist.Insert(0, new Vector2((circlemiddel + straal - circlemiddel - straal), 0));
+                obj.positionlijnlist.Insert(0, new Vector2(circlemiddel - straal, circlemiddel.y));
+                obj.positionlijnlist.Insert(0, new Vector2(circlemiddel + straal, circlemiddel.y));
+            }
+            else {
+                float closest = float.MaxValue;
+                Vector2 closestaxis = new Vector2(0,0);
+                foreach (Vector2 positionlijn in positionlijnlist)
+                {
+                    if (closest > Math.Sqrt(Math.Pow(circlemiddel.x - positionlijn.X) + Math.Pow(circlemiddel.Y - positionlijn.Y)))
+                    {
+                        closest = Math.Sqrt(Math.Pow(circlemiddel.x - positionlijn.X) + Math.Pow(circlemiddel.Y - positionlijn.Y));
+                        closestaxis = new Vector2(circlemiddel.x - positionlijn.X, circlemiddel.Y - positionlijn.Y);
+                    }
+                }
+                obj.lijnlist.Insert(0, closestaxis);
+                obj.positionlijnlist.Insert(0, new Vector2(circlemiddel.X - (straal * closestaxis.X), circlemiddel.Y - (straal * closestaxis.Y)));
+                obj.positionlijnlist.Insert(1, new Vector2(circlemiddel.X + (straal * closestaxis.X), circlemiddel.Y - (straal * closestaxis.Y)));
+                obj.positionlijnlist.Insert(2, new Vector2(circlemiddel.X - (straal * closestaxis.X), circlemiddel.Y + (straal * closestaxis.Y)));
+                obj.positionlijnlist.Insert(3, new Vector2(circlemiddel.X + (straal * closestaxis.X), circlemiddel.Y + (straal * closestaxis.Y)));
+            }
+        }
+        */
+        
         if (!obj.triangle)
         {
             obj.lijnlist.Insert(0, new Vector2(obj.tlx - obj.trx, obj.tly - obj.trY));
