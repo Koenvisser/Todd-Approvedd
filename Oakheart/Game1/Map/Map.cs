@@ -54,7 +54,7 @@ public class Map
                     switch (lines[0]) // retrieves the tile based on the given type in the level text file
                     {
                         case "Bark":
-                            //platform.Add(new Platform())
+                            platform.Add(new Platform(bool.Parse(lines[1]), float.Parse(lines[2]), "images/Bark", new Rectangle(int.Parse(lines[3]), int.Parse(lines[4]), int.Parse(lines[5]), int.Parse(lines[6]))));
                             break;
                     }
                 });

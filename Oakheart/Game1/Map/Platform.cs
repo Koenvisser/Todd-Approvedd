@@ -11,20 +11,18 @@ class Platform : SpriteGameObject
 {
     List<Fungus> fungusList;
     Rectangle boundingBox;
-    Player player;
     float rotation;
-    public Platform(bool infected, float rotation, string assetName, Rectangle boundingBox, Player player, int layer, string id) : base(rotation, assetName, layer, id)
+    public Platform(bool infected, float rotation, string assetName, Rectangle boundingBox, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
     {
         this.boundingBox = boundingBox;
         this.rotation = rotation;
-        this.player = player;
         position = new Vector2(boundingBox.X, boundingBox.Y);
         if (infected)
         {
             fungusList = new List<Fungus>();
-            for (int i = 0; boundingBox.Width / player.Sprite.Width > fungusList.Count; i++)
+            for (int i = 0; boundingBox.Width / 180 > fungusList.Count; i++)
             {
-                fungusList.Add(new Fungus(rotation, "fungus", i, position, player));
+                fungusList.Add(new Fungus(rotation, "fungus", i, position));
             } 
         }
 

@@ -10,21 +10,18 @@ class Fungus : SpriteGameObject
 {
     float rotation;
     bool cleansed;
-    Player player;
-    public Fungus(float rotation, string assetName, int index, Vector2 platformPosition, Player player, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
+    public Fungus(float rotation, string assetName, int index, Vector2 platformPosition, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
     {
-        position = platformPosition + new Vector2(index * player.Sprite.Width, 0);
+        position = platformPosition + new Vector2(index * 180, 0); //replace with player width
         origin = platformPosition;
         this.rotation = rotation;
-        this.player = player;
     }
 
     public override void Update(GameTime gameTime)
     {
         if (!cleansed)
         {
-            if (player.position.X - position.X < 10)
-            { }
+
         }
     }
 
