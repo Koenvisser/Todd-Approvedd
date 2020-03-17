@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Audio;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace OakHeart
 {
@@ -23,10 +24,11 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave;
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
-        private float menuposition, volume, timer, bottombarfade;
+        private float menuposition, volume, timer, bottombarfade, levelselectfade;
         private float[] angles = new float[30];
         private int[] LevelsProgress = new int[4];
-        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
+        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
+        private bool[] LevelButtonClicked = new bool[4], hoveringbutton = new bool[4];
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30];
@@ -484,6 +486,7 @@ namespace OakHeart
                         else if (PlayButtonClicked == true)
                         {
                             _state = GameState.LevelSelect;
+                            levelselectfade = 1;
                             LoadSave();
                             PlayButtonClicked = false;
                         }
@@ -531,7 +534,19 @@ namespace OakHeart
             {
                 int backgroundtree = LevelCompleted;
                 if (backgroundtree >= 4) { backgroundtree = 3; }
-                spriteBatch.Draw(levelselecttrees[backgroundtree],new Rectangle(width / 2 - (1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width) / 2, height - 1000, 1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width, 1000), Color.White);
+                spriteBatch.Draw(levelselecttrees[backgroundtree],new Rectangle(width / 2 - (1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width) / 2, height - 1000, 1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width, 1000), Color.White * levelselectfade);
+                if (levelselectfade <= 0.995f && backgroundtree > 0)
+                {
+                    spriteBatch.Draw(levelselecttrees[backgroundtree - 1], new Rectangle(width / 2 - (1000 / levelselecttrees[backgroundtree - 1].Height * levelselecttrees[backgroundtree - 1].Width) / 2, height - 1000, 1000 / levelselecttrees[backgroundtree - 1].Height * levelselecttrees[backgroundtree - 1].Width, 1000), Color.White * (1 - levelselectfade));
+                    if (_state == GameState.LevelSelect)
+                    {
+                        levelselectfade += 0.005f;
+                    }
+                    }
+                else if (levelselectfade <= 0.995f && backgroundtree == 0)
+                {
+                    levelselectfade = 1;
+                }
                 int percentage = LevelCompleted * 25;
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height / 10), Color.Black * .3f);
                 spriteBatch.DrawString(LevelSelectFont, percentage + "% Levels Completed", new Vector2(width / 4, height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
@@ -539,66 +554,70 @@ namespace OakHeart
 
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
-                Vector2 LevelSelectPosition = new Vector2();
+                Vector2[] LevelSelectPosition = new Vector2[4];
+                Rectangle[] LevelButton = new Rectangle[4];
                 while (i <= LevelCompleted && i <= 3)
                 {
                     if (i == 0)
-                    { LevelSelectPosition = new Vector2(.5f * graphics.PreferredBackBufferWidth, .5f * graphics.PreferredBackBufferHeight); }
+                    { LevelSelectPosition[i] = new Vector2(.5f * graphics.PreferredBackBufferWidth, .5f * graphics.PreferredBackBufferHeight); }
                     else if (i == 1)
-                    { LevelSelectPosition = new Vector2(0, 0); }
+                    { LevelSelectPosition[i] = new Vector2(100, 100); }
                     else if (i == 2)
-                    { LevelSelectPosition = new Vector2(0, 0); }
+                    { LevelSelectPosition[i] = new Vector2(0, 0); }
                     else if (i == 3)
-                    { LevelSelectPosition = new Vector2(0, 0); }
+                    { LevelSelectPosition[i] = new Vector2(0, 0); }
                     if (i >= LevelCompleted)
                     {
                         LevelColor = Color.Red;
                     }
                     i++;
-                    Rectangle LevelButton = new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 96, 96);
+                    LevelButton[i - 1] = new Rectangle((int)LevelSelectPosition[i - 1].X - 48, (int)LevelSelectPosition[i - 1].Y - 48, 96, 96);
                     if (bottombarfade > 0)
                     {
                         spriteBatch.Draw(rectangle, new Rectangle(0, height - height / 10, width, height / 10), Color.Black * .3f * bottombarfade);
-                        spriteBatch.DrawString(LevelSelectFont, LevelsProgress[i - 1] + "% Fungus Cleared", new Vector2(width / 2, height - height / 20) - LevelSelectFont.MeasureString("0% Fungus Cleared") / 2, Color.White * bottombarfade);
+                        spriteBatch.DrawString(LevelSelectFont, LevelsProgress[i - 1] + "% Fungus Cleared", new Vector2(width / 2, height - height / 20) - LevelSelectFont.MeasureString(LevelsProgress[i - 1] + "% Fungus Cleared") / 2, Color.White * bottombarfade);
                     }
-                    if (LevelButton.Contains(mousePosition) && _state == GameState.LevelSelect)
+                    if (LevelButton[i - 1].Contains(mousePosition) && _state == GameState.LevelSelect)
                     {
+                        hoveringbutton[i - 1] = true;
                         if (bottombarfade <= .95f)
                         {
                             bottombarfade += .05f;
                         }
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.6f));
-                            LevelButtonClicked = true;
+                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.6f));
+                            LevelButtonClicked[i - 1] = true;
                         }
-                        else if (LevelButtonClicked == true)
+                        else if (LevelButtonClicked[i - 1] == true)
                         {
                             _state = GameState.Game;
                             IsMouseVisible = false;
                             // level = i
-                            LevelButtonClicked = false;
+                            LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
+                            levelselectfade = 0;
                         }
                         else
                         {
-                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.3f));
+                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.3f));
                         }
                     }
-                    else
+                    else if(!LevelButton[i - 1].Contains(mousePosition) || _state != GameState.LevelSelect)
                     {
-                        spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 38, (int)LevelSelectPosition.Y - 38, 76, 76), new Color(0, 0, 0, 0.15f));
-                        if (bottombarfade >= .05f)
+                        hoveringbutton[i - 1] = false;
+                        spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.15f));
+                        if (bottombarfade >= .05f && _state == GameState.LevelSelect && hoveringbutton[0] == false && hoveringbutton[1] == false && hoveringbutton[2] == false && hoveringbutton[3] == false)
                         {
                             bottombarfade -= .05f;
                         }
-                        LevelButtonClicked = false;
+                        LevelButtonClicked[i - 1] = false;
                     }
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X + 38, (int)LevelSelectPosition.Y - 48, 10, 96), LevelColor);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y - 48, 96, 10), LevelColor);
-                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition.X - 48, (int)LevelSelectPosition.Y + 38, 96, 10), LevelColor);
-                    spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition - LevelSelectFont.MeasureString(i.ToString()) / 2, Color.White);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 48, (int)LevelSelectPosition[i - 1].Y - 48, 10, 96), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X + 38, (int)LevelSelectPosition[i - 1].Y - 48, 10, 96), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 48, (int)LevelSelectPosition[i - 1].Y - 48, 96, 10), LevelColor);
+                    spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 48, (int)LevelSelectPosition[i - 1].Y + 38, 96, 10), LevelColor);
+                    spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition[i - 1] - LevelSelectFont.MeasureString(i.ToString()) / 2, Color.White);
 
                 }
             }
