@@ -83,16 +83,16 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            loadingleft = Content.Load<Texture2D>("images/left");
-            loadingright = Content.Load<Texture2D>("images/right");
-            menuleave = Content.Load<Texture2D>("images/menuleave");
-            pause1 = Content.Load<Texture2D>("images/pause1");
-            pause2 = Content.Load<Texture2D>("images/pause2");
+            loadingleft = Content.Load<Texture2D>("images/menu/left");
+            loadingright = Content.Load<Texture2D>("images/menu/right");
+            menuleave = Content.Load<Texture2D>("images/menu/menuleave");
+            pause1 = Content.Load<Texture2D>("images/menu/pause1");
+            pause2 = Content.Load<Texture2D>("images/menu/pause2");
             KronaFont = Content.Load<SpriteFont>("fonts/Krona");
             LevelSelectFont = Content.Load<SpriteFont>("fonts/Krona2");
             PacificoFont = Content.Load<SpriteFont>("fonts/Pacifico");
             rectangle = new Texture2D(GraphicsDevice, 1, 1);
-            circle = Content.Load<Texture2D>("images/circle");
+            circle = Content.Load<Texture2D>("images/menu/circle");
             soundEffects.Add(Content.Load<SoundEffect>("sounds/backgroundmenu"));
             rectangle.SetData(new[] { Color.White });
             backgroundsongmenu = soundEffects[0].CreateInstance();
