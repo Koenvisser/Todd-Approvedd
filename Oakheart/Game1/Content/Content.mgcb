@@ -160,7 +160,7 @@
 /processorParam:TextureFormat=Color
 /build:images/menu/tree4.png
 
-#begin BPlayertrans.png
+#begin images/game/BPlayertrans.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -170,5 +170,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:BPlayertrans.png
+/build:images/game/BPlayertrans.png
 

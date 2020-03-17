@@ -25,7 +25,7 @@ namespace OakHeart
         private float menuposition, volume, timer, bottombarfade;
         private float[] angles = new float[30];
         private int[] LevelsProgress = new int[4];
-        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
+        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, LevelButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30];
@@ -101,7 +101,7 @@ namespace OakHeart
             backgroundsongmenu = soundEffects[0].CreateInstance();
             backgroundsongmenu.IsLooped = true;
             string settingsline;
-            if (File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt") == false)
+            if (!File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt"))
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume 1\nfullscreen True\n");
             }
@@ -113,6 +113,7 @@ namespace OakHeart
                 {
                     success1 = float.TryParse(settingsline.Replace("volume ", ""), out volume);
                     SliderPosition = (int)(graphics.PreferredBackBufferWidth / 2 - 173 + 300 * volume);
+                    SoundEffect.MasterVolume = volume;
                 }
                 else if (settingsline.Contains("fullscreen "))
                 {
@@ -125,7 +126,7 @@ namespace OakHeart
                 }
             }
             settingsfile.Close();
-            if (success1 == false || success2 == false)
+            if (!success1 || !success2)
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume 1\nfullscreen True\n");
             }
@@ -134,7 +135,7 @@ namespace OakHeart
             loadingdone = true;
             IsMouseVisible = true;
             //background = new Background(Content, new Vector2(0, 0), "name");
-            player = new Player(new Vector2(0, 600), "BPlayertrans");
+            player = new Player(new Vector2(0, 600), "images/game/BPlayertrans");
         }
 
         /// <summary>
@@ -153,7 +154,7 @@ namespace OakHeart
         {
             int i = 0;
             string saveline;
-            if (File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt") == false)
+            if (!File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt"))
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
             }
@@ -173,7 +174,7 @@ namespace OakHeart
                 {
                     success = Int32.TryParse(saveline, out LevelsProgress[i - 2]);
                 }
-                if (success == false)
+                if (!success)
                 {
                     File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
                 }
@@ -222,7 +223,7 @@ namespace OakHeart
                     return;
                 }
             }
-            else if (success == false)
+            else if (!success)
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
             }
@@ -234,7 +235,7 @@ namespace OakHeart
 
         private void FoundEasterEgg(string eastereggname)
         {
-            if (File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt") == false)
+            if (!File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt"))
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", "");
             }
@@ -267,7 +268,7 @@ namespace OakHeart
                 i++;
             }
             savefile.Close();
-            if (success == false)
+            if (!success)
             {
                 File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
             }
@@ -287,7 +288,7 @@ namespace OakHeart
                 IsMouseVisible = true;
                 if (_pausedstate == GameState.MainMenu || _pausedstate == GameState.LevelSelect)
                 {
-                    menusongfadout = true;
+                    soundfadeout = true;
                 }
             }
             else if (_state == GameState.Settings)
@@ -297,11 +298,11 @@ namespace OakHeart
             else
             {
                 _state = _pausedstate;
+                soundfadeout = false;
                 if (_state == GameState.Game)
                 { IsMouseVisible = false; }
                 else if (_pausedstate == GameState.MainMenu || _pausedstate == GameState.LevelSelect)
                 {
-                    menusongfadout = false;
                     if (backgroundsongmenu.State == SoundState.Stopped)
                     {
                         backgroundsongmenu.Play();
@@ -322,7 +323,7 @@ namespace OakHeart
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
 
-                if (escdown == false)
+                if (!escdown)
                 {
                     Pause();
                     escdown = true;
@@ -332,7 +333,7 @@ namespace OakHeart
             if (_state == GameState.MainMenu)
             {
                 // TODO: Add your update logic here
-                if (loadingdone == true && menuposition < graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false && ElapsedTime > 500)
+                if (loadingdone == true && menuposition < graphics.PreferredBackBufferWidth * 0.6f && !menuanimationdone && ElapsedTime > 500)
                 {
                     menuposition *= 1.02f;
                     menuposition += 3;
@@ -341,7 +342,7 @@ namespace OakHeart
                 {
                     ElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
                 }
-                if (menuposition >= graphics.PreferredBackBufferWidth * 0.6f && menuanimationdone == false)
+                if (menuposition >= graphics.PreferredBackBufferWidth * 0.6f && !menuanimationdone)
                 {
                     menuanimationdone = true;
                     menuposition = graphics.PreferredBackBufferWidth * 0.6f;
@@ -351,18 +352,7 @@ namespace OakHeart
                     menuposition *= 0.96f;
                     menuposition -= 2;
                 }
-                else if (menuanimationdone == true && menuposition < 0 && menuanimationdone2 == false)
-                {
-                    menuposition = 0;
-                    menuanimationdone2 = true;
-                    timer = 0;
-                    backgroundsongmenu.Volume = 0;
-                    backgroundsongmenu.Play();
-                }
-                if (menuanimationdone2 == true && backgroundsongmenu.Volume <= 0.995f && menusongfadout == false)
-                {
-                    backgroundsongmenu.Volume += 0.005f;
-                }
+                
                 if (menuanimationdone2 == true && timer >= 40)
                 {
                     Random random = new Random();
@@ -407,15 +397,30 @@ namespace OakHeart
                     timer = 0;
                 }
             }
-            else
+            else if(_state != GameState.MainMenu && _state != GameState.LevelSelect)
             {
-                if (menusongfadout == true && backgroundsongmenu.Volume >= 0.01f)
+                if (menusongfadeout && backgroundsongmenu.Volume >= 0.01f)
                 {
                     backgroundsongmenu.Volume -= 0.01f;
                 }
                 else if (backgroundsongmenu.State == SoundState.Playing && backgroundsongmenu.Volume < 0.01f)
                 {
                     backgroundsongmenu.Stop();
+                }
+            }
+            if (_state == GameState.MainMenu || _state == GameState.LevelSelect)
+            {
+                if (menuanimationdone && menuposition < 0 && !menuanimationdone2)
+                {
+                    menuposition = 0;
+                    menuanimationdone2 = true;
+                    timer = 0;
+                    SoundEffect.MasterVolume = 0;
+                    backgroundsongmenu.Play();
+                }
+                if (!menusongfadeout && backgroundsongmenu.Volume <= 0.995f)
+                {
+                    backgroundsongmenu.Volume += 0.005f;
                 }
             }
             if (_state == GameState.Game)
@@ -425,6 +430,14 @@ namespace OakHeart
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
+            }
+            if (SoundEffect.MasterVolume <= 0.995f && !soundfadeout)
+            {
+                SoundEffect.MasterVolume += 0.005f;
+            }
+            else if (SoundEffect.MasterVolume >= 0.005f && soundfadeout)
+            {
+                SoundEffect.MasterVolume -= 0.005f;
             }
             base.Update(gameTime);
         }
@@ -502,7 +515,7 @@ namespace OakHeart
                     }
                 }
 
-                if (menuanimationdone == false)
+                if (!menuanimationdone)
                 {
                     spriteBatch.Draw(loadingleft, new Rectangle((int)menuposition * -1, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
                     spriteBatch.Draw(loadingright, new Rectangle((int)menuposition, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
@@ -557,7 +570,7 @@ namespace OakHeart
                             IsMouseVisible = false;
                             // level = i
                             LevelButtonClicked = false;
-                            menusongfadout = true;
+                            menusongfadeout = true;
                         }
                         else
                         {
@@ -597,7 +610,7 @@ namespace OakHeart
             }
             if (_state == GameState.Settings)
             {
-                if (ResetGame == false)
+                if (!ResetGame)
                 {
                     int volumeheight = 280;
                     int fullscreenheight = 450;
@@ -733,13 +746,15 @@ namespace OakHeart
                         }
                         else if (ConfirmButtonClicked == true)
                         {
-                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", "\n");
                             _state = GameState.MainMenu;
                             if (backgroundsongmenu.State == SoundState.Stopped)
                             {
                                 backgroundsongmenu.Play();
                             }
-                            menusongfadout = false;
+                            menusongfadeout = false;
+                            soundfadeout = false;
                             ConfirmButtonClicked = false;
                             ResetGame = false;
                         }
@@ -839,7 +854,7 @@ namespace OakHeart
                         {
                             backgroundsongmenu.Play();
                         }
-                        menusongfadout = false;
+                        menusongfadeout = false;
                         MainMenuButtonClicked = false;
                     }
                     else
