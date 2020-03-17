@@ -172,3 +172,321 @@
 /processorParam:TextureFormat=Color
 /build:images/game/BPlayertrans.png
 
+#begin voicelines/Alfungus/Phase 1/bang.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 1/bang.wav
+
+#begin voicelines/Alfungus/Phase 1/boom.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 1/boom.wav
+
+#begin voicelines/Alfungus/Phase 1/fungustime.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 1/fungustime.wav
+
+#begin voicelines/Alfungus/Phase 1/ohh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 1/ohh.wav
+
+#begin voicelines/Alfungus/Phase 1/oof.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 1/oof.wav
+
+#begin voicelines/Alfungus/Phase 1/realEstate.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 1/realEstate.wav
+
+#begin voicelines/Alfungus/Phase 2/explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 2/explosion.wav
+
+#begin voicelines/Alfungus/Phase 2/fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 2/fire.wav
+
+#begin voicelines/Alfungus/Phase 2/fungus.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 2/fungus.wav
+
+#begin voicelines/Alfungus/Phase 2/laugh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 2/laugh.wav
+
+#begin voicelines/Alfungus/Phase 2/nono.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 2/nono.wav
+
+#begin voicelines/Alfungus/Phase 2/reee.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 2/reee.wav
+
+#begin voicelines/Alfungus/Phase 2/stop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Alfungus/Phase 2/stop.wav
+
+#begin voicelines/Cutscene1/dialogue1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Cutscene1/dialogue1.wav
+
+#begin voicelines/Cutscene1/dialogue2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Cutscene1/dialogue2.wav
+
+#begin voicelines/Cutscene1/line1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Cutscene1/line1.wav
+
+#begin voicelines/Cutscene1/line2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Cutscene1/line2.wav
+
+#begin voicelines/Cutscene2/line1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Cutscene2/line1.wav
+
+#begin voicelines/Cutscene2/line2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Cutscene2/line2.wav
+
+#begin voicelines/Level2/line1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level2/line1.wav
+
+#begin voicelines/Level2/line2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level2/line2.wav
+
+#begin voicelines/Level2/line3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level2/line3.wav
+
+#begin voicelines/Level3/line1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level3/line1.wav
+
+#begin voicelines/Level3/line2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level3/line2.wav
+
+#begin voicelines/Level3/line3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level3/line3.wav
+
+#begin voicelines/Level3/line4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level3/line4.wav
+
+#begin voicelines/Level4/approach.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/approach.wav
+
+#begin voicelines/Level4/closer.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/closer.wav
+
+#begin voicelines/Level4/cool.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/cool.wav
+
+#begin voicelines/Level4/doom.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/doom.wav
+
+#begin voicelines/Level4/end1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/end1.wav
+
+#begin voicelines/Level4/funguy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/funguy.wav
+
+#begin voicelines/Level4/hoho.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/hoho.wav
+
+#begin voicelines/Level4/nonono.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/nonono.wav
+
+#begin voicelines/Level4/transition1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/transition1.wav
+
+#begin voicelines/Level4/transition2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/transition2.wav
+
+#begin voicelines/Level4/winwin.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Level4/winwin.wav
+
+#begin voicelines/Oakheart/ahh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/ahh.wav
+
+#begin voicelines/Oakheart/ohh.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/ohh.wav
+
+#begin voicelines/Oakheart/oof.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/oof.wav
+
+#begin voicelines/Oakheart/ouch.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/ouch.wav
+
+#begin voicelines/Oakheart/tiktik1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/tiktik1.wav
+
+#begin voicelines/Oakheart/tiktik2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/tiktik2.wav
+
+#begin voicelines/Oakheart/wahoo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/wahoo.wav
+
+#begin voicelines/Oakheart/wee.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/wee.wav
+
+#begin voicelines/Oakheart/woo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/woo.wav
+
+#begin voicelines/Oakheart/yay.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Oakheart/yay.wav
+
+#begin voicelines/Tutorial/end.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Tutorial/end.wav
+
+#begin voicelines/Tutorial/enemy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Tutorial/enemy.wav
+
+#begin voicelines/Tutorial/fungus.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Tutorial/fungus.wav
+
+#begin voicelines/Tutorial/jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Tutorial/jump.wav
+
+#begin voicelines/Tutorial/movement.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Tutorial/movement.wav
+
+#begin voicelines/Tutorial/walljump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:voicelines/Tutorial/walljump.wav
+

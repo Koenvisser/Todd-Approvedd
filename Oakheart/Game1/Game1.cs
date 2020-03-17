@@ -21,6 +21,7 @@ namespace OakHeart
         Background background;
         InputHelper inputHelper;
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave;
+        private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade;
         private float[] angles = new float[30];
@@ -91,6 +92,10 @@ namespace OakHeart
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
             pause1 = Content.Load<Texture2D>("images/menu/pause1");
             pause2 = Content.Load<Texture2D>("images/menu/pause2");
+            for (int i = 1; i <= 4; i++)
+            {
+                levelselecttrees[i - 1] = Content.Load<Texture2D>("images/menu/tree" + i);
+            }
             KronaFont = Content.Load<SpriteFont>("fonts/Krona");
             LevelSelectFont = Content.Load<SpriteFont>("fonts/Krona2");
             PacificoFont = Content.Load<SpriteFont>("fonts/Pacifico");
@@ -524,6 +529,9 @@ namespace OakHeart
 
             else if (_state == GameState.LevelSelect || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.LevelSelect))
             {
+                int backgroundtree = LevelCompleted;
+                if (backgroundtree >= 4) { backgroundtree = 3; }
+                spriteBatch.Draw(levelselecttrees[backgroundtree],new Rectangle(width / 2 - (1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width) / 2, height - 1000, 1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width, 1000), Color.White);
                 int percentage = LevelCompleted * 25;
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height / 10), Color.Black * .3f);
                 spriteBatch.DrawString(LevelSelectFont, percentage + "% Levels Completed", new Vector2(width / 4, height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
