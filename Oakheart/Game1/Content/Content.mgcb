@@ -590,17 +590,11 @@
 /build:images/game/Bark.png
 
 #begin Levels/3.txt
-/importer:
-/processor:
-/build:Levels/3.txt
+/copy:Levels/3.txt
 
 #begin Levels/4.txt
-/importer:
-/processor:
-/build:Levels/4.txt
+/copy:Levels/4.txt
 
 #begin Levels/2.txt
-/importer:
-/processor:
-/build:Levels/2.txt
+/copy:Levels/2.txt
 
