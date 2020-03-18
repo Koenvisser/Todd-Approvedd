@@ -108,11 +108,11 @@ namespace OakHeart
             backgroundsongmenu = soundEffects[0].CreateInstance();
             backgroundsongmenu.IsLooped = true;
             string settingsline;
-            if (!File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt"))
+            if (!File.Exists(Directory.GetCurrentDirectory() + @"\settings.txt"))
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume 1\nfullscreen True\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\settings.txt", "volume 1\nfullscreen True\n");
             }
-            StreamReader settingsfile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt");
+            StreamReader settingsfile = new StreamReader(Directory.GetCurrentDirectory() + @"\settings.txt");
             bool success1 = false, success2 = false;
             while ((settingsline = settingsfile.ReadLine()) != null)
             {
@@ -135,7 +135,7 @@ namespace OakHeart
             settingsfile.Close();
             if (!success1 || !success2)
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume 1\nfullscreen True\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\settings.txt", "volume 1\nfullscreen True\n");
             }
             menuleavespos[29] = new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20, graphics.PreferredBackBufferHeight * .5f - 20);
             // TODO: use this.Content to load your game content here
@@ -161,11 +161,11 @@ namespace OakHeart
         {
             int i = 0;
             string saveline;
-            if (!File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt"))
+            if (!File.Exists(Directory.GetCurrentDirectory() + @"\save.txt"))
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
             }
-            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
+            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory() + @"\save.txt");
             while ((saveline = savefile.ReadLine()) != null)
             {
                 bool success = false;
@@ -183,7 +183,7 @@ namespace OakHeart
                 }
                 if (!success)
                 {
-                    File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
                 }
                 i++;
             }
@@ -196,7 +196,7 @@ namespace OakHeart
             int i = 0;
             bool success = false, success2 = false;
             int previouslevelcompleted = 0, previousfunguscleared = 0;
-            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
+            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory() + @"\save.txt");
             while ((saveline = savefile.ReadLine()) != null)
             {
                 if (i == 0)
@@ -223,7 +223,7 @@ namespace OakHeart
             {
                 if (fungusclearedpercent > previousfunguscleared)
                 {
-                    File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", previouslevelcompleted + "\n" + previoustext);
+                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", previouslevelcompleted + "\n" + previoustext);
                 }
                 else
                 {
@@ -232,22 +232,22 @@ namespace OakHeart
             }
             else if (!success)
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
             }
             else
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", level + "\n" + previoustext);
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + "\n" + previoustext);
             }
         }
 
         private void FoundEasterEgg(string eastereggname)
         {
-            if (!File.Exists(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt"))
+            if (!File.Exists(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt"))
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", "");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", "");
             }
             string eastereggfiletext = "";
-            string[] alleastereggsfound = File.ReadAllLines(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt");
+            string[] alleastereggsfound = File.ReadAllLines(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt");
             foreach (string x in alleastereggsfound)
             {
                 if (x == eastereggname)
@@ -260,7 +260,7 @@ namespace OakHeart
             string saveline, previoustext = "", level = "";
             int i = 0, previouseastereggs = 0;
             bool success = false;
-            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt");
+            StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory() + @"\save.txt");
             while ((saveline = savefile.ReadLine()) != null)
             {
                 if (i == 0)
@@ -277,12 +277,12 @@ namespace OakHeart
             savefile.Close();
             if (!success)
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
             }
             else
             {
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", level + previouseastereggs++ + "\n" + previoustext);
-                File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", eastereggfiletext + eastereggname + "\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + previouseastereggs++ + "\n" + previoustext);
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", eastereggfiletext + eastereggname + "\n");
             }
         }
 
@@ -318,7 +318,13 @@ namespace OakHeart
             }
 
 
-        } 
+        }
+
+        private void PlayCutscene(int cutscene, GameTime gameTime, SpriteBatch spriteBatch)
+        {
+
+        }
+
                  /// <summary>
                  /// Allows the game to run logic such as updating the world,
                  /// checking for collisions, gathering input, and playing audio.
@@ -673,7 +679,7 @@ namespace OakHeart
                             graphics.IsFullScreen = fullscreen;
                             graphics.ApplyChanges();
                             fullscreensliderclick = false;
-                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume " + volume + "\nfullscreen " + fullscreen + "\n");
+                            File.WriteAllText(Directory.GetCurrentDirectory() + @"\settings.txt", "volume " + volume + "\nfullscreen " + fullscreen + "\n");
                         }
                     }
                     else
@@ -702,7 +708,7 @@ namespace OakHeart
                     else if (mouseState.LeftButton != ButtonState.Pressed && DragSlider == true)
                     {
                         DragSlider = false;
-                        File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\settings.txt", "volume " + volume + "\nfullscreen " + fullscreen + "\n");
+                        File.WriteAllText(Directory.GetCurrentDirectory() + @"\settings.txt", "volume " + volume + "\nfullscreen " + fullscreen + "\n");
                     }
                     spriteBatch.Draw(rectangle, SlideBar, new Color(200, 200, 200));
                     spriteBatch.Draw(circle, new Rectangle(width / 2 + 137, volumeheight + 70, 26, 26), new Color(200, 200, 200));
@@ -773,8 +779,8 @@ namespace OakHeart
                         }
                         else if (ConfirmButtonClicked == true)
                         {
-                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
-                            File.WriteAllText(Directory.GetCurrentDirectory().Replace(@"bin\Windows\x86\Debug", "Content") + @"\eastereggsfound.txt", "\n");
+                            File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                            File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", "\n");
                             _state = GameState.MainMenu;
                             if (backgroundsongmenu.State == SoundState.Stopped)
                             {
