@@ -21,10 +21,10 @@ namespace OakHeart
         SpriteBatch spriteBatch;
         Background background;
         InputHelper inputHelper;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder;
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo;
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
-        private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer;
+        private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition;
         private float[] angles = new float[30];
         private int[] LevelsProgress = new int[4];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
@@ -94,6 +94,7 @@ namespace OakHeart
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
+            logo = Content.Load<Texture2D>("images/menu/Logo");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
@@ -150,7 +151,7 @@ namespace OakHeart
             background = new Background(Content, new Vector2(0, 0), "images/game/Level_1_Background");
             player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
-            for (int x = 1; x <= 1; x++)
+            for (int x = 1; x <= 4; x++)
                 levels.Add(new Map(x));
         }
 
@@ -481,6 +482,12 @@ namespace OakHeart
                 
                 if (menuanimationdone2 == true && timer >= 40)
                 {
+                    logoposition += gameTime.ElapsedGameTime.Milliseconds * 0.0025f;
+                    Console.WriteLine(logoposition);
+                    if (logoposition > 1)
+                    {
+                        logoposition = 0;
+                    }
                     Random random = new Random();
                     float angle = random.Next(0, 1000);
                     angle *= .01f;
@@ -702,7 +709,12 @@ namespace OakHeart
                         }
                     }
                     else { PlayButtonClicked = false; }
-
+                    float logopos = logoposition;
+                    if (logopos > 0.5f)
+                    {
+                        logopos = 1 - logoposition;
+                    }
+                    spriteBatch.Draw(logo,new Rectangle(width / 2 - 750,100 - (int)menuposition - (int)(logopos * 40), 1500, 225), Color.White);
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X / 2, graphics.PreferredBackBufferHeight * .5f + menuposition), Color.White);
                     if (menuanimationdone2 == true)
                     {
