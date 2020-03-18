@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Background.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="Gamemanagement\AnimatedGameObject.cs" />
+    <Compile Include="Gamemanagement\Animation.cs" />
     <Compile Include="Map\Fungus.cs" />
     <Compile Include="Map\Platform.cs" />
     <Compile Include="Physics\Collision.cs" />

@@ -145,7 +145,7 @@ namespace OakHeart
             loadingdone = true;
             IsMouseVisible = true;
             //background = new Background(Content, new Vector2(0, 0), "name");
-            player = new Player(new Vector2(0, 600), "images/game/BPlayertrans");
+            player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
             for (int x = 1; x <= 1; x++)
                 levels.Add(new Map(x));
