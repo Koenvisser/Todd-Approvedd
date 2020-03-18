@@ -40,7 +40,7 @@ public class Platform : SpriteGameObject
         {
             for (int i = 1; i < fungus.Count; i++)
             {
-                if ((playerpos.X < BoundingBox.X + (boundingBox.Width / 8) * i && playerpos.X > BoundingBox.X + (boundingBox.Width / 8) * (i - 1)) || playerpos.X + 48 /*playerwidth*/ < BoundingBox.X + (boundingBox.Width / 8) * i && playerpos.X + 48 > BoundingBox.X + (boundingBox.Width / 8) * (i + 1))
+                if ((playerpos.X < BoundingBox.X + (boundingBox.Width / 8) * i && playerpos.X > BoundingBox.X + (boundingBox.Width / 8) * (i - 1)) || playerpos.X + 80 /*playerwidth*/ > BoundingBox.X + (boundingBox.Width / 8) * i && playerpos.X + 80 < BoundingBox.X + (boundingBox.Width / 8) * (i + 1))
                 {
                     fungusactive[i] = false;
                     fungusactive[i - 1] = false;
@@ -101,7 +101,7 @@ public class Platform : SpriteGameObject
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch, this.GlobalPosition - Camera.campos, origin, -rot * MathHelper.Pi / 180);
+        sprite.Draw(spriteBatch, GlobalPosition - Camera.campos, origin, -rot * MathHelper.Pi / 180);
 
         for (int i = 0; i < fungus.Count; i++)
         {

@@ -65,7 +65,7 @@ public class Player : AnimatedGameObject
         }
         else if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && isOnFloor)
         {
-            Jump(300);
+            Jump(400);
             jump = true;
         }
         //if (inputHelper.IsKeyDown(Keys.Down) || inputHelper.IsKeyDown(Keys.A) && !isOnFloor)

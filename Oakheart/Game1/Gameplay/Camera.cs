@@ -25,7 +25,7 @@ class Camera : GameObject
         int x = level;
         campos = new Vector2(player.Position.X - Game1.Screen.X / 2, player.Position.Y - Game1.Screen.Y / 2);
         campos.X = MathHelper.Clamp(player.Position.X - Game1.Screen.X / 2, 0, levelWidth[x] - Game1.Screen.X);
-        campos.Y = MathHelper.Clamp(player.Position.Y - Game1.Screen.Y / 2, 0, levelHeight[x] - Game1.Screen.Y);
+        campos.Y = MathHelper.Clamp(player.Position.Y - Game1.Screen.Y / 2, -10000, levelHeight[x] - Game1.Screen.Y);
     }
 }
 
