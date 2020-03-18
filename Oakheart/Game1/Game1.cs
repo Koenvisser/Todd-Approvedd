@@ -21,7 +21,7 @@ namespace OakHeart
         SpriteBatch spriteBatch;
         Background background;
         InputHelper inputHelper;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder;
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo;
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer;
@@ -94,6 +94,7 @@ namespace OakHeart
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
+            logo = Content.Load<Texture2D>("images/menu/Logo");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
@@ -680,7 +681,7 @@ namespace OakHeart
                         }
                     }
                     else { PlayButtonClicked = false; }
-
+                    spriteBatch.Draw(logo,new Rectangle(width / 2 - 750,100 - (int)menuposition, 1500, 225), Color.White);
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X / 2, graphics.PreferredBackBufferHeight * .5f + menuposition), Color.White);
                     if (menuanimationdone2 == true)
                     {
