@@ -578,6 +578,13 @@ namespace OakHeart
                     }
                     platform.Update(gameTime, false);
                 }
+                foreach (Enemy enemy in level.Enemy)
+                {
+                    if (player.CollidesWith(enemy))
+                    {
+
+                    }
+                }
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
