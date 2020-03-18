@@ -333,19 +333,28 @@ namespace OakHeart
             float fade = 1;
             if (_state != GameState.Settings && _state != GameState.Pause)
             {
-                _state = GameState.Cutscene;
+                if (cutscenetimer > 1000)
+                {
+                    _state = GameState.Cutscene;
+                }
                 if (AssetManager.sound != null && assetManager.sound.State == SoundState.Paused)
                 {
                     assetManager.sound.Resume();
                 }
             }
+            else if (_state == GameState.MainMenu)
+            {
+                CutscenePlaying = false;
+            }
             else if (assetManager.sound.State == SoundState.Playing)
             {
                 assetManager.sound.Pause();
             }
+            if (cutscenetimer > 500 && cutscenetimer < 47500)
+            {
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.Black);
-
-            if (LevelCompleted == 0)
+            }
+                if (LevelCompleted == 0)
             {
                 if (cutscenetimer < 10000)
                 {
@@ -381,7 +390,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene1/dialogue1", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(-50 + (int)((cutscenetimer - 10000) / 290), -50 + (int)((cutscenetimer - 10000) / 290), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(placeholder, new Rectangle(-50 + (int)((cutscenetimer - 10000) / 290), 50 - (int)((cutscenetimer - 10000) / 290), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                 }
                 else if (cutscenetimer < 48000)
                 {
@@ -398,16 +407,22 @@ namespace OakHeart
                         AssetManager.PlaySound("voicelines/Cutscene1/dialogue2", false);
                     }
                     spriteBatch.Draw(placeholder, new Rectangle(50 - (int)((cutscenetimer - 10000) / 290), -50 + (int)((cutscenetimer - 10000) / 290), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    if (cutscenetimer > 47500)
+                    {
+                        _state = GameState.Game;
+                    }
                 }
                 else if (cutscenetimer >= 48000)
                 {
                     CutscenePlaying = false;
+                    _state = GameState.Game;
+                }
+                if (_state == GameState.Cutscene || cutscenetimer <= 1000 || (cutscenetimer > 47500 && _state == GameState.Game))
+                {
+                    cutscenetimer += gameTime.ElapsedGameTime.Milliseconds;
                 }
             }
-            if (_state == GameState.Cutscene)
-            {
-                cutscenetimer += gameTime.ElapsedGameTime.Milliseconds;
-            } }
+             }
 
                  /// <summary>
                  /// Allows the game to run logic such as updating the world,
@@ -581,10 +596,6 @@ namespace OakHeart
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            if (CutscenePlaying == true)
-            {
-                PlayCutscene(gameTime, spriteBatch);
-            }
             if (_state == GameState.MainMenu || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.MainMenu))
             {
                 if (menuanimationdone == true)
@@ -705,12 +716,18 @@ namespace OakHeart
                         }
                         else if (LevelButtonClicked[i - 1] == true)
                         {
-                            _state = GameState.Game;
                             IsMouseVisible = false;
                             level = levels[i - 1];
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
                             levelselectfade = 0;
+                            //if (LevelCompleted <= i)
+                            //{
+                            //    CutscenePlaying = true;
+                            //}
+                            //else {
+                                _state = GameState.Game;
+                            //}
                         }
                         else
                         {
@@ -1036,6 +1053,10 @@ namespace OakHeart
                 {
                     spriteBatch.DrawString(PacificoFont, "Main Menu", new Vector2((width - PacificoFont.MeasureString("Main Menu").X) / 2, (height - PacificoFont.MeasureString("Main Menu").Y) / 2 - 70), Color.White);
                 }
+            }
+            if (CutscenePlaying == true)
+            {
+                PlayCutscene(gameTime, spriteBatch);
             }
             spriteBatch.End();
             base.Draw(gameTime);
