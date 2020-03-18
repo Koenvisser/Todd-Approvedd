@@ -13,8 +13,8 @@ class Snail : Enemy
     {
         LoadAnimation("images/game/snail", "Snail", true);
         this.position = position;
-        startx = position.X;
-        endx = endpos;
+        startx = Math.Min(position.X, endpos);
+        endx = Math.Max(position.X, endpos);
         movespeed = 10;
         PlayAnimation("Snail");
     }

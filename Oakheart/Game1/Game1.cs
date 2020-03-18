@@ -623,7 +623,22 @@ namespace OakHeart
                 {
                     if (player.CollidesWith(enemy))
                     {
+                        if (enemy is Snail)
+                        {
+                            player.currentHealth--;
+                        }
 
+                        if (enemy is Dragonfly)
+                        {
+                            if (player.position.Y > enemy.position.Y)
+                            {
+                                //do something
+                            }
+                            else
+                            {
+                                player.currentHealth--;
+                            }
+                        }
                     }
                 }
                 player.HandleInput(inputHelper);
