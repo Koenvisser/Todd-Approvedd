@@ -22,8 +22,8 @@ public class Platform : SpriteGameObject
     public Platform(bool infected, float rotation, string assetName, Rectangle boundingBox, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
     {
         this.boundingBox = boundingBox;
-        this.rotation = rotation;
-        position = new Vector2(boundingBox.X, boundingBox.Y);
+        this.rotation = rotation % 180;
+        position = new Vector2(boundingBox.X + Camera.campos.X, boundingBox.Y + Camera.campos.Y);
         if (infected)
         {
             for (int i = 0; boundingBox.Width / (boundingBox.Width/8) > fungus.Count; i++)
@@ -101,7 +101,7 @@ public class Platform : SpriteGameObject
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(sprite.Sprite, boundingBox, null, Color.White, rotation, new Vector2(0) + Camera.campos, SpriteEffects.None, 0);
+        sprite.Draw(spriteBatch, this.GlobalPosition - Camera.campos, origin, -rot * MathHelper.Pi / 180);
 
         for (int i = 0; i < fungus.Count; i++)
         {
