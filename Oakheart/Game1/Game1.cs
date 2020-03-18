@@ -561,14 +561,15 @@ namespace OakHeart
                 if (player.idletime > 15 && (assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
                     Random random = new Random();
-                    int rdm = random.Next(1,2);
+                    int rdm = random.Next(1,3);
                     assetManager.PlaySound("voicelines/Oakheart/tiktik" + rdm, false);
                     FoundEasterEgg("Tiktik");
+                    player.idletime = 10;
                 }
                 if (player.jump == true)
                 {
                     Random random = new Random();
-                    int soundn = random.Next(0,3);
+                    int soundn = random.Next(0,4);
                     string randomsound = "";
                     if (soundn == 0)
                     {
