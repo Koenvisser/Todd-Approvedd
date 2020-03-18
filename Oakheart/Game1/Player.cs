@@ -12,7 +12,7 @@ public class Player : AnimatedGameObject
 {
     Vector2 startPosition;
     public Vector2 spawnposition;
-    public bool isOnFloor, isDead, shieldActive, itemAvailable, crosshairVisible;
+    public bool isOnFloor, isDead, shieldActive, itemAvailable, crosshairVisible, wallslide, walljump;
     public int maxHealth = 30;
     public int currentHealth;
     public bool reset;
