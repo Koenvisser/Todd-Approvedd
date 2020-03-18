@@ -290,7 +290,8 @@ namespace OakHeart
             }
             else
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + previouseastereggs++ + "\n" + previoustext);
+                previouseastereggs++;
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + "\n" + previouseastereggs + "\n" + previoustext);
                 File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", eastereggfiletext + eastereggname + "\n");
             }
         }
@@ -550,6 +551,13 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
+                if (player.idletime > 15 && (assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    Random random = new Random();
+                    int rdm = random.Next(1,2);
+                    assetManager.PlaySound("voicelines/Oakheart/tiktik" + rdm, false);
+                    FoundEasterEgg("Tiktik");
+                }
                 if (player.jump == true)
                 {
                     Random random = new Random();
@@ -726,7 +734,7 @@ namespace OakHeart
                 int percentage = LevelCompleted * 25;
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height / 10), Color.Black * .3f);
                 spriteBatch.DrawString(LevelSelectFont, percentage + "% Levels Completed", new Vector2(width / 4, height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
-                spriteBatch.DrawString(LevelSelectFont, EasterEgssFound / 4 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString("0% Easter Eggs Found") / 2, Color.White);
+                spriteBatch.DrawString(LevelSelectFont, (float)(EasterEgssFound) / 4 * 100 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString((float)(EasterEgssFound) / 4 * 100 + "% Easter Eggs Found") / 2, Color.White);
 
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
