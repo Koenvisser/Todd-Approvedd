@@ -147,7 +147,7 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            //background = new Background(Content, new Vector2(0, 0), "name");
+            background = new Background(Content, new Vector2(0, 0), "images/game/Level_1_Background");
             player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
             for (int x = 1; x <= 1; x++)
@@ -581,7 +581,7 @@ namespace OakHeart
                     assetManager.PlaySound("voicelines/Oakheart/" + randomsound, false);
                 }
                 if (player.wallslide)
-                {
+                { 
                     player.velocity.Y = 50;
                 }
                 else if (!player.playercol && !player.wallslide) { 
@@ -813,7 +813,7 @@ namespace OakHeart
             }
             else if (_state == GameState.Game || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.Game))
             {
-                //background.Draw(gameTime, spriteBatch); // draws background
+                background.Draw(gameTime, spriteBatch); // draws background
                 player.Draw(gameTime, spriteBatch);
                 level.Draw(gameTime, spriteBatch); // draws the level
             }
