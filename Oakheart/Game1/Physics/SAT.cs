@@ -140,10 +140,11 @@ partial class SpriteGameObject : GameObject
 
         /*if (trx > obj.tlx + 50 && tlx < obj.trx - 50)
         {
-            obj.lijnlist.Insert(0, new Vector2((obj.tlx + 50) - (obj.trx - 50), obj.tly - obj.trY));
-            obj.lijnlist.Insert(1, new Vector2((obj.tlx + 50) - (obj.blx + 50), obj.tly - obj.bly));
-            obj.positionlijnlist.Insert(0, new Vector2(obj.tlx + 50, obj.tly));
-            obj.positionlijnlist.Insert(1, new Vector2(obj.trx - 50, obj.trY));
+            float distancex = 50 * (float)Math.Cos(obj.rot);
+            obj.lijnlist.Insert(0, new Vector2((obj.tlx + distancex) - (obj.trx - distancex), obj.tly - obj.trY));
+            obj.lijnlist.Insert(1, new Vector2((obj.tlx + distancex) - (obj.blx + distancex), obj.tly - obj.bly));
+            obj.positionlijnlist.Insert(0, new Vector2(obj.tlx + distancex, obj.tly));
+            obj.positionlijnlist.Insert(1, new Vector2(obj.trx - distancex, obj.trY));
         }
 
         else
