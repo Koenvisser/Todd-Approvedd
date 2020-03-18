@@ -16,7 +16,7 @@ public class Player : AnimatedGameObject
     public int maxHealth = 30;
     public int currentHealth;
     public bool reset;
-    public float walkingSpeed = 200f;
+    public float walkingSpeed = 200f, idletime;
     public bool playercol;
     public bool jump, hit;
 
@@ -62,11 +62,13 @@ public class Player : AnimatedGameObject
             jump = true;
             walljump = false;
             walljumping = true;
+            idletime = 0;
         }
         else if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && isOnFloor)
         {
-            Jump(300);
+            Jump(400);
             jump = true;
+            idletime = 0;
         }
         //if (inputHelper.IsKeyDown(Keys.Down) || inputHelper.IsKeyDown(Keys.A) && !isOnFloor)
         //{
@@ -80,6 +82,7 @@ public class Player : AnimatedGameObject
                 PlayAnimation("Walk");
 
             }
+            idletime = 0;
         }
         else if (inputHelper.IsKeyDown(Keys.Right) || inputHelper.IsKeyDown(Keys.D))
         {
@@ -89,6 +92,7 @@ public class Player : AnimatedGameObject
                 PlayAnimation("Walk");
 
             }
+            idletime = 0;
         }
         else
         {
@@ -110,6 +114,7 @@ public class Player : AnimatedGameObject
 
     public override void Update(GameTime gameTime) // updates the player character when in the game
     {
+        idletime += (float)gameTime.ElapsedGameTime.TotalSeconds;
         jump = false;
         hit = false;
         base.Update(gameTime);

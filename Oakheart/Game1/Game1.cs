@@ -93,7 +93,7 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
+            placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
@@ -147,7 +147,7 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            //background = new Background(Content, new Vector2(0, 0), "name");
+            background = new Background(Content, new Vector2(0, 0), "images/game/Level_1_Background");
             player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
             for (int x = 1; x <= 1; x++)
@@ -290,7 +290,8 @@ namespace OakHeart
             }
             else
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + previouseastereggs++ + "\n" + previoustext);
+                previouseastereggs++;
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + "\n" + previouseastereggs + "\n" + previoustext);
                 File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", eastereggfiletext + eastereggname + "\n");
             }
         }
@@ -299,6 +300,13 @@ namespace OakHeart
         {
             if (_state != GameState.Pause && _state != GameState.Settings)
             {
+                if (_state == GameState.Game)
+                {
+                    if (assetManager.sound != null && assetManager.sound.State == SoundState.Playing)
+                    {
+                        assetManager.sound.Pause();
+                    }
+                }
                 _pausedstate = _state;
                 _state = GameState.Pause;
                 IsMouseVisible = true;
@@ -316,7 +324,12 @@ namespace OakHeart
                 _state = _pausedstate;
                 soundfadeout = false;
                 if (_state == GameState.Game)
-                { IsMouseVisible = false; }
+                { IsMouseVisible = false;
+                    if (assetManager.sound != null && assetManager.sound.State == SoundState.Paused)
+                    {
+                        assetManager.sound.Resume();
+                    }
+                }
                 else if (_pausedstate == GameState.MainMenu || _pausedstate == GameState.LevelSelect)
                 {
                     if (backgroundsongmenu.State == SoundState.Stopped)
@@ -538,9 +551,37 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
-
-                if (player.wallslide)
+                if (player.idletime > 15 && (assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
+                    Random random = new Random();
+                    int rdm = random.Next(1,2);
+                    assetManager.PlaySound("voicelines/Oakheart/tiktik" + rdm, false);
+                    FoundEasterEgg("Tiktik");
+                }
+                if (player.jump == true)
+                {
+                    Random random = new Random();
+                    int soundn = random.Next(0,3);
+                    string randomsound = "";
+                    if (soundn == 0)
+                    {
+                        randomsound = "yay";
+                    }
+                    else if (soundn == 1)
+                    {
+                        randomsound = "woo";
+                    }
+                    else if (soundn == 2)
+                    {
+                        randomsound = "wee";
+                    }
+                    else {
+                        randomsound = "wahoo";
+                    }
+                    assetManager.PlaySound("voicelines/Oakheart/" + randomsound, false);
+                }
+                if (player.wallslide)
+                { 
                     player.velocity.Y = 50;
                 }
                 else if (!player.playercol && !player.wallslide) { 
@@ -700,7 +741,7 @@ namespace OakHeart
                 int percentage = LevelCompleted * 25;
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height / 10), Color.Black * .3f);
                 spriteBatch.DrawString(LevelSelectFont, percentage + "% Levels Completed", new Vector2(width / 4, height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
-                spriteBatch.DrawString(LevelSelectFont, EasterEgssFound / 4 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString("0% Easter Eggs Found") / 2, Color.White);
+                spriteBatch.DrawString(LevelSelectFont, (float)(EasterEgssFound) / 4 * 100 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString((float)(EasterEgssFound) / 4 * 100 + "% Easter Eggs Found") / 2, Color.White);
 
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
@@ -779,9 +820,13 @@ namespace OakHeart
             }
             else if (_state == GameState.Game || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.Game))
             {
-                //background.Draw(gameTime, spriteBatch); // draws background
+                background.Draw(gameTime, spriteBatch); // draws background
                 player.Draw(gameTime, spriteBatch);
                 level.Draw(gameTime, spriteBatch); // draws the level
+            }
+            if (CutscenePlaying == true)
+            {
+                PlayCutscene(gameTime, spriteBatch);
             }
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
@@ -1033,6 +1078,8 @@ namespace OakHeart
                     }
                     else if (MainMenuButtonClicked == true)
                     {
+                        LoadSave();
+                        player = new Player(new Vector2(0, 600));
                         _state = GameState.MainMenu;
                         if (backgroundsongmenu.State == SoundState.Stopped)
                         {
@@ -1078,10 +1125,6 @@ namespace OakHeart
                 {
                     spriteBatch.DrawString(PacificoFont, "Main Menu", new Vector2((width - PacificoFont.MeasureString("Main Menu").X) / 2, (height - PacificoFont.MeasureString("Main Menu").Y) / 2 - 70), Color.White);
                 }
-            }
-            if (CutscenePlaying == true)
-            {
-                PlayCutscene(gameTime, spriteBatch);
             }
             spriteBatch.End();
             base.Draw(gameTime);
