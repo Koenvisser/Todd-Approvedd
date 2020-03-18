@@ -21,7 +21,7 @@ namespace OakHeart
         SpriteBatch spriteBatch;
         Background background;
         InputHelper inputHelper;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder;
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo;
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer;
@@ -94,6 +94,7 @@ namespace OakHeart
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
+            logo = Content.Load<Texture2D>("images/menu/Logo");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
@@ -290,7 +291,8 @@ namespace OakHeart
             }
             else
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + previouseastereggs++ + "\n" + previoustext);
+                previouseastereggs++;
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", level + "\n" + previouseastereggs + "\n" + previoustext);
                 File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", eastereggfiletext + eastereggname + "\n");
             }
         }
@@ -550,6 +552,13 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
+                if (player.idletime > 15 && (assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    Random random = new Random();
+                    int rdm = random.Next(1,2);
+                    assetManager.PlaySound("voicelines/Oakheart/tiktik" + rdm, false);
+                    FoundEasterEgg("Tiktik");
+                }
                 if (player.jump == true)
                 {
                     Random random = new Random();
@@ -610,6 +619,13 @@ namespace OakHeart
                         platform.playerpos = player.position;
                     }
                     platform.Update(gameTime, false);
+                }
+                foreach (Enemy enemy in level.Enemy)
+                {
+                    if (player.CollidesWith(enemy))
+                    {
+
+                    }
                 }
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);
@@ -672,7 +688,7 @@ namespace OakHeart
                         }
                     }
                     else { PlayButtonClicked = false; }
-
+                    spriteBatch.Draw(logo,new Rectangle(width / 2 - 750,100 - (int)menuposition, 1500, 225), Color.White);
                     spriteBatch.DrawString(KronaFont, "Play", new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X / 2, graphics.PreferredBackBufferHeight * .5f + menuposition), Color.White);
                     if (menuanimationdone2 == true)
                     {
@@ -726,7 +742,7 @@ namespace OakHeart
                 int percentage = LevelCompleted * 25;
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height / 10), Color.Black * .3f);
                 spriteBatch.DrawString(LevelSelectFont, percentage + "% Levels Completed", new Vector2(width / 4, height / 20) - LevelSelectFont.MeasureString(percentage + "% Levels Completed") / 2, Color.White);
-                spriteBatch.DrawString(LevelSelectFont, EasterEgssFound / 4 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString("0% Easter Eggs Found") / 2, Color.White);
+                spriteBatch.DrawString(LevelSelectFont, (float)(EasterEgssFound) / 4 * 100 + "% Easter Eggs Found", new Vector2(width / 4 * 3, height / 20) - LevelSelectFont.MeasureString((float)(EasterEgssFound) / 4 * 100 + "% Easter Eggs Found") / 2, Color.White);
 
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
