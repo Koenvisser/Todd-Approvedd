@@ -93,7 +93,7 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
+            placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
@@ -299,6 +299,13 @@ namespace OakHeart
         {
             if (_state != GameState.Pause && _state != GameState.Settings)
             {
+                if (_state == GameState.Game)
+                {
+                    if (assetManager.sound != null && assetManager.sound.State == SoundState.Playing)
+                    {
+                        assetManager.sound.Pause();
+                    }
+                }
                 _pausedstate = _state;
                 _state = GameState.Pause;
                 IsMouseVisible = true;
@@ -316,7 +323,12 @@ namespace OakHeart
                 _state = _pausedstate;
                 soundfadeout = false;
                 if (_state == GameState.Game)
-                { IsMouseVisible = false; }
+                { IsMouseVisible = false;
+                    if (assetManager.sound != null && assetManager.sound.State == SoundState.Paused)
+                    {
+                        assetManager.sound.Resume();
+                    }
+                }
                 else if (_pausedstate == GameState.MainMenu || _pausedstate == GameState.LevelSelect)
                 {
                     if (backgroundsongmenu.State == SoundState.Stopped)
@@ -797,6 +809,10 @@ namespace OakHeart
                 player.Draw(gameTime, spriteBatch);
                 level.Draw(gameTime, spriteBatch); // draws the level
             }
+            if (CutscenePlaying == true)
+            {
+                PlayCutscene(gameTime, spriteBatch);
+            }
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, .1f, 0, 0.4f));
@@ -1094,10 +1110,6 @@ namespace OakHeart
                 {
                     spriteBatch.DrawString(PacificoFont, "Main Menu", new Vector2((width - PacificoFont.MeasureString("Main Menu").X) / 2, (height - PacificoFont.MeasureString("Main Menu").Y) / 2 - 70), Color.White);
                 }
-            }
-            if (CutscenePlaying == true)
-            {
-                PlayCutscene(gameTime, spriteBatch);
             }
             spriteBatch.End();
             base.Draw(gameTime);
