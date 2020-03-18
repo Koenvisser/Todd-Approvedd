@@ -7,11 +7,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OakHeart;
 
-class Platform : SpriteGameObject
+public class Platform : SpriteGameObject
 {
-    List<Fungus> fungusList;
     Rectangle boundingBox;
     float rotation;
+    public Vector2 playerpos;
+    bool[] fungusactive = new bool[8];
+    List<Fungus> fungus = new List<Fungus>();
+
     public Platform(bool infected, float rotation, string assetName, Rectangle boundingBox, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
     {
         this.boundingBox = boundingBox;
@@ -19,23 +22,38 @@ class Platform : SpriteGameObject
         position = new Vector2(boundingBox.X, boundingBox.Y);
         if (infected)
         {
-            fungusList = new List<Fungus>();
-            for (int i = 0; boundingBox.Width / 180 > fungusList.Count; i++)
+            for (int i = 0; boundingBox.Width / (boundingBox.Width/8) > fungus.Count; i++)
             {
-                fungusList.Add(new Fungus(rotation, "fungus", i, position));
+                fungus.Add(new Fungus(rotation, "images/game/fungus", i, boundingBox));
+                fungusactive[i] = true;
             } 
         }
-
     }
+
+    public override void Update(GameTime gameTime)
+    {
+        for (int i = 1; i < fungus.Count; i++)
+        {
+            if ((playerpos.X < BoundingBox.X + (boundingBox.Width / 8) * i && playerpos.X > BoundingBox.X + (boundingBox.Width / 8) * (i-1)) || playerpos.X + 48 /*playerwidth*/ < BoundingBox.X + (boundingBox.Width / 8) * i && playerpos.X + 48 > BoundingBox.X + (boundingBox.Width / 8) * (i+1))
+            {
+                fungusactive[i] = false;
+                fungusactive[i-1] = false;
+            }
+            Console.WriteLine(fungusactive[i]);
+
+        }
+    }
+
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(sprite.Sprite, boundingBox, null, Color.White, rotation, new Vector2(0), SpriteEffects.None, 0);
+        spriteBatch.Draw(sprite.Sprite, boundingBox, null, Color.White, rotation, new Vector2(0) + Camera.campos, SpriteEffects.None, 0);
 
-        if(fungusList != null)
+        for (int i = 0; i < fungus.Count; i++)
         {
-            for(int i = 0; i < fungusList.Count; i++)
+            if (fungus != null && fungusactive[i])
             {
-                fungusList[i].Draw(gameTime, spriteBatch);
+                    fungus[i].Draw(gameTime, spriteBatch);
+                
             }
         }
     }

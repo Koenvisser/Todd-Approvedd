@@ -18,8 +18,15 @@ public class Map
     List<string> textLines;
     List<Platform> platform = new List<Platform>();
 
+    public List<Platform> Platform 
+    {
+        get { return platform; }
+    }
+
     public Map(int level) // loads level
     {
+        levelWidth.Add(0);
+        levelHeight.Add(0);
         textLines = new List<string>();
         streamreader = new StreamReader("Content/Levels/" + level + ".txt");
         string line = streamreader.ReadLine();
@@ -27,41 +34,24 @@ public class Map
 
         while (line != null)
         {
-            try
-            {
-                textLines.Add(line);
-                line = streamreader.ReadLine();
+            string[] lines = line.Split(',');
+            if(int.Parse(lines[3]) > levelWidth[level - 1]){
+                levelWidth[level - 1] = int.Parse(lines[3]);
             }
-            catch (IndexOutOfRangeException)
+            if (int.Parse(lines[4]) > levelHeight[level - 1])
             {
-                Console.WriteLine("The level is corrupted."); // error handling for when levels are built wrong (not all lines are equal in length)
-                // current effect is that tiles out of range are not rendered
+                levelHeight[level - 1] = int.Parse(lines[4])+540;
             }
-            catch (OutOfMemoryException)
+            switch (lines[0]) // retrieves the tile based on the given type in the level text file
             {
-                Console.WriteLine("There is not enough memory to complete this operation."); // error handling for when the computer runs out of memory
-                // this is just in case since our old levels are now offloaded when a new level is initialized, freeing up memory
+                case "Bark":
+                    platform.Add(new Platform(bool.Parse(lines[1]), float.Parse(lines[2]), "images/game/Bark", new Rectangle(int.Parse(lines[3]), int.Parse(lines[4]), int.Parse(lines[5]), int.Parse(lines[6]))));
+                    break;
             }
+            line = streamreader.ReadLine();
+            /* waits with performing the task again until the earlier instance is finished
+                loads slower, but is less likely to cause lag when loading big levels */
         }
-
-        levelWidth.Add(70 * width);
-        levelHeight.Add(70 * (textLines.Count));
-            for (int y = 0; y < textLines.Count; ++y)
-            {
-                Task t1 = Task.Run(() => // streamlines the above instruction into a task
-                {
-                    string[] lines = line.Split(',');
-                    switch (lines[0]) // retrieves the tile based on the given type in the level text file
-                    {
-                        case "Bark":
-                            platform.Add(new Platform(bool.Parse(lines[1]), float.Parse(lines[2]), "images/Bark", new Rectangle(int.Parse(lines[3]), int.Parse(lines[4]), int.Parse(lines[5]), int.Parse(lines[6]))));
-                            break;
-                    }
-                });
-                t1.Wait();
-                /* waits with performing the task again until the earlier instance is finished
-                    loads slower, but is less likely to cause lag when loading big levels */
-            }
         
 
     }
