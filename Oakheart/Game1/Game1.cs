@@ -14,20 +14,20 @@ namespace OakHeart
     /// </summary>
     public class Game1 : Game
     {
-        enum GameState { MainMenu, Settings, LevelSelect, Game, Pause };
+        enum GameState { MainMenu, Settings, LevelSelect, Game, Pause, Cutscene };
         GameState _state = GameState.MainMenu;
         GameState _pausedstate = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Background background;
         InputHelper inputHelper;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave;
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder;
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
-        private float menuposition, volume, timer, bottombarfade, levelselectfade;
+        private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer;
         private float[] angles = new float[30];
         private int[] LevelsProgress = new int[4];
-        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false;
+        private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
         private bool[] LevelButtonClicked = new bool[4], hoveringbutton = new bool[4];
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
         private SoundEffectInstance backgroundsongmenu;
@@ -92,6 +92,7 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
@@ -141,6 +142,7 @@ namespace OakHeart
                 File.WriteAllText(Directory.GetCurrentDirectory() + @"\settings.txt", "volume 1\nfullscreen True\n");
             }
             menuleavespos[29] = new Vector2(graphics.PreferredBackBufferWidth / 2 - KronaFont.MeasureString("Play").X * 0.6f - 20, graphics.PreferredBackBufferHeight * .5f - 20);
+            LoadSave();
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
@@ -250,7 +252,7 @@ namespace OakHeart
         {
             if (!File.Exists(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt"))
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", "");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", "\n");
             }
             string eastereggfiletext = "";
             string[] alleastereggsfound = File.ReadAllLines(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt");
@@ -326,10 +328,86 @@ namespace OakHeart
 
         }
 
-        private void PlayCutscene(int cutscene, GameTime gameTime, SpriteBatch spriteBatch)
+        private void PlayCutscene(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            float fade = 1;
+            if (_state != GameState.Settings && _state != GameState.Pause)
+            {
+                _state = GameState.Cutscene;
+                if (AssetManager.sound != null && assetManager.sound.State == SoundState.Paused)
+                {
+                    assetManager.sound.Resume();
+                }
+            }
+            else if (assetManager.sound.State == SoundState.Playing)
+            {
+                assetManager.sound.Pause();
+            }
+                spriteBatch.Draw(rectangle, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.Black);
 
-        }
+            if (LevelCompleted == 0)
+            {
+                if (cutscenetimer < 10000)
+                {
+                    if (cutscenetimer < 1000)
+                    {
+                        fade = cutscenetimer / 1000;
+                    }
+                    else if (cutscenetimer > 9000)
+                    {
+                        fade = (10000 - cutscenetimer) / 1000;
+                    }
+                    if (AssetManager.sound == null && cutscenetimer < 500)
+                    {
+                        AssetManager.PlaySound("voicelines/Cutscene1/line1", false);
+                    }
+                    spriteBatch.Draw(placeholder, new Rectangle(0 - (int)(cutscenetimer / 100), 0 - (int)(cutscenetimer / 100), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                }
+                else if (cutscenetimer < 29000)
+                {
+                    if (cutscenetimer < 11000)
+                    {
+                        fade = (cutscenetimer - 10000) / 1000;
+                    }
+                    else if (cutscenetimer > 28000)
+                    {
+                        fade = (29000 - cutscenetimer) / 1000;
+                    }
+                    if (AssetManager.sound.State == SoundState.Stopped && cutscenetimer < 10500)
+                    {
+                        AssetManager.PlaySound("voicelines/Cutscene1/line2", false);
+                    }
+                    else if (AssetManager.sound.State == SoundState.Stopped && cutscenetimer < 20000 && cutscenetimer > 18000)
+                    {
+                        AssetManager.PlaySound("voicelines/Cutscene1/dialogue1", false);
+                    }
+                    spriteBatch.Draw(placeholder, new Rectangle(-50 + (int)((cutscenetimer - 10000) / 290), -50 + (int)((cutscenetimer - 10000) / 290), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                }
+                else if (cutscenetimer < 48000)
+                {
+                    if (cutscenetimer < 30000)
+                    {
+                        fade = (cutscenetimer - 29000) / 1000;
+                    }
+                    else if (cutscenetimer > 47000)
+                    {
+                        fade = (48000 - cutscenetimer) / 1000;
+                    }
+                    if (AssetManager.sound.State == SoundState.Stopped && cutscenetimer < 29500)
+                    {
+                        AssetManager.PlaySound("voicelines/Cutscene1/dialogue2", false);
+                    }
+                    spriteBatch.Draw(placeholder, new Rectangle(50 - (int)((cutscenetimer - 10000) / 290), -50 + (int)((cutscenetimer - 10000) / 290), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                }
+                else if (cutscenetimer >= 48000)
+                {
+                    CutscenePlaying = false;
+                }
+            }
+            if (_state == GameState.Cutscene)
+            {
+                cutscenetimer += gameTime.ElapsedGameTime.Milliseconds;
+            } }
 
                  /// <summary>
                  /// Allows the game to run logic such as updating the world,
@@ -338,7 +416,6 @@ namespace OakHeart
                  /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
             timer += gameTime.ElapsedGameTime.Milliseconds;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -503,6 +580,10 @@ namespace OakHeart
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            if (CutscenePlaying == true)
+            {
+                PlayCutscene(gameTime, spriteBatch);
+            }
             if (_state == GameState.MainMenu || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.MainMenu))
             {
                 if (menuanimationdone == true)
@@ -520,7 +601,6 @@ namespace OakHeart
                         {
                             _state = GameState.LevelSelect;
                             levelselectfade = 1;
-                            LoadSave();
                             PlayButtonClicked = false;
                         }
                         else
