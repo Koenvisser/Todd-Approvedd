@@ -92,7 +92,7 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
+            //placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");

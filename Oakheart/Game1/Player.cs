@@ -52,10 +52,6 @@ public class Player : AnimatedGameObject
         PlayAnimation("Jump");
         velocity.Y = -speed;
         isOnFloor = false;
-        if (characterType == '#') // higher jump if the character is agile
-        {
-            velocity.Y = -speed * 1.3f;
-        }
     }
 
     public override void HandleInput(InputHelper inputHelper) // player controls
@@ -72,10 +68,12 @@ public class Player : AnimatedGameObject
         if (inputHelper.IsKeyDown(Keys.Left) || inputHelper.IsKeyDown(Keys.A))
         {
             velocity.X = -walkingSpeed;
+            PlayAnimation("Walk");
         }
         else if (inputHelper.IsKeyDown(Keys.Right) || inputHelper.IsKeyDown(Keys.D))
         {
             velocity.X = walkingSpeed;
+            PlayAnimation("Walk");
         }
         else
         {

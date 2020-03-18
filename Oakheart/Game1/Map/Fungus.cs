@@ -13,7 +13,7 @@ public class Fungus : SpriteGameObject
     bool cleansed;
     public Fungus(float rotation, string assetName, int index, Rectangle boundingBox, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
     {
-        this.boundingBox = new Rectangle(boundingBox.X + (boundingBox.Width / 8) * index, boundingBox.Y, (boundingBox.Width / 8), boundingBox.Height); //replace with player width
+        this.boundingBox = new Rectangle(boundingBox.X + ((int)(tlx - this.trx) / 8) * index, boundingBox.Y - ((boundingBox.Height - 120) / 8) * index, (boundingBox.Width / 8), boundingBox.Height); //replace with player width
         this.rotation = rotation % 180;
     }
 
