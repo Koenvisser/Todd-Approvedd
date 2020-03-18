@@ -14,7 +14,7 @@ public class Fungus : SpriteGameObject
     public Fungus(float rotation, string assetName, int index, Rectangle boundingBox, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
     {
         this.boundingBox = new Rectangle(boundingBox.X + (boundingBox.Width / 8) * index, boundingBox.Y, (boundingBox.Width / 8), boundingBox.Height); //replace with player width
-        this.rotation = rotation;
+        this.rotation = rotation % 180;
     }
 
     public override void Update(GameTime gameTime)
@@ -29,7 +29,7 @@ public class Fungus : SpriteGameObject
     {
         if (!cleansed)
         {
-            spriteBatch.Draw(sprite.Sprite, boundingBox, null, Color.White, rotation, new Vector2(0) + Camera.campos, SpriteEffects.None, 0);
+            spriteBatch.Draw(sprite.Sprite, new Rectangle(boundingBox.X - (int)Camera.campos.X, boundingBox.Y - (int)Camera.campos.Y, boundingBox.Width , boundingBox.Height), null, Color.White, -rotation * MathHelper.Pi / 180, new Vector2(0), SpriteEffects.None, 0);
         }
     }
 }

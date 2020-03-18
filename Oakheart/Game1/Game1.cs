@@ -147,7 +147,7 @@ namespace OakHeart
             loadingdone = true;
             IsMouseVisible = true;
             //background = new Background(Content, new Vector2(0, 0), "name");
-            player = new Player(new Vector2(0, 600), "images/game/BPlayertrans");
+            player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
             for (int x = 1; x <= 1; x++)
                 levels.Add(new Map(x));
@@ -545,8 +545,6 @@ namespace OakHeart
                 player.Update(gameTime);
                 HandleInput(gameTime);
                 player.HandleInput(inputHelper);
-                camera = new Camera(player);
-                camera.camera(gameTime, levelint);
                 foreach (Platform platform in level.Platform)
                 {
 
@@ -556,6 +554,11 @@ namespace OakHeart
                         {
                             player.isOnFloor = true;
                         }
+                        if(platform.rot == 90 || platform.rot == 270)
+                        {
+                            player.wallslide = true;
+                            player.walljump = true;
+                        }
                         player.playercol = true;
                         platform.Update(gameTime, true);
                         player.position.Y += player.MTV.Y;
@@ -563,6 +566,8 @@ namespace OakHeart
                     }
                     platform.Update(gameTime, false);
                 }
+                camera = new Camera(player);
+                camera.camera(gameTime, levelint);
             }
             if (SoundEffect.MasterVolume <= 0.995f && !soundfadeout)
             {

@@ -8,11 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
-public class Player : SpriteGameObject
+public class Player : AnimatedGameObject
 {
     Vector2 startPosition;
     public Vector2 spawnposition;
-    public bool isOnFloor, isDead, shieldActive, itemAvailable, crosshairVisible;
+    public bool isOnFloor, isDead, shieldActive, itemAvailable, crosshairVisible, wallslide, walljump;
     public int maxHealth = 30;
     public int currentHealth;
     public bool reset;
@@ -26,13 +26,18 @@ public class Player : SpriteGameObject
     private GameTime gameTime;
     public char characterType;
 
-    public Player(Vector2 start, string AssetName) : base(0, AssetName, 2) // initializes a player character
+    public Player(Vector2 start) : base(0, 2) // initializes a player character
     {
         startPosition = start;
         position = startPosition;
         velocity = Vector2.Zero;
         previousposition = position;
         currentHealth = maxHealth;
+        LoadAnimation("animations/Oakheartidle@10x1", "Idle", true);
+        LoadAnimation("animations/Oakheartwalk@5x2", "Walk", true);
+        LoadAnimation("animations/Oakheartjump@10x1", "Jump", false);
+        LoadAnimation("animations/Oakheartfall@5x1", "Fall", false);
+        PlayAnimation("Idle");
 
 
         invincibletime = 0.0f;
@@ -44,6 +49,7 @@ public class Player : SpriteGameObject
 
     public void Jump(float speed = 300) // method for making the character jump
     {
+        PlayAnimation("Jump");
         velocity.Y = -speed;
         isOnFloor = false;
         if (characterType == '#') // higher jump if the character is agile
