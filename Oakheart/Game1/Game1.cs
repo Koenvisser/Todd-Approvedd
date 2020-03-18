@@ -36,6 +36,8 @@ namespace OakHeart
         Player player;
         Camera camera;
         public int levelint;
+        public List<Map> levels;
+        public Map level;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -58,6 +60,7 @@ namespace OakHeart
             graphics.PreferredBackBufferHeight = 1080;
             graphics.PreferredBackBufferWidth = 1920;
             graphics.ApplyChanges();
+            screen = new Point(1920, 1080);
             assetManager = new AssetManager(Content);
             base.Initialize();
             inputHelper = new InputHelper();
@@ -143,6 +146,9 @@ namespace OakHeart
             IsMouseVisible = true;
             //background = new Background(Content, new Vector2(0, 0), "name");
             player = new Player(new Vector2(0, 600), "images/game/BPlayertrans");
+            levels = new List<Map>();
+            for (int x = 1; x <= 1; x++)
+                levels.Add(new Map(x));
         }
 
         /// <summary>
@@ -326,6 +332,7 @@ namespace OakHeart
                  /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
             timer += gameTime.ElapsedGameTime.Milliseconds;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
@@ -432,11 +439,31 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
+
+                if (!player.playercol) { 
+                    player.velocity.Y += 9.81f * (1000 / 1000);
+                }
+                player.playercol = false;
                 player.Update(gameTime);
                 HandleInput(gameTime);
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
+                foreach (Platform platform in level.Platform)
+                {
+
+                    if (player.CollidesWith(platform))
+                    {
+                        if (player.position.Y + player.Height - 10 <= platform.position.Y)
+                        {
+                            player.isOnFloor = true;
+                        }
+                        player.playercol = true;
+                        platform.Update(gameTime);
+                        player.position.Y += player.MTV.Y;
+                        platform.playerpos = player.position;
+                    }
+                }
             }
             if (SoundEffect.MasterVolume <= 0.995f && !soundfadeout)
             {
@@ -593,7 +620,7 @@ namespace OakHeart
                         {
                             _state = GameState.Game;
                             IsMouseVisible = false;
-                            // level = i
+                            level = levels[i - 1];
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
                             levelselectfade = 0;
@@ -625,6 +652,7 @@ namespace OakHeart
             {
                 //background.Draw(gameTime, spriteBatch); // draws background
                 player.Draw(gameTime, spriteBatch);
+                level.Draw(gameTime, spriteBatch); // draws the level
             }
             if (_state == GameState.Pause || _state == GameState.Settings)
             {

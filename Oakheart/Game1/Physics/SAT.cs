@@ -138,17 +138,18 @@ partial class SpriteGameObject : GameObject
             lines = 3;
         }
 
-        /*if (trx > obj.tlx && tlx < obj.trx)
+        /*if (trx > obj.tlx + 50 && tlx < obj.trx - 50)
         {
-        obj.lijnlist.Insert(0, new Vector2((obj.tlx + "circlewidth") - (obj.trx - "circlewidth"), obj.tly - obj.trY));
-        obj.lijnlist.Insert(1, new Vector2((obj.tlx + "circlewidth") - (obj.blx - "circlewidth"), obj.tly - obj.bly));
-
-
+            obj.lijnlist.Insert(0, new Vector2((obj.tlx + 50) - (obj.trx - 50), obj.tly - obj.trY));
+            obj.lijnlist.Insert(1, new Vector2((obj.tlx + 50) - (obj.blx + 50), obj.tly - obj.bly));
+            obj.positionlijnlist.Insert(0, new Vector2(obj.tlx + 50, obj.tly));
+            obj.positionlijnlist.Insert(1, new Vector2(obj.trx - 50, obj.trY));
         }
 
-        else{
+        else
+        {
 
-            if (circlemiddel < trx && circlemiddel > tlx)
+            if (obj.tlx + 50 > trx)
             {
                 obj.lijnlist.Insert(0, new Vector2(0, (circlemiddel + straal - circlemiddel - straal)));
                 obj.positionlijnlist.Insert(0, new Vector2(circlemiddel.x, circlemiddel - straal));
@@ -160,9 +161,10 @@ partial class SpriteGameObject : GameObject
                 obj.positionlijnlist.Insert(0, new Vector2(circlemiddel - straal, circlemiddel.y));
                 obj.positionlijnlist.Insert(0, new Vector2(circlemiddel + straal, circlemiddel.y));
             }
-            else {
+            else
+            {
                 float closest = float.MaxValue;
-                Vector2 closestaxis = new Vector2(0,0);
+                Vector2 closestaxis = new Vector2(0, 0);
                 foreach (Vector2 positionlijn in positionlijnlist)
                 {
                     if (closest > Math.Sqrt(Math.Pow(circlemiddel.x - positionlijn.X) + Math.Pow(circlemiddel.Y - positionlijn.Y)))
@@ -177,8 +179,8 @@ partial class SpriteGameObject : GameObject
                 obj.positionlijnlist.Insert(2, new Vector2(circlemiddel.X - (straal * closestaxis.X), circlemiddel.Y + (straal * closestaxis.Y)));
                 obj.positionlijnlist.Insert(3, new Vector2(circlemiddel.X + (straal * closestaxis.X), circlemiddel.Y + (straal * closestaxis.Y)));
             }
-        }
-        */
+        }*/
+        
         
         if (!obj.triangle)
         {

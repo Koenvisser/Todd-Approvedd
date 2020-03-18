@@ -54,7 +54,6 @@ public class Player : SpriteGameObject
 
     public override void HandleInput(InputHelper inputHelper) // player controls
     {
-        Console.WriteLine(position);
         if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && isOnFloor)
         {
             Jump(300);

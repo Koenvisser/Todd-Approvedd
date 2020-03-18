@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-class Fungus : SpriteGameObject
+public class Fungus : SpriteGameObject
 {
+    Rectangle boundingBox;
     float rotation;
     bool cleansed;
-    public Fungus(float rotation, string assetName, int index, Vector2 platformPosition, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
+    public Fungus(float rotation, string assetName, int index, Rectangle boundingBox, int layer = 0, string id = "") : base(rotation, assetName, layer, id)
     {
-        position = platformPosition + new Vector2(index * 180, 0); //replace with player width
-        origin = platformPosition;
+        this.boundingBox = new Rectangle(boundingBox.X + (boundingBox.Width / 8) * index, boundingBox.Y, (boundingBox.Width / 8), boundingBox.Height); //replace with player width
         this.rotation = rotation;
     }
 
@@ -21,7 +21,7 @@ class Fungus : SpriteGameObject
     {
         if (!cleansed)
         {
-
+            
         }
     }
 
@@ -29,7 +29,7 @@ class Fungus : SpriteGameObject
     {
         if (!cleansed)
         {
-            spriteBatch.Draw(sprite.Sprite, position, null, Color.White, rotation, origin, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(sprite.Sprite, boundingBox, null, Color.White, rotation, new Vector2(0) + Camera.campos, SpriteEffects.None, 0);
         }
     }
 }
