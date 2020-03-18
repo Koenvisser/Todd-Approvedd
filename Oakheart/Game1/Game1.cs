@@ -93,7 +93,7 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
+            placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
@@ -299,6 +299,13 @@ namespace OakHeart
         {
             if (_state != GameState.Pause && _state != GameState.Settings)
             {
+                if (_state == GameState.Game)
+                {
+                    if (assetManager.sound != null && assetManager.sound.State == SoundState.Playing)
+                    {
+                        assetManager.sound.Pause();
+                    }
+                }
                 _pausedstate = _state;
                 _state = GameState.Pause;
                 IsMouseVisible = true;
@@ -316,7 +323,12 @@ namespace OakHeart
                 _state = _pausedstate;
                 soundfadeout = false;
                 if (_state == GameState.Game)
-                { IsMouseVisible = false; }
+                { IsMouseVisible = false;
+                    if (assetManager.sound != null && assetManager.sound.State == SoundState.Paused)
+                    {
+                        assetManager.sound.Resume();
+                    }
+                }
                 else if (_pausedstate == GameState.MainMenu || _pausedstate == GameState.LevelSelect)
                 {
                     if (backgroundsongmenu.State == SoundState.Stopped)
@@ -538,7 +550,28 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
-
+                if (player.jump == true)
+                {
+                    Random random = new Random();
+                    int soundn = random.Next(0,3);
+                    string randomsound = "";
+                    if (soundn == 0)
+                    {
+                        randomsound = "yay";
+                    }
+                    else if (soundn == 1)
+                    {
+                        randomsound = "woo";
+                    }
+                    else if (soundn == 2)
+                    {
+                        randomsound = "wee";
+                    }
+                    else {
+                        randomsound = "wahoo";
+                    }
+                    assetManager.PlaySound("voicelines/Oakheart/" + randomsound, false);
+                }
                 if (player.wallslide)
                 { 
                     player.velocity.Y = 50;
@@ -775,6 +808,10 @@ namespace OakHeart
                 background.Draw(gameTime, spriteBatch); // draws background
                 player.Draw(gameTime, spriteBatch);
                 level.Draw(gameTime, spriteBatch); // draws the level
+            }
+            if (CutscenePlaying == true)
+            {
+                PlayCutscene(gameTime, spriteBatch);
             }
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
@@ -1026,6 +1063,8 @@ namespace OakHeart
                     }
                     else if (MainMenuButtonClicked == true)
                     {
+                        LoadSave();
+                        player = new Player(new Vector2(0, 600));
                         _state = GameState.MainMenu;
                         if (backgroundsongmenu.State == SoundState.Stopped)
                         {
@@ -1071,10 +1110,6 @@ namespace OakHeart
                 {
                     spriteBatch.DrawString(PacificoFont, "Main Menu", new Vector2((width - PacificoFont.MeasureString("Main Menu").X) / 2, (height - PacificoFont.MeasureString("Main Menu").Y) / 2 - 70), Color.White);
                 }
-            }
-            if (CutscenePlaying == true)
-            {
-                PlayCutscene(gameTime, spriteBatch);
             }
             spriteBatch.End();
             base.Draw(gameTime);
