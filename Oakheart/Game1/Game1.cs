@@ -539,12 +539,12 @@ namespace OakHeart
             if (_state == GameState.Game)
             {
 
-                if (player.wallslide && !player.walljumping)
+                if (player.wallslide)
                 {
                     player.velocity.Y = 50;
                 }
                 else if (!player.playercol && !player.wallslide) { 
-                    player.velocity.Y += 9.81f * (1000 / 1000);
+                    player.velocity.Y += 10;
                 }
                 player.playercol = false;
                 player.wallslide = false;
