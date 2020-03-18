@@ -68,20 +68,36 @@ public class Player : AnimatedGameObject
         if (inputHelper.IsKeyDown(Keys.Left) || inputHelper.IsKeyDown(Keys.A))
         {
             velocity.X = -walkingSpeed;
-            PlayAnimation("Walk");
+            if (isOnFloor)
+            {
+                PlayAnimation("Walk");
+
+            }
         }
         else if (inputHelper.IsKeyDown(Keys.Right) || inputHelper.IsKeyDown(Keys.D))
         {
             velocity.X = walkingSpeed;
-            PlayAnimation("Walk");
+            if (isOnFloor)
+            {
+                PlayAnimation("Walk");
+
+            }
         }
         else
         {
             velocity.X = 0f;
+            if (isOnFloor)
+            {
+                PlayAnimation("Idle");
+            }
         }
         if (velocity.X != 0.0f)
         {
             Mirror = velocity.X < 0;
+        }
+        if(!isOnFloor && velocity.Y > 0)
+        {
+            PlayAnimation("Fall");
         }
     }
 
