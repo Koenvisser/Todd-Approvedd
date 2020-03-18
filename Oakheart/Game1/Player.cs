@@ -12,7 +12,7 @@ public class Player : AnimatedGameObject
 {
     Vector2 startPosition;
     public Vector2 spawnposition;
-    public bool isOnFloor, isDead, shieldActive, itemAvailable, crosshairVisible, wallslide, walljump;
+    public bool isOnFloor, isDead, shieldActive, itemAvailable, crosshairVisible, wallslide, walljump, walljumping;
     public int maxHealth = 30;
     public int currentHealth;
     public bool reset;
@@ -56,7 +56,14 @@ public class Player : AnimatedGameObject
 
     public override void HandleInput(InputHelper inputHelper) // player controls
     {
-        if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && isOnFloor)
+        if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && walljump)
+        {
+            Jump(300);
+            jump = true;
+            walljump = false;
+            walljumping = true;
+        }
+        else if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && isOnFloor)
         {
             Jump(300);
             jump = true;

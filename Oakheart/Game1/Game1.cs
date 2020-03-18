@@ -30,6 +30,7 @@ namespace OakHeart
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
         private bool[] LevelButtonClicked = new bool[4], hoveringbutton = new bool[4];
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
+        Vector2 lastcollision;
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30];
         List<SoundEffect> soundEffects;
@@ -538,34 +539,46 @@ namespace OakHeart
             if (_state == GameState.Game)
             {
 
-                if (!player.playercol) { 
+                if (player.wallslide && !player.walljumping)
+                {
+                    player.velocity.Y = 50;
+                }
+                else if (!player.playercol && !player.wallslide) { 
                     player.velocity.Y += 9.81f * (1000 / 1000);
                 }
                 player.playercol = false;
+                player.wallslide = false;
+                player.isOnFloor = false;
                 player.Update(gameTime);
                 HandleInput(gameTime);
-                player.HandleInput(inputHelper);
                 foreach (Platform platform in level.Platform)
                 {
 
                     if (player.CollidesWith(platform))
                     {
-                        if (player.position.Y + player.Height - 10 <= platform.position.Y)
+                        if (player.position.Y + player.Height - 80 <= platform.position.Y && platform.rot != 90)
                         {
                             player.isOnFloor = true;
+                            player.walljumping = false;
                         }
-                        if(platform.rot == 90 || platform.rot == 270)
+                        if ((platform.rot == 90 || platform.rot == 270) && player.position.X <= platform.position.X)
                         {
                             player.wallslide = true;
-                            player.walljump = true;
                         }
+                        if ((platform.rot == 90 || platform.rot == 270) && player.position.X <= platform.position.X && !((lastcollision.X == platform.position.X) && (lastcollision.Y == platform.position.Y)))
+                        {
+                            player.walljump = true;
+                            player.walljumping = false;
+                        }
+                        lastcollision = platform.position;
                         player.playercol = true;
                         platform.Update(gameTime, true);
-                        player.position.Y += player.MTV.Y;
+                        player.position += player.MTV;
                         platform.playerpos = player.position;
                     }
                     platform.Update(gameTime, false);
                 }
+                player.HandleInput(inputHelper);
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
             }
