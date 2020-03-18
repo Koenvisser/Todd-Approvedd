@@ -150,7 +150,7 @@ namespace OakHeart
             background = new Background(Content, new Vector2(0, 0), "images/game/Level_1_Background");
             player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
-            for (int x = 1; x <= 1; x++)
+            for (int x = 1; x <= 4; x++)
                 levels.Add(new Map(x));
         }
 
