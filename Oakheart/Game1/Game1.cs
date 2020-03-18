@@ -538,7 +538,28 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
-
+                if (player.jump == true)
+                {
+                    Random random = new Random();
+                    int soundn = random.Next(0,3);
+                    string randomsound = "";
+                    if (soundn == 0)
+                    {
+                        randomsound = "yay";
+                    }
+                    else if (soundn == 1)
+                    {
+                        randomsound = "woo";
+                    }
+                    else if (soundn == 2)
+                    {
+                        randomsound = "wee";
+                    }
+                    else {
+                        randomsound = "wahoo";
+                    }
+                    assetManager.PlaySound("voicelines/Oakheart/" + randomsound, false);
+                }
                 if (player.wallslide)
                 {
                     player.velocity.Y = 50;
@@ -1026,6 +1047,8 @@ namespace OakHeart
                     }
                     else if (MainMenuButtonClicked == true)
                     {
+                        LoadSave();
+                        player = new Player(new Vector2(0, 600));
                         _state = GameState.MainMenu;
                         if (backgroundsongmenu.State == SoundState.Stopped)
                         {
