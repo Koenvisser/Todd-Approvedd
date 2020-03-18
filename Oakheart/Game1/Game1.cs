@@ -465,10 +465,11 @@ namespace OakHeart
                             player.isOnFloor = true;
                         }
                         player.playercol = true;
-                        platform.Update(gameTime);
+                        platform.Update(gameTime, true);
                         player.position.Y += player.MTV.Y;
                         platform.playerpos = player.position;
                     }
+                    platform.Update(gameTime, false);
                 }
             }
             if (SoundEffect.MasterVolume <= 0.995f && !soundfadeout)
