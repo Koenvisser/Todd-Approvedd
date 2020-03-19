@@ -152,7 +152,7 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            player = new Player(new Vector2(000, 600));
+            player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
             backgrounds = new List<Background>();
             for (int x = 1; x <= 3; x++)
@@ -878,7 +878,7 @@ namespace OakHeart
                     {
                         Alfungus alfungus = enemy as Alfungus;
 
-                        enemy.playerpos = player.position;
+                        enemy.playerpos = new Vector2(player.position.X + player.Width/2, player.position.Y + player.Height/2);
                         foreach (BossAttacks attack in alfungus.Attacks)
                         {
                             if (attack.CollidesWith(player))

@@ -41,9 +41,14 @@ public class Map
         while (line != null)
         {
             string[] lines = line.Split(',');
-            if(int.Parse(lines[3]) > levelWidth[level - 1]){
-                levelWidth[level - 1] = int.Parse(lines[3]);
+            if (lines.Count() > 3)
+            {
+                if (int.Parse(lines[3]) > levelWidth[level - 1])
+                {
+                    levelWidth[level - 1] = int.Parse(lines[3]);
+                }
             }
+           
             if (lines.Count() > 4)
             {
                 if (int.Parse(lines[4]) > levelHeight[level - 1])
