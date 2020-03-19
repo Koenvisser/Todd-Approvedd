@@ -1261,12 +1261,20 @@ namespace OakHeart
                     played[2] = true;
                 }
             }
-            if (levelplaying == 1 && player.position.X == 16500 && !played[2] && player.position.Y < 900)
+            if (levelplaying == 1 && player.position.X == 16500 && !played[3] && player.position.Y < 900)
             {
                 if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
                     assetManager.PlaySound("voicelines/Tutorial/end", false);
-                    played[2] = true;
+                    played[3] = true;
+                }
+            }
+            if (levelplaying == 1 && player.position.X == 4000 && !played[4] && player.position.Y < 700)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/fungus", false);
+                    played[4] = true;
                 }
             }
 
