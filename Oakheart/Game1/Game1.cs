@@ -33,6 +33,7 @@ namespace OakHeart
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30], menuleavespos2 = new Vector2[200];
         List<SoundEffect> soundEffects;
+        List<bool> Played;
         Player player;
         Camera camera;
         public int levelint, levelplaying;
@@ -1223,6 +1224,13 @@ namespace OakHeart
                 spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2 - 20, 80, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X + 40, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y + 40), Color.ForestGreen);
                 spriteBatch.DrawString(LevelSelectFont, "Press Up or the Spacebar to jump", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), Color.White);
                 CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y));
+            }
+            if (levelplaying == 2 && player.position.X == 600)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/enemy", false);
+                }
             }
             Console.WriteLine(player.position);
             if (_state == GameState.Pause || _state == GameState.Settings)
