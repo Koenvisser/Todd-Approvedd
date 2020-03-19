@@ -27,7 +27,7 @@ namespace OakHeart
         private float[] angles = new float[30], angles2 = new float[200];
         private int[] LevelsProgress = new int[3];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
-        private bool[] LevelButtonClicked = new bool[3], hoveringbutton = new bool[3];
+        private bool[] LevelButtonClicked = new bool[3], hoveringbutton = new bool[3], voicelines = new bool[3];
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound, iCutscenePlaying;
         Vector2 lastcollision;
         private SoundEffectInstance backgroundsongmenu;
@@ -776,6 +776,38 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
+                if (levelplaying == 3)
+                {
+                    if (voicelines[0] == false)
+                    {
+                        if ((AssetManager.sound == null || (AssetManager.sound != null && AssetManager.sound.State != SoundState.Playing)))
+                        {
+                            AssetManager.PlaySound("voicelines/level4/approach", false);
+                            voicelines[0] = true;
+                        }
+                    }
+                    else if (voicelines[1] == false)
+                    {
+                        if ((AssetManager.sound == null || (AssetManager.sound != null && AssetManager.sound.State != SoundState.Playing)))
+                        {
+                            AssetManager.PlaySound("voicelines/level4/closer", false);
+                            voicelines[1] = true;
+                        }
+                    }
+                    else if (voicelines[2] == false)
+                    {
+                        if ((AssetManager.sound == null || (AssetManager.sound != null && AssetManager.sound.State != SoundState.Playing)))
+                        {
+                            AssetManager.PlaySound("voicelines/level4/hoho", false);
+                            voicelines[2] = true;
+                        }
+                    }
+                }
+                else {
+                    voicelines[0] = false;
+                    voicelines[1] = false;
+                    voicelines[2] = false;
+                }
                 gametimer += gameTime.ElapsedGameTime.Milliseconds * 0.001f;
                 if (player.idletime > 15 && (assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
