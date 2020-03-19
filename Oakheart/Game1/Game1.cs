@@ -25,14 +25,14 @@ namespace OakHeart
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition, gametimer;
-        private float[] angles = new float[30];
+        private float[] angles = new float[30], angles2 = new float[200];
         private int[] LevelsProgress = new int[4];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
         private bool[] LevelButtonClicked = new bool[4], hoveringbutton = new bool[4];
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
         Vector2 lastcollision;
         private SoundEffectInstance backgroundsongmenu;
-        private Vector2[] menuleavespos = new Vector2[30];
+        private Vector2[] menuleavespos = new Vector2[30], menuleavespos2 = new Vector2[200];
         List<SoundEffect> soundEffects;
         Player player;
         Camera camera;
@@ -438,6 +438,45 @@ namespace OakHeart
                 }
             }
              }
+
+        private void CreateLeaves(Point topleft, Point bottomright)
+        {
+            Random random = new Random();
+            menuleavespos2[0] = new Vector2(topleft.X,(int)(topleft.Y - menuleave.Width * 0.04f));
+            for (int i = 1; i < 200; i++)
+            {
+                menuleavespos2[i] = menuleavespos2[i - 1];
+                if (angles2[i] == 0)
+                {
+                    angles2[i] = random.Next(0, 7);
+                }
+                if (menuleavespos2[i].X < (int)(bottomright.X + menuleave.Height * 0.04f) && menuleavespos2[i].Y == (int)(topleft.Y - menuleave.Width * 0.04f))
+                {
+                    menuleavespos2[i].X += menuleave.Width * 0.03f;
+                    menuleavespos2[i].Y = (int)(topleft.Y - menuleave.Width * 0.04f);
+                }
+                if (menuleavespos2[i].X >= (int)(bottomright.X + menuleave.Height * 0.04f) && menuleavespos2[i].Y < (int)(bottomright.Y + menuleave.Width * 0.04f))
+                {
+                    menuleavespos2[i].X = (int)(bottomright.X + menuleave.Height * 0.04f);
+                    menuleavespos2[i].Y += menuleave.Height * 0.03f;
+                }
+                if (menuleavespos2[i].X <= (int)(bottomright.X + menuleave.Height * 0.04f) && menuleavespos2[i].Y >= (int)(bottomright.Y + menuleave.Width * 0.04f))
+                {
+                    menuleavespos2[i].X -= menuleave.Width * 0.03f;
+                    menuleavespos2[i].Y = (int)(bottomright.Y + menuleave.Width * 0.04f);
+                }
+                if (menuleavespos2[i].X <= (int)(topleft.X - menuleave.Height * 0.04f) && menuleavespos2[i].Y <= (int)(bottomright.Y + menuleave.Width * 0.04f))
+                {
+                    menuleavespos2[i].X = (int)(topleft.X - menuleave.Height * 0.04f);
+                    menuleavespos2[i].Y -= menuleave.Height * 0.03f;
+                }
+                if (menuleavespos2[i].X <= (int)(topleft.X - menuleave.Height * 0.04f) && menuleavespos2[i].Y <= (int)(topleft.Y - menuleave.Width * 0.04f))
+                {
+                    menuleavespos2[i] = new Vector2(-100, -100);
+                }
+                spriteBatch.Draw(menuleave, menuleavespos2[i - 1], new Rectangle(0, 0, menuleave.Width, menuleave.Height), Color.White, angles2[i], new Vector2(menuleave.Width / 2, menuleave.Height / 2), .08f, SpriteEffects.None, 1);
+            }
+        }
 
         private void PlayHitSound()
         {
@@ -889,8 +928,9 @@ namespace OakHeart
                 {
                     assetManager.PlaySound("voicelines/Tutorial/movement", false);
                 }
-                spriteBatch.Draw(rectangle,new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").Y), Color.ForestGreen);
+                spriteBatch.Draw(rectangle,new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2 - 20, 80, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X + 40, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").Y + 40), Color.ForestGreen);
                 spriteBatch.DrawString(LevelSelectFont, "Press A/D or Left/Right to move", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100), Color.White);
+                CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").Y));
                 gametimer = 0;
             }
             if (player.hasjumped == false && levelplaying == 1 && gametimer > 8 && player.hasmoved == true)
@@ -899,8 +939,9 @@ namespace OakHeart
                 {
                     assetManager.PlaySound("voicelines/Tutorial/jump", false);
                 }
-                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y), Color.ForestGreen);
+                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2 - 20, 80, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X + 40, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y + 40), Color.ForestGreen);
                 spriteBatch.DrawString(LevelSelectFont, "Press Up or the Spacebar to jump", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), Color.White);
+                CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y));
             }
 
             if (_state == GameState.Pause || _state == GameState.Settings)
