@@ -439,11 +439,34 @@ namespace OakHeart
             }
              }
 
-                 /// <summary>
-                 /// Allows the game to run logic such as updating the world,
-                 /// checking for collisions, gathering input, and playing audio.
-                 /// </summary>
-                 /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        private void PlayHitSound()
+        {
+            Random random = new Random();
+            int rdm = random.Next(0,4);
+            string soundname = "";
+            if (rdm == 0)
+            {
+                soundname = "ahh";
+            }
+            else if (rdm == 1)
+            {
+                soundname = "ohh";
+            }
+            else if (rdm == 2)
+            {
+                soundname = "oof";
+            }
+            else {
+                soundname = "ouch";
+            }
+            assetManager.PlaySound("voicelines/Oakheart/" + soundname, false);
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
@@ -634,6 +657,7 @@ namespace OakHeart
                         if (enemy is Snail)
                         {
                             player.currentHealth--;
+                            PlayHitSound();
                         }
 
                         if (enemy is Dragonfly)
@@ -645,6 +669,7 @@ namespace OakHeart
                             else
                             {
                                 player.currentHealth--;
+                                PlayHitSound();
                             }
                         }
                     }
