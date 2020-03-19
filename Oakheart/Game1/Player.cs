@@ -19,7 +19,7 @@ public class Player : AnimatedGameObject
     public float walkingSpeed = 200f, idletime;
     public bool playercol;
     public bool jump, hit;
-    public bool hasmoved = false;
+    public bool hasmoved = false, hasjumped = false;
 
     public int lives = 20;
     protected float invincibletime;
@@ -53,6 +53,7 @@ public class Player : AnimatedGameObject
         PlayAnimation("Jump");
         velocity.Y = -speed;
         isOnFloor = false;
+        hasjumped = true;
     }
 
     public override void HandleInput(InputHelper inputHelper) // player controls

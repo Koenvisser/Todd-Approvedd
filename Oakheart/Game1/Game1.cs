@@ -24,7 +24,7 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo;
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
-        private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition;
+        private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition, gametimer;
         private float[] angles = new float[30];
         private int[] LevelsProgress = new int[4];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
@@ -581,6 +581,7 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
+                gametimer += gameTime.ElapsedGameTime.Milliseconds * 0.001f;
                 if (player.idletime > 15 && (assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
                     Random random = new Random();
@@ -890,8 +891,17 @@ namespace OakHeart
                 }
                 spriteBatch.Draw(rectangle,new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").Y), Color.ForestGreen);
                 spriteBatch.DrawString(LevelSelectFont, "Press A/D or Left/Right to move", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100), Color.White);
+                gametimer = 0;
             }
-
+            if (player.hasjumped == false && levelplaying == 1 && gametimer > 8 && player.hasmoved == true)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)) && gametimer < 8.5)
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/jump", false);
+                }
+                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y), Color.ForestGreen);
+                spriteBatch.DrawString(LevelSelectFont, "Press Up or the Spacebar to jump", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), Color.White);
+            }
 
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
