@@ -24,7 +24,7 @@ namespace OakHeart
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo;
         private Texture2D[] levelselecttrees = new Texture2D[4];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
-        private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition;
+        private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition, gametimer;
         private float[] angles = new float[30];
         private int[] LevelsProgress = new int[4];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
@@ -36,7 +36,7 @@ namespace OakHeart
         List<SoundEffect> soundEffects;
         Player player;
         Camera camera;
-        public int levelint;
+        public int levelint, levelplaying;
         public List<Map> levels;
         public Map level;
         public Game1()
@@ -439,11 +439,34 @@ namespace OakHeart
             }
              }
 
-                 /// <summary>
-                 /// Allows the game to run logic such as updating the world,
-                 /// checking for collisions, gathering input, and playing audio.
-                 /// </summary>
-                 /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        private void PlayHitSound()
+        {
+            Random random = new Random();
+            int rdm = random.Next(0,4);
+            string soundname = "";
+            if (rdm == 0)
+            {
+                soundname = "ahh";
+            }
+            else if (rdm == 1)
+            {
+                soundname = "ohh";
+            }
+            else if (rdm == 2)
+            {
+                soundname = "oof";
+            }
+            else {
+                soundname = "ouch";
+            }
+            assetManager.PlaySound("voicelines/Oakheart/" + soundname, false);
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
@@ -558,17 +581,19 @@ namespace OakHeart
             }
             if (_state == GameState.Game)
             {
+                gametimer += gameTime.ElapsedGameTime.Milliseconds * 0.001f;
                 if (player.idletime > 15 && (assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
                     Random random = new Random();
-                    int rdm = random.Next(1,2);
+                    int rdm = random.Next(1,3);
                     assetManager.PlaySound("voicelines/Oakheart/tiktik" + rdm, false);
                     FoundEasterEgg("Tiktik");
+                    player.idletime = 10;
                 }
                 if (player.jump == true)
                 {
                     Random random = new Random();
-                    int soundn = random.Next(0,3);
+                    int soundn = random.Next(0,4);
                     string randomsound = "";
                     if (soundn == 0)
                     {
@@ -630,7 +655,24 @@ namespace OakHeart
                 {
                     if (player.CollidesWith(enemy))
                     {
+                        if (enemy is Snail)
+                        {
+                            player.currentHealth--;
+                            PlayHitSound();
+                        }
 
+                        if (enemy is Dragonfly)
+                        {
+                            if (player.position.Y > enemy.position.Y)
+                            {
+                                //do something
+                            }
+                            else
+                            {
+                                player.currentHealth--;
+                                PlayHitSound();
+                            }
+                        }
                     }
                 }
                 player.HandleInput(inputHelper);
@@ -794,6 +836,7 @@ namespace OakHeart
                         }
                         else if (LevelButtonClicked[i - 1] == true)
                         {
+                            levelplaying = i;
                             IsMouseVisible = false;
                             level = levels[i - 1];
                             LevelButtonClicked[i - 1] = false;
@@ -840,6 +883,26 @@ namespace OakHeart
             {
                 PlayCutscene(gameTime, spriteBatch);
             }
+            if (player.hasmoved == false && levelplaying == 1 && player.idletime > 3)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)) && player.idletime < 3.5)
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/movement", false);
+                }
+                spriteBatch.Draw(rectangle,new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").Y), Color.ForestGreen);
+                spriteBatch.DrawString(LevelSelectFont, "Press A/D or Left/Right to move", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100), Color.White);
+                gametimer = 0;
+            }
+            if (player.hasjumped == false && levelplaying == 1 && gametimer > 8 && player.hasmoved == true)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)) && gametimer < 8.5)
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/jump", false);
+                }
+                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X, (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y), Color.ForestGreen);
+                spriteBatch.DrawString(LevelSelectFont, "Press Up or the Spacebar to jump", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), Color.White);
+            }
+
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, .1f, 0, 0.4f));
@@ -989,6 +1052,7 @@ namespace OakHeart
                         {
                             File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
                             File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", "\n");
+                            LoadSave();
                             _state = GameState.MainMenu;
                             if (backgroundsongmenu.State == SoundState.Stopped)
                             {
