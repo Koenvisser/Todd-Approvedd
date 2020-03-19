@@ -36,7 +36,7 @@ namespace OakHeart
         List<SoundEffect> soundEffects;
         Player player;
         Camera camera;
-        public int levelint;
+        public int levelint, levelplaying;
         public List<Map> levels;
         public Map level;
         public Game1()
@@ -835,6 +835,7 @@ namespace OakHeart
                         }
                         else if (LevelButtonClicked[i - 1] == true)
                         {
+                            levelplaying = i;
                             IsMouseVisible = false;
                             level = levels[i - 1];
                             LevelButtonClicked[i - 1] = false;
@@ -881,6 +882,17 @@ namespace OakHeart
             {
                 PlayCutscene(gameTime, spriteBatch);
             }
+            if (player.hasmoved == false && levelplaying == 1 && player.idletime > 3)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)) && player.idletime < 3.5)
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/movement", false);
+                }
+                spriteBatch.Draw(rectangle,new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X, (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").Y), Color.ForestGreen);
+                spriteBatch.DrawString(LevelSelectFont, "Press A/D or Left/Right to move", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press A/D or Left/Right to move").X / 2, 100), Color.White);
+            }
+
+
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, .1f, 0, 0.4f));
@@ -1030,6 +1042,7 @@ namespace OakHeart
                         {
                             File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
                             File.WriteAllText(Directory.GetCurrentDirectory() + @"\eastereggsfound.txt", "\n");
+                            LoadSave();
                             _state = GameState.MainMenu;
                             if (backgroundsongmenu.State == SoundState.Stopped)
                             {

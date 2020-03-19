@@ -19,6 +19,7 @@ public class Player : AnimatedGameObject
     public float walkingSpeed = 200f, idletime;
     public bool playercol;
     public bool jump, hit;
+    public bool hasmoved = false;
 
     public int lives = 20;
     protected float invincibletime;
@@ -83,6 +84,7 @@ public class Player : AnimatedGameObject
 
             }
             idletime = 0;
+            hasmoved = true;
         }
         else if (inputHelper.IsKeyDown(Keys.Right) || inputHelper.IsKeyDown(Keys.D))
         {
@@ -93,6 +95,7 @@ public class Player : AnimatedGameObject
 
             }
             idletime = 0;
+            hasmoved = true;
         }
         else
         {
