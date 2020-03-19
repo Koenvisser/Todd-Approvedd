@@ -12,8 +12,8 @@ class FungusShot : BossAttacks
     public FungusShot(float rotation, Vector2 position, Vector2 destination, string assetname, float speedmod, int layer = 0, string id = "") : base(rotation, assetname, layer, id)
     {
         this.position = position;
-        velocity = position - destination;
-        this.rotation = (float)Math.Atan2(velocity.Y, velocity.X);
+        velocity = destination - position;
+        this.rotation = (float)Math.Atan2(position.Y - destination.Y, position.X - destination.X);
         velocity /= speedmod;
     }
 
