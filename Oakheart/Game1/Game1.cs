@@ -1033,7 +1033,7 @@ namespace OakHeart
                     { LevelSelectPosition[i] = new Vector2(0, 0); }
                     if (i >= LevelCompleted)
                     {
-                        LevelColor = Color.Red;
+                        LevelColor = Color.Red * levelselectfade;
                     }
                     i++;
                     LevelButton[i - 1] = new Rectangle((int)LevelSelectPosition[i - 1].X - 48, (int)LevelSelectPosition[i - 1].Y - 48, 96, 96);
@@ -1054,7 +1054,7 @@ namespace OakHeart
                         }
                         if (mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.6f));
+                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.6f) * levelselectfade);
                             LevelButtonClicked[i - 1] = true;
                         }
                         else if (LevelButtonClicked[i - 1] == true)
@@ -1079,13 +1079,13 @@ namespace OakHeart
                         }
                         else
                         {
-                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.3f));
+                            spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.3f) * levelselectfade);
                         }
                     }
                     else if(!LevelButton[i - 1].Contains(mousePosition) || _state != GameState.LevelSelect)
                     {
                         hoveringbutton[i - 1] = false;
-                        spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.15f));
+                        spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.15f) * levelselectfade);
                         if (bottombarfade >= .05f && _state == GameState.LevelSelect && hoveringbutton[0] == false && hoveringbutton[1] == false && hoveringbutton[2] == false && hoveringbutton[3] == false)
                         {
                             bottombarfade -= .05f;
@@ -1096,7 +1096,7 @@ namespace OakHeart
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X + 38, (int)LevelSelectPosition[i - 1].Y - 48, 10, 96), LevelColor);
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 48, (int)LevelSelectPosition[i - 1].Y - 48, 96, 10), LevelColor);
                     spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 48, (int)LevelSelectPosition[i - 1].Y + 38, 96, 10), LevelColor);
-                    spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition[i - 1] - LevelSelectFont.MeasureString(i.ToString()) / 2, Color.White);
+                    spriteBatch.DrawString(LevelSelectFont, i.ToString(), LevelSelectPosition[i - 1] - LevelSelectFont.MeasureString(i.ToString()) / 2, Color.White * levelselectfade);
 
                 }
             }
