@@ -759,6 +759,7 @@ namespace OakHeart
                             levelint++;
                             level = levels[levelint];
                             background = backgrounds[levelint];
+                            player.position = player.spawnposition;
                         }
                         if (player.position.Y + player.Height - 80 <= platform.position.Y && platform.rot != 90)
                         {
