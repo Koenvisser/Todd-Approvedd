@@ -59,7 +59,7 @@ public class Player : AnimatedGameObject
 
     public override void HandleInput(InputHelper inputHelper) // player controls
     {
-        if (inputHelper.IsKeyDown(Keys.Z))
+        if (inputHelper.IsKeyDown(Keys.S) || inputHelper.KeyPressed(Keys.Down))
         {
             phasing = true;
         }
