@@ -729,17 +729,55 @@ namespace OakHeart
                 else if (!player.isOnFloor && !player.wallslide) { 
                     player.velocity.Y += 10;
                 }
-                player.reset = false;
+                if (player.velocity.Y > 200)
+                    player.velocity.Y = 100;
+                foreach (Enemy enemy in level.Enemy)
+                {
+                    if (player.CollidesWith(enemy))
+                    {
+                        if (enemy is Snail)
+                        {
+                            player.currentHealth--;
+                            PlayHitSound();
+                        }
+
+                        if (enemy is Dragonfly)
+                        {
+                            if (player.position.Y + player.Height - 80 < enemy.position.Y)
+                            {
+                                player.isOnFloor = true;
+                            }
+                            else
+                            {
+                                player.currentHealth--;
+                                PlayHitSound();
+                                player.reset = true;
+                            }
+                        }
+                    }
+                    enemy.Update(gameTime);
+                }
                 Playercollisioncheck();
                 player.playercol = false;
                 player.wallslide = false;
                 player.isOnFloor = false;
                 player.Update(gameTime);
                 HandleInput(gameTime);
+                player.reset = false;
                 foreach (Platform platform in level.Platform)
                 {
-
-                    if (player.CollidesWith(platform))
+                    if (player.phasing)
+                    {
+                        if (!player.CollidesWith(platform))
+                        {
+                            player.phasingint += 1;
+                        }
+                        if (player.phasingint != level.Platform.Count)
+                            player.phasing = true;
+                        else if (player.phasingint == level.Platform.Count)
+                            player.phasing = false;
+                    }
+                    else if (player.CollidesWith(platform))
                     {
                         if (player.position.Y + player.Height - 80 <= platform.position.Y && platform.rot != 90)
                         {
@@ -763,31 +801,7 @@ namespace OakHeart
                     }
                     platform.Update(gameTime, false);
                 }
-                foreach (Enemy enemy in level.Enemy)
-                {
-                    if (player.CollidesWith(enemy))
-                    {
-                        if (enemy is Snail)
-                        {
-                            player.currentHealth--;
-                            PlayHitSound();
-                        }
-
-                        if (enemy is Dragonfly)
-                        {
-                            if (player.position.Y > enemy.position.Y)
-                            {
-                                //do something
-                            }
-                            else
-                            {
-                                player.currentHealth--;
-                                PlayHitSound();
-                            }
-                        }
-                    }
-                    enemy.Update(gameTime);
-                }
+                player.phasingint = 0;
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
