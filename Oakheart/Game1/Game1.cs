@@ -737,8 +737,10 @@ namespace OakHeart
                 player.Update(gameTime);
                 HandleInput(gameTime);
                 player.reset = false;
+                int endplatformcheck = 0;
                 foreach (Platform platform in level.Platform)
                 {
+                    endplatformcheck++;
                     if (player.phasing)
                     {
                         if (!player.CollidesWith(platform))
@@ -752,6 +754,13 @@ namespace OakHeart
                     }
                     else if (player.CollidesWith(platform))
                     {
+                        if (level.Platform.Count == endplatformcheck)
+                        {
+                            levelint++;
+                            level = levels[levelint];
+                            background = backgrounds[levelint];
+                            player.position = player.spawnposition;
+                        }
                         if (player.position.Y + player.Height - 80 <= platform.position.Y && platform.rot != 90)
                         {
                             player.isOnFloor = true;
@@ -971,6 +980,7 @@ namespace OakHeart
                             levelplaying = i;
                             IsMouseVisible = false;
                             level = levels[i - 1];
+                            levelint = i - 1;
                             background = backgrounds[i - 1];
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
@@ -1009,7 +1019,7 @@ namespace OakHeart
             }
             else if (_state == GameState.Game || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.Game))
             {
-                background.Draw(gameTime, spriteBatch); // draws background
+                background.Draw(gameTime, spriteBatch, levelint); // draws background
                 player.Draw(gameTime, spriteBatch);
                 level.Draw(gameTime, spriteBatch); // draws the level
             }

@@ -39,26 +39,29 @@ public class Background
 
 
 
-public void Draw(GameTime gameTime, SpriteBatch spriteBatch) // draws the background
+public void Draw(GameTime gameTime, SpriteBatch spriteBatch, int level) // draws the background
     {
-        spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, -2300 - (int)Camera.campos.Y, 20000, 5000), Color.White);
+        if (level == 0)
+            spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, -2300 - (int)Camera.campos.Y, 20000, 5000), Color.White);
+        if (level == 1)
+            spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, -2300 - (int)Camera.campos.Y, 20000, 5000), Color.White);
         //oude trinity code
-       /*
-        spriteBatch.Draw(sky, position, Color.White);
+        /*
+         spriteBatch.Draw(sky, position, Color.White);
 
-        /// drawing random Mountains
-        spriteBatch.Draw(cloud1, cloud, Color.White);
+         /// drawing random Mountains
+         spriteBatch.Draw(cloud1, cloud, Color.White);
 
-        /// drawing random clouds
-        for (int i = 0; i < 6; i++)
-        {
-            spriteBatch.Draw(mountain, position, Color.White);
-        }
+         /// drawing random clouds
+         for (int i = 0; i < 6; i++)
+         {
+             spriteBatch.Draw(mountain, position, Color.White);
+         }
 
-        ///draw hills
-        spriteBatch.Draw(hill2, position, Color.White);
-        spriteBatch.Draw(hill1, position, Color.White);
-        */
+         ///draw hills
+         spriteBatch.Draw(hill2, position, Color.White);
+         spriteBatch.Draw(hill1, position, Color.White);
+         */
     }
 }
 
