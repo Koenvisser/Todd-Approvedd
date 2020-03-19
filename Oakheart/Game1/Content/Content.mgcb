@@ -577,18 +577,6 @@
 /processorParam:TextureFormat=Color
 /build:images/menu/Logo.png
 
-#begin images/game/Bark.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:images/game/Bark.png
-
 #begin Levels/3.txt
 /copy:Levels/3.txt
 
@@ -645,4 +633,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:animations/Snail@5x1.png
+
+#begin images/game/Bark.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:images/game/Bark.png
 
