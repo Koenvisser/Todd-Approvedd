@@ -205,6 +205,9 @@ namespace OakHeart
                 {
                     success = Int32.TryParse(saveline, out LevelsProgress[i - 2]);
                 }
+                else {
+                    success = true;
+                }
                 if (!success)
                 {
                     savefile.Close();
