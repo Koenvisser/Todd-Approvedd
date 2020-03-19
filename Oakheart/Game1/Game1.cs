@@ -846,8 +846,8 @@ namespace OakHeart
                             levelint++;
                             if (levelint == 3)
                             {
-                           //     iCutscenePlaying = 2;
-                           //     CutscenePlaying = true;
+                               iCutscenePlaying = 2;
+                                CutscenePlaying = true;
                             }
                             LevelComplete(levelint, 100);
                             level = levels[levelint];
@@ -1166,15 +1166,15 @@ namespace OakHeart
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
                             levelselectfade = 0;
-                     //       if (i <= 2)
-                     //       {
-                     //           cutscenetimer = 0;
-                     //           iCutscenePlaying = i - 1;
-                     //           CutscenePlaying = true;
-                     //       }
-                      //      else {
+                            if (i <= 2)
+                            {
+                                cutscenetimer = 0;
+                                iCutscenePlaying = i - 1;
+                                CutscenePlaying = true;
+                            }
+                            else {
                                 _state = GameState.Game;
-                     //       }
+                            }
                         }
                         else
                         {
