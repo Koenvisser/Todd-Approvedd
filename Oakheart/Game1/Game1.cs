@@ -152,7 +152,7 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            player = new Player(new Vector2(9000, 00));
+            player = new Player(new Vector2(000, 600));
             levels = new List<Map>();
             backgrounds = new List<Background>();
             for (int x = 1; x <= 3; x++)
@@ -804,6 +804,8 @@ namespace OakHeart
                 else if (!player.isOnFloor && !player.wallslide) { 
                     player.velocity.Y += 10;
                 }
+                if (player.velocity.Y > 200)
+                    player.velocity.Y = 200;
                 Playercollisioncheck();
                 player.playercol = false;
                 player.wallslide = false;
@@ -849,11 +851,11 @@ namespace OakHeart
                             player.isOnFloor = true;
                             player.walljumping = false;
                         }
-                        if (player.position.X + 10 >= platform.position.X + platform.Width || player.position.X + player.Width - 10 < platform.position.X)
+                        if ((platform.rot == 90 || platform.rot == 270) && player.position.X + 10 >= platform.position.X + platform.Height || player.position.X + player.Width - 10 < platform.position.X)
                         {
                             player.wallslide = true;
                         }
-                        if ((platform.rot == 90 || platform.rot == 270) && player.position.X <= platform.position.X && !((lastcollision.X == platform.position.X) && (lastcollision.Y == platform.position.Y)))
+                        if ((platform.rot == 90 || platform.rot == 270) && (player.position.X + player.Width - 10 <= platform.position.X || player.position.X >= platform.position.X + platform.Height - 10) && !((lastcollision.X == platform.position.X) && (lastcollision.Y == platform.position.Y)))
                         {
                             player.walljump = true;
                             player.walljumping = false;
@@ -870,6 +872,40 @@ namespace OakHeart
                 foreach (Enemy enemy in level.Enemy)
                 {
                     enemy.Update(gameTime);
+
+                    if(enemy is Alfungus)
+                    {
+                        Alfungus alfungus = enemy as Alfungus;
+
+                        enemy.playerpos = player.position;
+                        foreach (BossAttacks attack in alfungus.Attacks)
+                        {
+                            if (attack.CollidesWith(player))
+                            {
+                                if (attack is FungusShot)
+                                {
+                                    player.currentHealth--;
+                                    PlayHitSound();
+
+                                }
+                                if (attack is SporeCloud)
+                                {
+                                    if (alfungus.phase == Alfungus.Phase.Normal)
+                                    {
+                                        player.velocity /= 2;
+                                    }
+                                    else
+                                    {
+                                        player.currentHealth--;
+                                        PlayHitSound();
+                                    }
+                                }
+                                attack.Visible = false;
+                                attack.position = Vector2.Zero;
+                            }
+                        }
+                    }
+                    
                     if (player.CollidesWith(enemy))
                     {
                         if (enemy is Snail)
@@ -899,6 +935,11 @@ namespace OakHeart
                                 player.reset = true;
 
                             }
+                        }
+                        if (enemy is Alfungus)
+                        {
+                            player.currentHealth--;
+                            PlayHitSound();
                         }
                     }
                     
@@ -1110,7 +1151,7 @@ namespace OakHeart
                             IsMouseVisible = false;
                             level = levels[i -1];
                             levelint = i -1;
-                            background = backgrounds[i - 1];
+                            background = backgrounds[i -1];
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
                             levelselectfade = 0;

@@ -63,6 +63,10 @@ public class Map
                 case "Dragonfly":
                     enemy.Add(new Dragonfly(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2])), new Vector2(float.Parse(lines[3]), float.Parse(lines[4])), float.Parse(lines[5])));
                     break;
+                case "Alfungus":
+                    enemy.Add(new Alfungus(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2]))));
+                    break;
+
             }
             line = streamreader.ReadLine();
             /* waits with performing the task again until the earlier instance is finished
