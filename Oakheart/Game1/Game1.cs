@@ -844,6 +844,7 @@ namespace OakHeart
                             background = backgrounds[levelint];
                             player.position = player.spawnposition;
                             _state = GameState.LevelSelect;
+                            LoadSave();
                             IsMouseVisible = true;
                         }
                         if (player.position.Y + player.Height - 80 <= platform.position.Y && platform.rot != 90)
