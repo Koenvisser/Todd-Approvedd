@@ -78,13 +78,13 @@ class Alfungus : Enemy
                 if (shotTimer < 0)
                 {
                     FungusShot(playerpos);
-                    shotTimer = 5000 * ((float)(random.Next(90, 110) / 100));
+                    shotTimer = 7500;
                 }
 
                 if (sporeTimer < 0)
                 {
                     SporeExplosion(playerpos);
-                    sporeTimer = 20000 * ((float)(random.Next(90, 110) / 100));
+                    sporeTimer = 19000;
                 }
             }
            
@@ -128,12 +128,36 @@ class Alfungus : Enemy
         {
             Attacks.Add(new FungusShot(0, bulletpos, PlayerPosition, "images/game/FungusShot", 2));
 
-            
+            int rnd = random.Next(0, 2);
+            if (rnd == 0)
+            {
+                Game1.AssetManager.PlaySound("voicelines/Alfungus/Phase 1/bang", false);
+
+            }
+            else
+            {
+                Game1.AssetManager.PlaySound("voicelines/Alfungus/Phase 1/boom", false);
+            }
         }
 
         if (phase == Phase.Snapped)
         {
             Attacks.Add(new FungusShot(0, bulletpos, PlayerPosition, "images/game/FungusShotAngry", 1));
+
+            int rnd = random.Next(0, 3);
+            if (rnd == 0)
+            {
+                Game1.AssetManager.PlaySound("voicelines/Alfungus/Phase 2/fire", false);
+            }
+            else if(rnd == 1)
+            {
+                Game1.AssetManager.PlaySound("voicelines/Alfungus/Phase 2/fungus", false);
+            }
+            else
+            {
+                Game1.AssetManager.PlaySound("voicelines/Alfungus/Phase 2/laugh", false);
+            }
+
         }
     }
 
@@ -144,10 +168,12 @@ class Alfungus : Enemy
         if(phase == Phase.Normal)
         {
             Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/FungusCloud", false));
+            Game1.AssetManager.PlaySound("voicelines/Alfungus/Phase 1/fungustime", false);
         }
         if(phase == Phase.Snapped)
         {
             Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/FungusCloudAngry", true));
+            Game1.AssetManager.PlaySound("voicelines/Alfungus/Phase 2/explosion", false);
         }
 
     }
