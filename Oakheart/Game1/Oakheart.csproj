@@ -42,8 +42,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
+    <Compile Include="Enemies\Alfungus.cs" />
+    <Compile Include="Enemies\BossAttacks.cs" />
     <Compile Include="Enemies\Dragonfly.cs" />
+    <Compile Include="Enemies\FungusShot.cs" />
     <Compile Include="Enemies\Snail.cs" />
+    <Compile Include="Enemies\SporeCloud.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Gamemanagement\AnimatedGameObject.cs" />
     <Compile Include="Gamemanagement\Animation.cs" />
