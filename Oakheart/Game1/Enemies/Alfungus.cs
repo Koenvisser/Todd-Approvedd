@@ -54,7 +54,7 @@ class Alfungus : Enemy
             if (sporeTimer < 0)
             {
                 SporeExplosion(playerpos);
-                sporeTimer = 20000 * ((float)(random.Next(90, 110) / 100))
+                sporeTimer = 20000 * ((float)(random.Next(90, 110) / 100));
             }
 
             foreach (BossAttacks attack in Attacks)

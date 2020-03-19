@@ -949,7 +949,7 @@ namespace OakHeart
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
             }
-            if (SoundEffect.MasterVolume <= 0.995f && !soundfadeout)
+            if (SoundEffect.MasterVolume <= volume - 0.005f && !soundfadeout)
             {
                 SoundEffect.MasterVolume += 0.005f;
             }
