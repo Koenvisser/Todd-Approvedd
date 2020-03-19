@@ -347,6 +347,9 @@ namespace OakHeart
 
         }
 
+        private void PlayFinalCutscene(GameTime gameTime, SpriteBatch spriteBatch)
+        { }
+
         private void PlayCutscene(GameTime gameTime, SpriteBatch spriteBatch)
         {
             float fade = 1;
@@ -756,6 +759,15 @@ namespace OakHeart
                     {
                         if (level.Platform.Count == endplatformcheck)
                         {
+                            if (levelint == 0)
+                            {
+                                //iCutscenePlaying = 1;
+                                //CutscenePlaying = true;
+                            }
+                            else if (levelint == 3)
+                            {
+                                //PlayFinalCutscene(gameTime,spriteBatch);
+                            }
                             levelint++;
                             level = levels[levelint];
                             background = backgrounds[levelint];
