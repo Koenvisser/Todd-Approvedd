@@ -33,7 +33,10 @@ namespace OakHeart
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30], menuleavespos2 = new Vector2[200];
         List<SoundEffect> soundEffects;
-        bool[] played = new bool[9];
+        bool[] played = new bool[11];
+        bool playingsound = false;
+        int soundtimer;
+        bool phasingtutorial = false;
         Player player;
         Camera camera;
         public int levelint, levelplaying;
@@ -65,6 +68,7 @@ namespace OakHeart
             graphics.ApplyChanges();
             screen = new Point(1920, 1080);
             assetManager = new AssetManager(Content);
+            soundtimer = 0;
             base.Initialize();
             inputHelper = new InputHelper();
 
@@ -818,7 +822,14 @@ namespace OakHeart
                 player.wallslide = false;
                 player.isOnFloor = false;
                 player.Update(gameTime);
-                HandleInput(gameTime);
+                if (!playingsound)
+                {
+                    HandleInput(gameTime);
+                }
+                else
+                {
+                    player.velocity = Vector2.Zero;
+                }
                 player.reset = false;
                 int endplatformcheck = 0;
                 foreach (Platform platform in level.Platform)
@@ -907,6 +918,10 @@ namespace OakHeart
                                         player.currentHealth--;
                                         PlayHitSound();
                                     }
+                                }
+                                if (player.currentHealth == 0)
+                                {
+                                    player.reset = true;
                                 }
                                 attack.Visible = false;
                                 attack.position = Vector2.Zero;
@@ -1231,7 +1246,7 @@ namespace OakHeart
                 spriteBatch.DrawString(LevelSelectFont, "Press Up or the Spacebar to jump", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), Color.White);
                 CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y));
             }
-            if (levelplaying == 2 && player.position.X == 600 && !played[0])
+            if (levelplaying == 2 && player.position.X >= 600 && !played[0])
             {
                 if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
@@ -1239,18 +1254,29 @@ namespace OakHeart
                     played[0] = true;
                 }
             }
-            if (levelplaying == 2 && player.position.X == 10000 && !played[1] && player.position.Y < 1000)
+            if (levelplaying == 2 && player.position.X >= 10000 && !played[1] && player.position.Y < 1000)
             {
                 if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)) && gametimer < 8.5)
                 {
                     assetManager.PlaySound("voicelines/level2/line2", false);
                     played[1] = true;
+                    phasingtutorial = true;
                 }
+            }
+            if (phasingtutorial)
+            {
                 spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2 - 20, 80, (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X + 40, (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").Y + 40), Color.ForestGreen);
                 spriteBatch.DrawString(LevelSelectFont, "Press S or Down to phase through bark", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100), Color.White);
                 CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").Y));
+                if (soundtimer < 1000)
+                    soundtimer += gameTime.ElapsedGameTime.Milliseconds;
+                else
+                {
+                    phasingtutorial = false;
+                    soundtimer = 0;
+                }
             }
-            if (levelplaying == 2 && player.position.X == 10950 && !played[2] && player.position.Y < 1300)
+            if (levelplaying == 2 && player.position.X >= 10950 && !played[2] && player.position.Y < 1300)
             {
                 if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
@@ -1258,7 +1284,7 @@ namespace OakHeart
                     played[2] = true;
                 }
             }
-            if (levelplaying == 1 && player.position.X == 16500 && !played[3] && player.position.Y < 900)
+            if (levelplaying == 1 && player.position.X >= 16500 && !played[3] && player.position.Y < 900)
             {
                 if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
@@ -1266,7 +1292,7 @@ namespace OakHeart
                     played[3] = true;
                 }
             }
-            if (levelplaying == 1 && player.position.X == 4000 && !played[4] && player.position.Y < 700)
+            if (levelplaying == 1 && player.position.X >= 4000 && !played[4] && player.position.Y < 700)
             {
                 if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
@@ -1274,7 +1300,32 @@ namespace OakHeart
                     played[4] = true;
                 }
             }
-
+            if (levelplaying == 2 && !played[5])
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/level2/line1", false);
+                    played[5] = true;
+                    playingsound = true;
+                }
+            }
+            if (levelplaying == 2 && player.position.X >= 11400 && !played[6] && player.position.Y < 0)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/level3/line2", false);
+                    played[6] = true;
+                }
+            }
+            if (playingsound)
+            {
+                soundtimer += gameTime.ElapsedGameTime.Milliseconds;
+                if (soundtimer > 10000)
+                {
+                    playingsound = false;
+                    soundtimer = 0;
+                }
+            }
             Console.WriteLine(player.position);
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
@@ -1536,6 +1587,10 @@ namespace OakHeart
                         }
                         menusongfadeout = false;
                         MainMenuButtonClicked = false;
+                        for (int i = 0; i <= played.Length; i++)
+                        {
+                            played[i] = false;
+                        }
                     }
                     else
                     {
