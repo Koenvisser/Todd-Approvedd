@@ -6,7 +6,6 @@ using OakHeart;
 public class SpriteSheet
 {
     protected Texture2D sprite;
-    protected bool[] collisionMask;
     protected int sheetIndex;
     protected int sheetColumns;
     protected int sheetRows;
@@ -19,11 +18,9 @@ public class SpriteSheet
 
         // construct the collision mask
         Color[] colorData = new Color[sprite.Width * sprite.Height];
-        collisionMask = new bool[sprite.Width * sprite.Height * 100];
         sprite.GetData(colorData);
         for (int i = 0; i < colorData.Length; ++i)
         {
-            collisionMask[i] = colorData[i].A != 0;
         }
 
         this.sheetIndex = sheetIndex;
@@ -58,13 +55,6 @@ public class SpriteSheet
         }
         spriteBatch.Draw(sprite, position, spritePart, Color.White,
             rotation, origin, 1.0f, spriteEffects, 0.0f);
-    }
-
-    public bool IsTranslucent(int x, int y)
-    {
-        int column_index = sheetIndex % sheetColumns;
-        int row_index = sheetIndex / sheetColumns % sheetRows;
-        return collisionMask[column_index * Width + x + (row_index * Height + y) * sprite.Width];
     }
 
     public Texture2D Sprite

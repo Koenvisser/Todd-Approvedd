@@ -149,7 +149,7 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            player = new Player(new Vector2(0, 600));
+            player = new Player(new Vector2(9000, 00));
             levels = new List<Map>();
             backgrounds = new List<Background>();
             for (int x = 1; x <= 3; x++)
@@ -732,7 +732,6 @@ namespace OakHeart
                 else if (!player.isOnFloor && !player.wallslide) { 
                     player.velocity.Y += 10;
                 }
-                player.reset = false;
                 Playercollisioncheck();
                 player.playercol = false;
                 player.wallslide = false;
@@ -796,6 +795,7 @@ namespace OakHeart
                     }
                     platform.Update(gameTime, false);
                 }
+                player.phasingint = 0;
                 foreach (Enemy enemy in level.Enemy)
                 {
                     enemy.Update(gameTime);
@@ -805,6 +805,7 @@ namespace OakHeart
                         {
                             player.currentHealth--;
                             PlayHitSound();
+                            player.reset = true;
                         }
 
                         if (enemy is Dragonfly)
@@ -824,7 +825,9 @@ namespace OakHeart
                                 player.currentHealth--;
                                 player.ridingDragonfly = false;
                                 PlayHitSound();
-                            } 
+                                player.reset = true;
+
+                            }
                         }
                     }
                     
@@ -992,8 +995,8 @@ namespace OakHeart
                         {
                             levelplaying = i;
                             IsMouseVisible = false;
-                            level = levels[i - 1];
-                            levelint = i - 1;
+                            level = levels[i -1];
+                            levelint = i -1;
                             background = backgrounds[i - 1];
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
