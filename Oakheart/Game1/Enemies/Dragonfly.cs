@@ -13,7 +13,7 @@ class Dragonfly : Enemy
     Direction direction;
     public Dragonfly(float rotation, Vector2 position, Vector2 endposition, int layer = 0, string id = "") : base (rotation, layer, id)
     {
-        LoadAnimation("animations/Dragonfly@4x1", "Dragonfly", true);
+        LoadAnimation("animations/Dragonfly@5x1", "Dragonfly", true);
         PlayAnimation("Dragonfly");
         this.position = position;
         start = position;

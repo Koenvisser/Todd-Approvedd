@@ -15,7 +15,7 @@ public class SpriteSheet
     public SpriteSheet(string assetname, float rotation, int sheetIndex = 0)
     {
         // retrieve the sprite
-        sprite = Game1.AssetManager.GetSprite(assetname);
+        sprite = OakHeart.Game1.AssetManager.GetSprite(assetname);
 
         // construct the collision mask
         Color[] colorData = new Color[sprite.Width * sprite.Height];
