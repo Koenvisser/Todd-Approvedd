@@ -485,7 +485,7 @@ namespace OakHeart
         private void PlayHitSound()
         {
             Random random = new Random();
-            int rdm = random.Next(0,4);
+            int rdm = random.Next(0, 4);
             string soundname = "";
             if (rdm == 0)
             {
@@ -499,10 +499,14 @@ namespace OakHeart
             {
                 soundname = "oof";
             }
-            else {
+            else
+            {
                 soundname = "ouch";
             }
-            assetManager.PlaySound("voicelines/Oakheart/" + soundname, false);
+            if ((assetManager.sound != null && assetManager.sound.State != SoundState.Playing) || assetManager.sound == null)
+            {
+                assetManager.PlaySound("voicelines/Oakheart/" + soundname, false);
+            }
         }
 
         private void Playercollisioncheck()
