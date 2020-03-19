@@ -42,11 +42,11 @@ public class Enemy : AnimatedGameObject
     public void TurnAround() // turns the enemy around
     {
         left = !left;
-        if (left)
-        {
+        //if (left)
+        //{
             Mirror = !Mirror;
             movespeed *= -1;
-        }
+        //}
     }
 
 }

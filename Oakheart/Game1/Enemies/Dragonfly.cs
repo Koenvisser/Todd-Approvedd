@@ -13,14 +13,14 @@ class Dragonfly : Enemy
     Direction direction;
     public Dragonfly(float rotation, Vector2 position, Vector2 endposition, int layer = 0, string id = "") : base (rotation, layer, id)
     {
-        LoadAnimation("animations/Dragonfly@5x1", "Dragonfly", true);
+        LoadAnimation("animations/Dragonfly@5x1", "Dragonfly", true, 0.001f);
         PlayAnimation("Dragonfly");
         this.position = position;
         start = position;
         end = endposition;
         left = true;
 
-        velocity = (start - end)/100;
+        velocity = (start - end);
         if (velocity.X > 0)
         {
             Mirror = true;
@@ -59,7 +59,8 @@ class Dragonfly : Enemy
 
     public override void Update(GameTime gameTime)
     {
-        base.Update(gameTime);
+        PlayAnimation("Dragonfly");
+       
 
         if (direction == Direction.Horizontal)
         {
@@ -84,6 +85,8 @@ class Dragonfly : Enemy
                 TurnAround();
             }
         }
+
+        base.Update(gameTime);
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

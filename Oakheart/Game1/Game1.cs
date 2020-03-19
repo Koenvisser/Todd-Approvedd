@@ -690,6 +690,7 @@ namespace OakHeart
                             }
                         }
                     }
+                    enemy.Update(gameTime);
                 }
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);
