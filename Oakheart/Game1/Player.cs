@@ -12,8 +12,9 @@ public class Player : AnimatedGameObject
 {
     Vector2 startPosition;
     public Vector2 spawnposition;
-    public bool isOnFloor, isDead, shieldActive, itemAvailable, crosshairVisible, wallslide, walljump, walljumping;
+    public bool isOnFloor, isDead, wallslide, walljump, walljumping, phasing;
     public int maxHealth = 30;
+    public int phasingint = 0;
     public int currentHealth;
     public bool reset;
     public float walkingSpeed = 200f, idletime;
@@ -58,6 +59,10 @@ public class Player : AnimatedGameObject
 
     public override void HandleInput(InputHelper inputHelper) // player controls
     {
+        if (inputHelper.IsKeyDown(Keys.Z))
+        {
+            phasing = true;
+        }
         if ((inputHelper.KeyPressed(Keys.Up) || inputHelper.KeyPressed(Keys.Space) || inputHelper.KeyPressed(Keys.W)) && walljump)
         {
             Jump(300);
