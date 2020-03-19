@@ -23,9 +23,9 @@ class Camera : GameObject
     public void camera(GameTime gameTime, int level) // updates the camera such that it follows the player
     {
         int x = level;
-        campos = new Vector2(player.Position.X - Game1.Screen.X / 2, player.Position.Y - Game1.Screen.Y / 2);
-        campos.X = MathHelper.Clamp(player.Position.X - Game1.Screen.X / 2, 0, levelWidth[x] - Game1.Screen.X);
-        campos.Y = MathHelper.Clamp(player.Position.Y - Game1.Screen.Y / 2, -10000, levelHeight[x] - Game1.Screen.Y);
+        campos = new Vector2(player.Position.X - OakHeart.Game1.Screen.X / 2, player.Position.Y - OakHeart.Game1.Screen.Y / 2);
+        campos.X = MathHelper.Clamp(player.Position.X - OakHeart.Game1.Screen.X / 2, 0, levelWidth[x] - OakHeart.Game1.Screen.X);
+        campos.Y = MathHelper.Clamp(player.Position.Y - OakHeart.Game1.Screen.Y / 2, -10000, levelHeight[x] - OakHeart.Game1.Screen.Y);
     }
 }
 
