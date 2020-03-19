@@ -585,7 +585,7 @@ namespace OakHeart
                 { 
                     player.velocity.Y = 50;
                 }
-                else if (!player.playercol && !player.wallslide) { 
+                else if (!player.isOnFloor && !player.wallslide) { 
                     player.velocity.Y += 10;
                 }
                 player.playercol = false;
@@ -603,7 +603,7 @@ namespace OakHeart
                             player.isOnFloor = true;
                             player.walljumping = false;
                         }
-                        if ((platform.rot == 90 || platform.rot == 270) && player.position.X <= platform.position.X)
+                        if (player.position.X <= platform.position.X || player.position.X + player.Width > platform.position.X + platform.Width)
                         {
                             player.wallslide = true;
                         }
