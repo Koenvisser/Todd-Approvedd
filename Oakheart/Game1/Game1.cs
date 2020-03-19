@@ -1040,7 +1040,10 @@ namespace OakHeart
                     if (bottombarfade > 0)
                     {
                         spriteBatch.Draw(rectangle, new Rectangle(0, height - height / 10, width, height / 10), Color.Black * .3f * bottombarfade);
+                        if (LevelButton[i - 1].Contains(mousePosition) && _state == GameState.LevelSelect)
+                        { 
                         spriteBatch.DrawString(LevelSelectFont, LevelsProgress[i - 1] + "% Fungus Cleared", new Vector2(width / 2, height - height / 20) - LevelSelectFont.MeasureString(LevelsProgress[i - 1] + "% Fungus Cleared") / 2, Color.White * bottombarfade);
+                        }
                     }
                     if (LevelButton[i - 1].Contains(mousePosition) && _state == GameState.LevelSelect)
                     {
