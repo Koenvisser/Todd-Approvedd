@@ -41,7 +41,7 @@ public class Background
 
 public void Draw(GameTime gameTime, SpriteBatch spriteBatch) // draws the background
     {
-        spriteBatch.Draw(background, new Rectangle(0, 0, 3000, 3000), Color.White);
+        spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, 0 - (int)Camera.campos.Y, 3000, 3000), Color.White);
         //oude trinity code
        /*
         spriteBatch.Draw(sky, position, Color.White);
