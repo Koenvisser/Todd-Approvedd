@@ -8,10 +8,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 class Alfungus : Enemy
 {
-    protected enum Phase { Normal, Snapped}
-    Phase phase;
+    public enum Phase { Normal, Snapped}
+    public Phase phase;
     Vector2 Center;
-    List<BossAttacks> Attacks;
+    float shotTimer, sporeTimer;
+    public List<BossAttacks> Attacks;
+    Random random;
+    public bool fightStarted = false;
+    protected bool enraged;
+
     public Alfungus(float rotation, Vector2 position, int layer = 0, string id = "") : base(rotation, layer, id)
     {
         LoadAnimation("images/boss/Alfungus", "Alfungus", true);
@@ -19,15 +24,45 @@ class Alfungus : Enemy
         phase = Phase.Normal;  
         Center = new Vector2(Width / 2, Height / 2);
         Attacks = new List<BossAttacks>();
+        shotTimer = 7500;
+        sporeTimer = 20000;
     }
 
     public override void Update(GameTime gameTime)
     {
-        base.Update(gameTime);
-        foreach (BossAttacks attack in Attacks)
+
+        if (!fightStarted)
         {
-            attack.Update(gameTime);
+            if (playerpos.X - position.X < 1000)
+            {
+                fightStarted = true;
+            }
         }
+        base.Update(gameTime);
+
+        if (fightStarted)
+        {
+            shotTimer -= (float)gameTime.ElapsedGameTime.Milliseconds;
+            sporeTimer -= (float)gameTime.ElapsedGameTime.Milliseconds;
+
+            if (shotTimer < 0)
+            {
+                FungusShot(playerpos);
+                shotTimer = 7500 * ((float)(random.Next(90, 110) / 100));
+            }
+
+            if (sporeTimer < 0)
+            {
+                SporeExplosion(playerpos);
+                sporeTimer = 20000 * ((float)(random.Next(90, 110) / 100))
+            }
+
+            foreach (BossAttacks attack in Attacks)
+            {
+                attack.Update(gameTime);
+            }
+        }
+        
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -63,15 +98,17 @@ class Alfungus : Enemy
         }
     }
 
-    public void SporeExplosion()
+    public void SporeExplosion(Vector2 playerpos)
     {
+        Vector2 sporepos = new Vector2(Center.X, BoundingBox.Top);
+
         if(phase == Phase.Normal)
         {
-
+            Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/SporeCloud", false));
         }
         if(phase == Phase.Snapped)
         {
-
+            Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/SporeCloudRed", true));
         }
 
     }

@@ -20,14 +20,14 @@ namespace OakHeart
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         InputHelper inputHelper;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo;
-        private Texture2D[] levelselecttrees = new Texture2D[4];
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo, levelselectbg1, levelselectbg2, levelselectbg3;
+        private Texture2D[] levelselecttrees = new Texture2D[3];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition, gametimer;
         private float[] angles = new float[30], angles2 = new float[200];
-        private int[] LevelsProgress = new int[4];
+        private int[] LevelsProgress = new int[3];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
-        private bool[] LevelButtonClicked = new bool[4], hoveringbutton = new bool[4];
+        private bool[] LevelButtonClicked = new bool[3], hoveringbutton = new bool[3];
         private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound, iCutscenePlaying;
         Vector2 lastcollision;
         private SoundEffectInstance backgroundsongmenu;
@@ -94,6 +94,9 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            levelselectbg1 = Content.Load<Texture2D>("images/menu/background1");
+            levelselectbg2 = Content.Load<Texture2D>("images/menu/background2");
+            levelselectbg3 = Content.Load<Texture2D>("images/menu/background3");
             placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             logo = Content.Load<Texture2D>("images/menu/Logo");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
@@ -101,7 +104,7 @@ namespace OakHeart
             menuleave = Content.Load<Texture2D>("images/menu/menuleave");
             pause1 = Content.Load<Texture2D>("images/menu/pause1");
             pause2 = Content.Load<Texture2D>("images/menu/pause2");
-            for (int i = 1; i <= 4; i++)
+            for (int i = 1; i <= 3; i++)
             {
                 levelselecttrees[i - 1] = Content.Load<Texture2D>("images/menu/tree" + i);
             }
@@ -177,10 +180,10 @@ namespace OakHeart
             string saveline;
             if (!File.Exists(Directory.GetCurrentDirectory() + @"\save.txt"))
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n");
             }
             StreamReader savefile = new StreamReader(Directory.GetCurrentDirectory() + @"\save.txt");
-            while ((saveline = savefile.ReadLine()) != null)
+            while ((saveline = savefile.ReadLine()) != null && savefile != null)
             {
                 bool success = false;
                 if (i == 0)
@@ -191,13 +194,15 @@ namespace OakHeart
                 {
                     success = Int32.TryParse(saveline, out EasterEgssFound);
                 }
-                else if (i <= 5)
+                else if (i <= 4)
                 {
                     success = Int32.TryParse(saveline, out LevelsProgress[i - 2]);
                 }
                 if (!success)
                 {
-                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                    savefile.Close();
+                    File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n");
+                    savefile = null;
                 }
                 i++;
             }
@@ -246,7 +251,7 @@ namespace OakHeart
             }
             else if (!success)
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n");
             }
             else
             {
@@ -291,7 +296,7 @@ namespace OakHeart
             savefile.Close();
             if (!success)
             {
-                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n0\n0\n");
+                File.WriteAllText(Directory.GetCurrentDirectory() + @"\save.txt", "0\n0\n0\n0\n0\n");
             }
             else
             {
@@ -867,6 +872,40 @@ namespace OakHeart
                 foreach (Enemy enemy in level.Enemy)
                 {
                     enemy.Update(gameTime);
+
+                    if(enemy is Alfungus)
+                    {
+                        Alfungus alfungus = enemy as Alfungus;
+
+                        enemy.playerpos = player.position;
+                        foreach (BossAttacks attack in alfungus.Attacks)
+                        {
+                            if (attack.CollidesWith(player))
+                            {
+                                if (attack is FungusShot)
+                                {
+                                    player.currentHealth--;
+                                    PlayHitSound();
+
+                                }
+                                if (attack is SporeCloud)
+                                {
+                                    if (alfungus.phase == Alfungus.Phase.Normal)
+                                    {
+                                        player.velocity /= 2;
+                                    }
+                                    else
+                                    {
+                                        player.currentHealth--;
+                                        PlayHitSound();
+                                    }
+                                }
+                                attack.Visible = false;
+                                attack.position = Vector2.Zero;
+                            }
+                        }
+                    }
+                    
                     if (player.CollidesWith(enemy))
                     {
                         if (enemy is Snail)
@@ -896,6 +935,11 @@ namespace OakHeart
                                 player.reset = true;
 
                             }
+                        }
+                        if (enemy is Alfungus)
+                        {
+                            player.currentHealth--;
+                            PlayHitSound();
                         }
                     }
                     
@@ -938,6 +982,7 @@ namespace OakHeart
             spriteBatch.Begin();
             if (_state == GameState.MainMenu || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.MainMenu))
             {
+                spriteBatch.Draw(levelselectbg3, new Rectangle(0, 0, width, height), Color.White);
                 if (menuanimationdone == true)
                 {
 
@@ -1002,12 +1047,31 @@ namespace OakHeart
 
             else if (_state == GameState.LevelSelect || ((_state == GameState.Pause || _state == GameState.Settings) && _pausedstate == GameState.LevelSelect))
             {
+                Texture2D Background = new Texture2D(graphics.GraphicsDevice,1,1);
+                int[] treeheight = new int[3];
+                treeheight[0] = 500;
+                treeheight[1] = 750;
+                treeheight[2] = 1000;
+                if (LevelCompleted == 0)
+                {
+                    Background = levelselectbg1;
+                }
+                else if (LevelCompleted == 1)
+                {
+                    Background = levelselectbg2;
+                    
+                }
+                else {
+                    Background = levelselectbg3;
+                }
+                spriteBatch.Draw(Background, new Rectangle(0,0,width,height), Color.White);
                 int backgroundtree = LevelCompleted;
                 if (backgroundtree >= 4) { backgroundtree = 3; }
-                spriteBatch.Draw(levelselecttrees[backgroundtree],new Rectangle(width / 2 - (1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width) / 2, height - 1000, 1000 / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width, 1000), Color.White * levelselectfade);
+
+                spriteBatch.Draw(levelselecttrees[backgroundtree],new Rectangle(width / 2 - (treeheight[backgroundtree] / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width) / 2, height - treeheight[backgroundtree] - 100, treeheight[backgroundtree] / levelselecttrees[backgroundtree].Height * levelselecttrees[backgroundtree].Width, treeheight[backgroundtree]), Color.White * levelselectfade);
                 if (levelselectfade <= 0.995f && backgroundtree > 0)
                 {
-                    spriteBatch.Draw(levelselecttrees[backgroundtree - 1], new Rectangle(width / 2 - (1000 / levelselecttrees[backgroundtree - 1].Height * levelselecttrees[backgroundtree - 1].Width) / 2, height - 1000, 1000 / levelselecttrees[backgroundtree - 1].Height * levelselecttrees[backgroundtree - 1].Width, 1000), Color.White * (1 - levelselectfade));
+                    spriteBatch.Draw(levelselecttrees[backgroundtree - 1], new Rectangle(width / 2 - (treeheight[backgroundtree - 1] / levelselecttrees[backgroundtree - 1].Height * levelselecttrees[backgroundtree - 1].Width) / 2, height - treeheight[backgroundtree - 1], treeheight[backgroundtree - 1] / levelselecttrees[backgroundtree - 1].Height * levelselecttrees[backgroundtree - 1].Width, treeheight[backgroundtree - 1]), Color.White * (1 - levelselectfade));
                     if (_state == GameState.LevelSelect)
                     {
                         levelselectfade += 0.005f;
@@ -1024,18 +1088,37 @@ namespace OakHeart
 
                 int i = 0;
                 Color LevelColor = Color.ForestGreen;
-                Vector2[] LevelSelectPosition = new Vector2[4];
-                Rectangle[] LevelButton = new Rectangle[4];
-                while (i <= LevelCompleted && i <= 3)
+                Vector2[] LevelSelectPosition = new Vector2[3];
+                Rectangle[] LevelButton = new Rectangle[3];
+                while (i <= LevelCompleted && i <= 2)
                 {
                     if (i == 0)
-                    { LevelSelectPosition[i] = new Vector2(.5f * graphics.PreferredBackBufferWidth, .5f * graphics.PreferredBackBufferHeight); }
+                    {
+                        if (LevelCompleted == 0)
+                        {
+                            LevelSelectPosition[i] = new Vector2(1030, 650);
+                        }
+                        else if (LevelCompleted == 1)
+                        {
+                            LevelSelectPosition[i] = new Vector2(1030, 500);
+                        }
+                        else
+                        {
+                            LevelSelectPosition[i] = new Vector2(870, 580);
+                        }
+                    }
                     else if (i == 1)
-                    { LevelSelectPosition[i] = new Vector2(100, 100); }
+                    {
+                        if (LevelCompleted == 1)
+                        {
+                            LevelSelectPosition[i] = new Vector2(800, 450);
+                        }
+                        else {
+                            LevelSelectPosition[i] = new Vector2(1100, 430);
+                        }
+                    }
                     else if (i == 2)
-                    { LevelSelectPosition[i] = new Vector2(0, 0); }
-                    else if (i == 3)
-                    { LevelSelectPosition[i] = new Vector2(0, 0); }
+                    { LevelSelectPosition[i] = new Vector2(900, 350); }
                     if (i >= LevelCompleted)
                     {
                         LevelColor = Color.Red * levelselectfade;
@@ -1091,7 +1174,7 @@ namespace OakHeart
                     {
                         hoveringbutton[i - 1] = false;
                         spriteBatch.Draw(rectangle, new Rectangle((int)LevelSelectPosition[i - 1].X - 38, (int)LevelSelectPosition[i - 1].Y - 38, 76, 76), new Color(0, 0, 0, 0.15f) * levelselectfade);
-                        if (bottombarfade >= .05f && _state == GameState.LevelSelect && hoveringbutton[0] == false && hoveringbutton[1] == false && hoveringbutton[2] == false && hoveringbutton[3] == false)
+                        if (bottombarfade >= .05f && _state == GameState.LevelSelect && hoveringbutton[0] == false && hoveringbutton[1] == false && hoveringbutton[2] == false)
                         {
                             bottombarfade -= .05f;
                         }
