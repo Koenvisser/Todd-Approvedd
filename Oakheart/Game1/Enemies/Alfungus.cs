@@ -19,13 +19,17 @@ class Alfungus : Enemy
 
     public Alfungus(float rotation, Vector2 position, int layer = 0, string id = "") : base(rotation, layer, id)
     {
-        LoadAnimation("images/boss/Alfungus", "Alfungus", true);
+        LoadAnimation("images/game/Alfungus", "Alfungus", true);
+        LoadAnimation("images/game/AlfungusAngry", "AlfungusAngry", true);
+        PlayAnimation("Alfungus");
         this.position = position;
+        this.position.Y -= Height;
         phase = Phase.Normal;  
         Center = new Vector2(Width / 2, Height / 2);
         Attacks = new List<BossAttacks>();
-        shotTimer = 7500;
+        shotTimer = 5000;
         sporeTimer = 20000;
+        random = new Random();
     }
 
     public override void Update(GameTime gameTime)
@@ -33,7 +37,15 @@ class Alfungus : Enemy
 
         if (!fightStarted)
         {
-            if (playerpos.X - position.X < 1000)
+            if ((playerpos.X - position.X) < 0)
+            {
+                if(playerpos.X - position.X > -3000)
+                {
+                    fightStarted = true;
+
+                }
+            }
+            else if(playerpos.X - position.X < 3000)
             {
                 fightStarted = true;
             }
@@ -48,7 +60,7 @@ class Alfungus : Enemy
             if (shotTimer < 0)
             {
                 FungusShot(playerpos);
-                shotTimer = 7500 * ((float)(random.Next(90, 110) / 100));
+                shotTimer = 5000 * ((float)(random.Next(90, 110) / 100));
             }
 
             if (sporeTimer < 0)
@@ -60,6 +72,11 @@ class Alfungus : Enemy
             foreach (BossAttacks attack in Attacks)
             {
                 attack.Update(gameTime);
+                if (attack is SporeCloud)
+                {
+                    SporeCloud spore = attack as SporeCloud;
+                    spore.UpdatePlayerPos(playerpos);
+                }
             }
         }
         
@@ -78,9 +95,9 @@ class Alfungus : Enemy
     public void FungusShot(Vector2 PlayerPosition)
     {
         Vector2 bulletpos;
-        if (PlayerPosition.X < Center.X)
+        if (PlayerPosition.X < position.X + Width/2)
         {
-            bulletpos = new Vector2(BoundingBox.Left, Center.Y);
+            bulletpos = new Vector2(BoundingBox.Left, position.Y + Height/4*3);
         }
         else
         {
@@ -89,26 +106,26 @@ class Alfungus : Enemy
 
         if (phase == Phase.Normal)
         {
-            Attacks.Add(new FungusShot(0, bulletpos, PlayerPosition, "images/game/FungusShot", 6));
+            Attacks.Add(new FungusShot(0, bulletpos, PlayerPosition, "images/game/FungusShot", 2));
         }
 
         if (phase == Phase.Snapped)
         {
-            Attacks.Add(new FungusShot(0, bulletpos, PlayerPosition, "images/game/FungusShotRed", 3));
+            Attacks.Add(new FungusShot(0, bulletpos, PlayerPosition, "images/game/FungusShotAngry", 1));
         }
     }
 
     public void SporeExplosion(Vector2 playerpos)
     {
-        Vector2 sporepos = new Vector2(Center.X, BoundingBox.Top);
+        Vector2 sporepos = new Vector2(position.X + Width/2, BoundingBox.Top);
 
         if(phase == Phase.Normal)
         {
-            Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/SporeCloud", false));
+            Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/FungusCloud", false));
         }
         if(phase == Phase.Snapped)
         {
-            Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/SporeCloudRed", true));
+            Attacks.Add(new SporeCloud(0, sporepos, playerpos, "images/game/FungusCloudAngry", true));
         }
 
     }

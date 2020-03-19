@@ -8,18 +8,26 @@ using Microsoft.Xna.Framework.Graphics;
 
 class SporeCloud : BossAttacks
 {
+    int visibilityTimer = 3000;
     public bool damaging;
     public SporeCloud(float rotation, Vector2 position, Vector2 playerpos, string assetname, bool damaging, int layer = 0, string id = "") : base(rotation, assetname, layer, id)
     {
         this.position = position;
         this.damaging = damaging;
 
-        velocity = (position - playerpos) / 10;  
+        velocity = (playerpos - position)/1.2f;  
     }
 
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+        visibilityTimer -= gameTime.ElapsedGameTime.Milliseconds;
+
+        if(visibilityTimer < 0)
+        {
+            Visible = false;
+            position = Vector2.Zero;
+        }
     }
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -29,6 +37,6 @@ class SporeCloud : BossAttacks
 
     public void UpdatePlayerPos(Vector2 playerpos)
     {
-        velocity = (position - playerpos);
+        velocity = (playerpos - position)/1.2f;
     }
 }
