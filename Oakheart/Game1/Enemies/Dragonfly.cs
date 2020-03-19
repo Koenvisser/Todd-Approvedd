@@ -8,10 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 class Dragonfly : Enemy
 {
-    Vector2 start, end;
-    enum Direction { Horizontal, Vertical, Diagonal}
-    Direction direction;
-    public Dragonfly(float rotation, Vector2 position, Vector2 endposition, int layer = 0, string id = "") : base (rotation, layer, id)
+    protected Vector2 start, end;
+    protected enum Direction { Horizontal, Vertical, Diagonal}
+    protected Direction direction;
+    protected bool up = true;
+    public Dragonfly(float rotation, Vector2 position, Vector2 endposition, float speedmod, int layer = 0, string id = "") : base (rotation, layer, id)
     {
         LoadAnimation("animations/Dragonfly@5x1", "Dragonfly", true, 0.001f);
         PlayAnimation("Dragonfly");
@@ -20,7 +21,7 @@ class Dragonfly : Enemy
         end = endposition;
         left = true;
 
-        velocity = (start - end);
+        velocity = (start - end) / speedmod;
         if (velocity.X > 0)
         {
             Mirror = true;
@@ -31,7 +32,11 @@ class Dragonfly : Enemy
         {
             direction = Direction.Vertical;
             start = new Vector2(position.X, Math.Min(position.Y, endposition.Y));
-            end = new Vector2(position.X, Math.Min(position.Y, endposition.Y));
+            end = new Vector2(position.X, Math.Max(position.Y, endposition.Y));
+            if (velocity.Y > 0)
+            {
+                up = false;
+            }
 
         }
         else if (velocity.Y == 0)
@@ -59,7 +64,6 @@ class Dragonfly : Enemy
 
     public override void Update(GameTime gameTime)
     {
-        PlayAnimation("Dragonfly");
        
 
         if (direction == Direction.Horizontal)
@@ -72,9 +76,10 @@ class Dragonfly : Enemy
         }
         if (direction == Direction.Vertical)
         {
-            if(position.Y < start.Y || position.Y > end.Y)
+            if (position.Y < start.Y && up || position.Y > end.Y && !up)
             {
                 velocity.Y *= -1;
+                up = !up;
             }
         }
         if (direction == Direction.Diagonal)

@@ -28,7 +28,7 @@ namespace OakHeart
         private int[] LevelsProgress = new int[4];
         private bool loadingdone = false, menuanimationdone = false, menuanimationdone2 = false, menusongfadeout = false, soundfadeout = false, PlayButtonClicked = false, SettingsButtonClicked = false, ConfirmButtonClicked = false, CancelButtonClicked = false, QuitButtonClicked = false, DragSlider = false, escdown = false, ResetButtonClicked, MainMenuButtonClicked, ResumeButtonClicked, fullscreen = false, fullscreensliderclick = false, BackButtonClicked = false, ResetGame = false, CutscenePlaying = false;
         private bool[] LevelButtonClicked = new bool[4], hoveringbutton = new bool[4];
-        private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound;
+        private int LevelCompleted, SliderPosition, ElapsedTime, EasterEgssFound, iCutscenePlaying;
         Vector2 lastcollision;
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30], menuleavespos2 = new Vector2[200];
@@ -369,12 +369,13 @@ namespace OakHeart
             {
                 assetManager.sound.Pause();
             }
-            if (cutscenetimer > 500 && cutscenetimer < 47500)
+            
+            if (iCutscenePlaying == 0)
             {
-                spriteBatch.Draw(rectangle, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.Black);
-            }
-                if (LevelCompleted == 0)
-            {
+                if (cutscenetimer > 500 && cutscenetimer < 47500)
+                {
+                    spriteBatch.Draw(rectangle, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.Black);
+                }
                 if (cutscenetimer < 10000)
                 {
                     if (cutscenetimer < 1000)
@@ -385,7 +386,7 @@ namespace OakHeart
                     {
                         fade = (10000 - cutscenetimer) / 1000;
                     }
-                    if (AssetManager.sound == null && cutscenetimer < 500)
+                    if ((AssetManager.sound == null || (AssetManager.sound != null && AssetManager.sound.State != SoundState.Playing)) && cutscenetimer < 500)
                     {
                         AssetManager.PlaySound("voicelines/Cutscene1/line1", false);
                     }
@@ -409,7 +410,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene1/dialogue1", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(-50 + (int)((cutscenetimer - 10000) / 290), 50 - (int)((cutscenetimer - 10000) / 290), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(placeholder, new Rectangle(-100 + (int)((cutscenetimer - 10000) / 190), - (int)((cutscenetimer - 10000) / 190), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                 }
                 else if (cutscenetimer < 48000)
                 {
@@ -425,7 +426,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene1/dialogue2", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(50 - (int)((cutscenetimer - 10000) / 290), -50 + (int)((cutscenetimer - 10000) / 290), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(placeholder, new Rectangle(-(int)((cutscenetimer - 29000) / 190), -100 + (int)((cutscenetimer - 29000) / 190), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                     if (cutscenetimer > 47500)
                     {
                         _state = GameState.Game;
@@ -441,7 +442,59 @@ namespace OakHeart
                     cutscenetimer += gameTime.ElapsedGameTime.Milliseconds;
                 }
             }
-             }
+            else if (iCutscenePlaying == 1)
+            {
+                if (cutscenetimer > 500 && cutscenetimer < 14500)
+                {
+                    spriteBatch.Draw(rectangle, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.Black);
+                }
+                if (cutscenetimer < 7000)
+                {
+                    if (cutscenetimer < 1000)
+                    {
+                        fade = cutscenetimer / 1000;
+                    }
+                    else if (cutscenetimer > 6000)
+                    {
+                        fade = (7000 - cutscenetimer) / 1000;
+                    }
+                    if ((AssetManager.sound == null || (AssetManager.sound != null && AssetManager.sound.State != SoundState.Playing)) && cutscenetimer > 500 && cutscenetimer < 1000)
+                    {
+                        AssetManager.PlaySound("voicelines/Cutscene2/line1", false);
+                    }
+                    spriteBatch.Draw(placeholder, new Rectangle((int)(-(cutscenetimer) / 140), (int)(-(cutscenetimer) / 140), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 70), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 70)), Color.White * fade);
+                }
+                else if (cutscenetimer < 15000)
+                {
+                    if (cutscenetimer < 8000)
+                    {
+                        fade = (cutscenetimer - 7000) / 1000;
+                    }
+                    else if (cutscenetimer > 14000)
+                    {
+                        fade = (15000 - cutscenetimer) / 1000;
+                    }
+                    if (AssetManager.sound.State == SoundState.Stopped && cutscenetimer < 7500)
+                    {
+                        AssetManager.PlaySound("voicelines/Cutscene2/line2", false);
+                    }
+                    spriteBatch.Draw(placeholder, new Rectangle(- (int)((cutscenetimer - 7000) / 80), - (int)((cutscenetimer - 7000) / 80), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    if (cutscenetimer > 14500)
+                    {
+                        _state = GameState.Game;
+                    }
+                }
+                else if (cutscenetimer >= 15000)
+                {
+                    CutscenePlaying = false;
+                    _state = GameState.Game;
+                }
+                if (_state == GameState.Cutscene || cutscenetimer <= 1000 || (cutscenetimer > 14500 && _state == GameState.Game))
+                {
+                    cutscenetimer += gameTime.ElapsedGameTime.Milliseconds;
+                }
+            }
+        }
 
         private void CreateLeaves(Point topleft, Point bottomright)
         {
@@ -676,34 +729,7 @@ namespace OakHeart
                 else if (!player.isOnFloor && !player.wallslide) { 
                     player.velocity.Y += 10;
                 }
-                if (player.velocity.Y > 200)
-                    player.velocity.Y = 100;
-                foreach (Enemy enemy in level.Enemy)
-                {
-                    if (player.CollidesWith(enemy))
-                    {
-                        if (enemy is Snail)
-                        {
-                            player.currentHealth--;
-                            PlayHitSound();
-                        }
-
-                        if (enemy is Dragonfly)
-                        {
-                            if (player.position.Y + player.Height - 80 < enemy.position.Y)
-                            {
-                                player.isOnFloor = true;
-                            }
-                            else
-                            {
-                                player.currentHealth--;
-                                PlayHitSound();
-                                player.reset = true;
-                            }
-                        }
-                    }
-                    enemy.Update(gameTime);
-                }
+                player.reset = false;
                 Playercollisioncheck();
                 player.playercol = false;
                 player.wallslide = false;
@@ -756,7 +782,39 @@ namespace OakHeart
                     }
                     platform.Update(gameTime, false);
                 }
-                player.phasingint = 0;
+                foreach (Enemy enemy in level.Enemy)
+                {
+                    enemy.Update(gameTime);
+                    if (player.CollidesWith(enemy))
+                    {
+                        if (enemy is Snail)
+                        {
+                            player.currentHealth--;
+                            PlayHitSound();
+                        }
+
+                        if (enemy is Dragonfly)
+                        {
+                            if (player.ridingDragonfly && (enemy.position.Y - player.position.Y < 10 && enemy.position.Y - player.position.Y > -20))
+                            {
+                                player.isOnFloor = true;
+                                player.velocity = Vector2.Zero;
+                                player.position += enemy.velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                            }
+                            else if (player.position.Y < enemy.position.Y)
+                            {                         
+                                player.ridingDragonfly = true;                                
+                            }
+                            else
+                            {
+                                player.currentHealth--;
+                                player.ridingDragonfly = false;
+                                PlayHitSound();
+                            } 
+                        }
+                    }
+                    
+                }
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);
                 camera.camera(gameTime, levelint);
@@ -926,9 +984,10 @@ namespace OakHeart
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
                             levelselectfade = 0;
-                            //if (LevelCompleted <= i)
+                            //if (i <= 2)
                             //{
-                            //    CutscenePlaying = true;
+                                //iCutscenePlaying = i - 1;
+                                //CutscenePlaying = true;
                             //}
                             //else {
                                 _state = GameState.Game;

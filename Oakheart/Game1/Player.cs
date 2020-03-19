@@ -21,7 +21,7 @@ public class Player : AnimatedGameObject
     public bool playercol;
     public bool jump, hit;
     public bool hasmoved = false, hasjumped = false;
-
+    public bool ridingDragonfly = false;
     public int lives = 20;
     protected float invincibletime;
 
