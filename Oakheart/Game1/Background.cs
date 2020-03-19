@@ -44,7 +44,10 @@ public void Draw(GameTime gameTime, SpriteBatch spriteBatch, int level) // draws
         if (level == 0)
             spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, -2300 - (int)Camera.campos.Y, 20000, 5000), Color.White);
         if (level == 1)
-            spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, -2300 - (int)Camera.campos.Y, 20000, 5000), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, -2000 - (int)Camera.campos.Y, 20000, 5000), Color.White);
+        if (level == 2)
+            spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, -2300 - (int)Camera.campos.Y, 5000, 2000), Color.White);
+
         //oude trinity code
         /*
          spriteBatch.Draw(sky, position, Color.White);

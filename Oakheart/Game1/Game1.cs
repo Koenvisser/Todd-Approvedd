@@ -149,7 +149,7 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            player = new Player(new Vector2(0, 600));
+            player = new Player(new Vector2(000, 600));
             levels = new List<Map>();
             backgrounds = new List<Background>();
             for (int x = 1; x <= 3; x++)
@@ -799,7 +799,8 @@ namespace OakHeart
                 else if (!player.isOnFloor && !player.wallslide) { 
                     player.velocity.Y += 10;
                 }
-                player.reset = false;
+                if (player.velocity.Y > 200)
+                    player.velocity.Y = 200;
                 Playercollisioncheck();
                 player.playercol = false;
                 player.wallslide = false;
@@ -845,11 +846,11 @@ namespace OakHeart
                             player.isOnFloor = true;
                             player.walljumping = false;
                         }
-                        if (player.position.X + 10 >= platform.position.X + platform.Width || player.position.X + player.Width - 10 < platform.position.X)
+                        if ((platform.rot == 90 || platform.rot == 270) && player.position.X + 10 >= platform.position.X + platform.Height || player.position.X + player.Width - 10 < platform.position.X)
                         {
                             player.wallslide = true;
                         }
-                        if ((platform.rot == 90 || platform.rot == 270) && player.position.X <= platform.position.X && !((lastcollision.X == platform.position.X) && (lastcollision.Y == platform.position.Y)))
+                        if ((platform.rot == 90 || platform.rot == 270) && (player.position.X + player.Width - 10 <= platform.position.X || player.position.X >= platform.position.X + platform.Height - 10) && !((lastcollision.X == platform.position.X) && (lastcollision.Y == platform.position.Y)))
                         {
                             player.walljump = true;
                             player.walljumping = false;
@@ -862,6 +863,7 @@ namespace OakHeart
                     }
                     platform.Update(gameTime, false);
                 }
+                player.phasingint = 0;
                 foreach (Enemy enemy in level.Enemy)
                 {
                     enemy.Update(gameTime);
@@ -905,6 +907,7 @@ namespace OakHeart
                         {
                             player.currentHealth--;
                             PlayHitSound();
+                            player.reset = true;
                         }
 
                         if (enemy is Dragonfly)
@@ -924,7 +927,9 @@ namespace OakHeart
                                 player.currentHealth--;
                                 player.ridingDragonfly = false;
                                 PlayHitSound();
-                            } 
+                                player.reset = true;
+
+                            }
                         }
                         if (enemy is Alfungus)
                         {
@@ -1100,9 +1105,9 @@ namespace OakHeart
                         {
                             levelplaying = i;
                             IsMouseVisible = false;
-                            level = levels[i - 1];
-                            levelint = i - 1;
-                            background = backgrounds[i - 1];
+                            level = levels[i -1];
+                            levelint = i -1;
+                            background = backgrounds[i -1];
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
                             levelselectfade = 0;
