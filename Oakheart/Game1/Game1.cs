@@ -20,7 +20,7 @@ namespace OakHeart
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         InputHelper inputHelper;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo, levelselectbg1, levelselectbg2, levelselectbg3;
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, logo, levelselectbg1, levelselectbg2, levelselectbg3, cutscene11, cutscene12, cutscene13, cutscene21, cutscene22,cutscene31,cutscene32;
         private Texture2D[] levelselecttrees = new Texture2D[3];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition, gametimer;
@@ -33,6 +33,7 @@ namespace OakHeart
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30], menuleavespos2 = new Vector2[200];
         List<SoundEffect> soundEffects;
+        bool[] played = new bool[9];
         Player player;
         Camera camera;
         public int levelint, levelplaying;
@@ -94,10 +95,16 @@ namespace OakHeart
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            cutscene11 = Content.Load<Texture2D>("images/cutscene/cutscene1.1");
+            cutscene12 = Content.Load<Texture2D>("images/cutscene/cutscene1.2");
+            cutscene13 = Content.Load<Texture2D>("images/cutscene/cutscene1.3");
+            cutscene21 = Content.Load<Texture2D>("images/cutscene/cutscene2.2");
+            cutscene22 = Content.Load<Texture2D>("images/cutscene/cutscene2.1");
+            cutscene31 = Content.Load<Texture2D>("images/cutscene/cutscene3.1");
+            cutscene32 = Content.Load<Texture2D>("images/cutscene/cutscene3.2");
             levelselectbg1 = Content.Load<Texture2D>("images/menu/background1");
             levelselectbg2 = Content.Load<Texture2D>("images/menu/background2");
             levelselectbg3 = Content.Load<Texture2D>("images/menu/background3");
-            placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             logo = Content.Load<Texture2D>("images/menu/Logo");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
@@ -197,6 +204,9 @@ namespace OakHeart
                 else if (i <= 4)
                 {
                     success = Int32.TryParse(saveline, out LevelsProgress[i - 2]);
+                }
+                else {
+                    success = true;
                 }
                 if (!success)
                 {
@@ -392,7 +402,7 @@ namespace OakHeart
                 {
                     AssetManager.PlaySound("voicelines/Level4/end1", false);
                 }
-                spriteBatch.Draw(placeholder, new Rectangle(0 - (int)(cutscenetimer / 210), 0 - (int)(cutscenetimer / 210), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                spriteBatch.Draw(cutscene31, new Rectangle(0 - (int)(cutscenetimer / 210), 0 - (int)(cutscenetimer / 210), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
             }
             else if (cutscenetimer < 31000)
             {
@@ -408,7 +418,7 @@ namespace OakHeart
                 {
                     AssetManager.PlaySound("voicelines/Level4/cool", false);
                 }
-                spriteBatch.Draw(placeholder, new Rectangle((int)(-(cutscenetimer) / 100), (int)(-(cutscenetimer) / 100), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 50), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 50)), Color.White * fade);
+                spriteBatch.Draw(cutscene32, new Rectangle((int)(-(cutscenetimer) / 100), (int)(-(cutscenetimer) / 100), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 50), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 50)), Color.White * fade);
             }
             else if (cutscenetimer >= 31000)
             {
@@ -465,7 +475,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene1/line1", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(0 - (int)(cutscenetimer / 100), 0 - (int)(cutscenetimer / 100), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(cutscene11, new Rectangle(0 - (int)(cutscenetimer / 100), 0 - (int)(cutscenetimer / 100), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                 }
                 else if (cutscenetimer < 29000)
                 {
@@ -485,7 +495,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene1/dialogue1", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(-100 + (int)((cutscenetimer - 10000) / 190), - (int)((cutscenetimer - 10000) / 190), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(cutscene12, new Rectangle(-100 + (int)((cutscenetimer - 10000) / 190), - (int)((cutscenetimer - 10000) / 190), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                 }
                 else if (cutscenetimer < 48000)
                 {
@@ -501,7 +511,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene1/dialogue2", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(-(int)((cutscenetimer - 29000) / 190), -100 + (int)((cutscenetimer - 29000) / 190), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(cutscene13, new Rectangle(-(int)((cutscenetimer - 29000) / 190), -100 + (int)((cutscenetimer - 29000) / 190), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                     if (cutscenetimer > 47000)
                     {
                         _state = GameState.Game;
@@ -537,7 +547,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene2/line1", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle((int)(-(cutscenetimer) / 140), (int)(-(cutscenetimer) / 140), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 70), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 70)), Color.White * fade);
+                    spriteBatch.Draw(cutscene21, new Rectangle((int)(-(cutscenetimer) / 140), (int)(-(cutscenetimer) / 140), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 70), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 70)), Color.White * fade);
                 }
                 else if (cutscenetimer < 15000)
                 {
@@ -553,7 +563,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene2/line2", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(- (int)((cutscenetimer - 7000) / 80), - (int)((cutscenetimer - 7000) / 80), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(cutscene22, new Rectangle(- (int)((cutscenetimer - 7000) / 80), - (int)((cutscenetimer - 7000) / 80), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                     if (cutscenetimer > 14000)
                     {
                         _state = GameState.Game;
@@ -1224,7 +1234,51 @@ namespace OakHeart
                 spriteBatch.DrawString(LevelSelectFont, "Press Up or the Spacebar to jump", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), Color.White);
                 CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y));
             }
+            if (levelplaying == 2 && player.position.X == 600 && !played[0])
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/enemy", false);
+                    played[0] = true;
+                }
+            }
+            if (levelplaying == 2 && player.position.X == 10000 && !played[1] && player.position.Y < 1000)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)) && gametimer < 8.5)
+                {
+                    assetManager.PlaySound("voicelines/level2/line2", false);
+                    played[1] = true;
+                }
+                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2 - 20, 80, (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X + 40, (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").Y + 40), Color.ForestGreen);
+                spriteBatch.DrawString(LevelSelectFont, "Press S or Down to phase through bark", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100), Color.White);
+                CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").Y));
+            }
+            if (levelplaying == 2 && player.position.X == 10950 && !played[2] && player.position.Y < 1300)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/walljump", false);
+                    played[2] = true;
+                }
+            }
+            if (levelplaying == 1 && player.position.X == 16500 && !played[3] && player.position.Y < 900)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/end", false);
+                    played[3] = true;
+                }
+            }
+            if (levelplaying == 1 && player.position.X == 4000 && !played[4] && player.position.Y < 700)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/fungus", false);
+                    played[4] = true;
+                }
+            }
 
+            Console.WriteLine(player.position);
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
                 spriteBatch.Draw(rectangle, new Rectangle(0, 0, width, height), new Color(0, .1f, 0, 0.4f));
