@@ -769,6 +769,7 @@ namespace OakHeart
                                 //PlayFinalCutscene(gameTime,spriteBatch);
                             }
                             levelint++;
+                            LevelComplete(levelint, 100);
                             level = levels[levelint];
                             background = backgrounds[levelint];
                             player.position = player.spawnposition;
