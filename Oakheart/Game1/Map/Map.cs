@@ -44,17 +44,21 @@ public class Map
             if(int.Parse(lines[3]) > levelWidth[level - 1]){
                 levelWidth[level - 1] = int.Parse(lines[3]);
             }
-            if (int.Parse(lines[4]) > levelHeight[level - 1])
+            if (lines.Count() > 4)
             {
-                levelHeight[level - 1] = int.Parse(lines[4])+540;
+                if (int.Parse(lines[4]) > levelHeight[level - 1])
+                {
+                    levelHeight[level - 1] = int.Parse(lines[4]) + 540;
+                }
             }
+          
             switch (lines[0]) // retrieves the tile based on the given type in the level text file
             {
                 case "Bark":
                     platform.Add(new Platform(bool.Parse(lines[1]), float.Parse(lines[2]), "images/game/Bark", new Rectangle(int.Parse(lines[3]), int.Parse(lines[4]), int.Parse(lines[5]), int.Parse(lines[6]))));
                     break;
                 case "Snail":
-                    enemy.Add(new Snail(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2])), float.Parse(lines[3])));
+                    enemy.Add(new Snail(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2])), float.Parse(lines[3]), int.Parse(lines[4])));
                     break;
                 case "Dragonfly":
                     enemy.Add(new Dragonfly(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2])), new Vector2(float.Parse(lines[3]), float.Parse(lines[4])), float.Parse(lines[5])));

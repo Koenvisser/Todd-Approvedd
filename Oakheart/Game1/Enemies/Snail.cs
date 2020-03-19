@@ -9,14 +9,15 @@ using Microsoft.Xna.Framework.Graphics;
 class Snail : Enemy
 {
     protected float startx, endx;
-    public Snail(float rotation, Vector2 position, float endpos, int layer = 0, string id = "") : base(rotation, layer, id)
+    public Snail(float rotation, Vector2 position, float endpos, int movespeed, int layer = 0, string id = "") : base(rotation, layer, id)
     {
-        LoadAnimation("images/game/snail", "Snail", true);
+        LoadAnimation("animations/Snail@5x1", "Snail", true);
         this.position = position;
         startx = Math.Min(position.X, endpos);
         endx = Math.Max(position.X, endpos);
-        movespeed = 10;
+        this.movespeed = movespeed;
         PlayAnimation("Snail");
+        this.position.Y -= Height;
     }
 
     public override void Update(GameTime gameTime)
@@ -25,7 +26,7 @@ class Snail : Enemy
         {
             TurnAround();
         }
-
+        position.X += movespeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         base.Update(gameTime);
     }
 
