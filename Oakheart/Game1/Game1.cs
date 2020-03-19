@@ -708,6 +708,7 @@ namespace OakHeart
                 }
                 foreach (Enemy enemy in level.Enemy)
                 {
+                    enemy.Update(gameTime);
                     if (player.CollidesWith(enemy))
                     {
                         if (enemy is Snail)
@@ -718,18 +719,25 @@ namespace OakHeart
 
                         if (enemy is Dragonfly)
                         {
-                            if (player.position.Y > enemy.position.Y)
+                            if (player.ridingDragonfly && (enemy.position.Y - player.position.Y < 10 && enemy.position.Y - player.position.Y > -20))
                             {
-                                //do something
+                                player.isOnFloor = true;
+                                player.velocity = Vector2.Zero;
+                                player.position += enemy.velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                            }
+                            else if (player.position.Y < enemy.position.Y)
+                            {                         
+                                player.ridingDragonfly = true;                                
                             }
                             else
                             {
                                 player.currentHealth--;
+                                player.ridingDragonfly = false;
                                 PlayHitSound();
-                            }
+                            } 
                         }
                     }
-                    enemy.Update(gameTime);
+                    
                 }
                 player.HandleInput(inputHelper);
                 camera = new Camera(player);

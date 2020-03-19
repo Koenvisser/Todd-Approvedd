@@ -57,7 +57,7 @@ public class Map
                     enemy.Add(new Snail(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2])), float.Parse(lines[3])));
                     break;
                 case "Dragonfly":
-                    enemy.Add(new Dragonfly(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2])), new Vector2(float.Parse(lines[3]), float.Parse(lines[4]))));
+                    enemy.Add(new Dragonfly(0, new Vector2(float.Parse(lines[1]), float.Parse(lines[2])), new Vector2(float.Parse(lines[3]), float.Parse(lines[4])), float.Parse(lines[5])));
                     break;
             }
             line = streamreader.ReadLine();
