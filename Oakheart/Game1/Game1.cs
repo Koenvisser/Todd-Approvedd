@@ -865,6 +865,40 @@ namespace OakHeart
                 foreach (Enemy enemy in level.Enemy)
                 {
                     enemy.Update(gameTime);
+
+                    if(enemy is Alfungus)
+                    {
+                        Alfungus alfungus = enemy as Alfungus;
+
+                        enemy.playerpos = player.position;
+                        foreach (BossAttacks attack in alfungus.Attacks)
+                        {
+                            if (attack.CollidesWith(player))
+                            {
+                                if (attack is FungusShot)
+                                {
+                                    player.currentHealth--;
+                                    PlayHitSound();
+
+                                }
+                                if (attack is SporeCloud)
+                                {
+                                    if (alfungus.phase == Alfungus.Phase.Normal)
+                                    {
+                                        player.velocity /= 2;
+                                    }
+                                    else
+                                    {
+                                        player.currentHealth--;
+                                        PlayHitSound();
+                                    }
+                                }
+                                attack.Visible = false;
+                                attack.position = Vector2.Zero;
+                            }
+                        }
+                    }
+                    
                     if (player.CollidesWith(enemy))
                     {
                         if (enemy is Snail)
@@ -891,6 +925,11 @@ namespace OakHeart
                                 player.ridingDragonfly = false;
                                 PlayHitSound();
                             } 
+                        }
+                        if (enemy is Alfungus)
+                        {
+                            player.currentHealth--;
+                            PlayHitSound();
                         }
                     }
                     
