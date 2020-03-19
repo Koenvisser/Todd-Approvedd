@@ -148,7 +148,6 @@ public class Player : AnimatedGameObject
 
     public void Die() // handles events after the player dies
     {
-        lives = 20;
         reset = true;
     }
 

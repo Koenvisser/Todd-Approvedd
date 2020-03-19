@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-public class Background : SpriteGameObject
+public class Background
 {
-   
+    Texture2D background;
     
     //oude trinity code
     /*
@@ -16,14 +16,14 @@ public class Background : SpriteGameObject
 
  Rectangle cloud;
  */
- public Background(ContentManager content, Vector2 position, string assetName) : base(0.0f, assetName, 100) // initializes the background
+ public Background(ContentManager content, int level) // initializes the background
  {
-
+        
+     background = content.Load<Texture2D>("images/game/Level_" + level + "_Background");
      //oude trinity code
     /*startPosition = position;
 
      random = new Random();
-     sky = content.Load<Texture2D>("Backgrounds/sky");
      hill1 = content.Load<Texture2D>("Backgrounds/Hills_1");
      hill2 = content.Load<Texture2D>("Backgrounds/Hills_2");
      cloud1 = content.Load<Texture2D>("Backgrounds/Cloud_1");
@@ -39,9 +39,9 @@ public class Background : SpriteGameObject
 
 
 
-public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) // draws the background
+public void Draw(GameTime gameTime, SpriteBatch spriteBatch) // draws the background
     {
-        
+        spriteBatch.Draw(background, new Rectangle(0 - (int)Camera.campos.X, 0 - (int)Camera.campos.Y, 3000, 3000), Color.White);
         //oude trinity code
        /*
         spriteBatch.Draw(sky, position, Color.White);
