@@ -19,7 +19,6 @@ namespace OakHeart
         GameState _pausedstate = GameState.MainMenu;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Background background;
         InputHelper inputHelper;
         private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo;
         private Texture2D[] levelselecttrees = new Texture2D[4];
@@ -38,7 +37,9 @@ namespace OakHeart
         Camera camera;
         public int levelint, levelplaying;
         public List<Map> levels;
+        public List<Background> backgrounds;
         public Map level;
+        public Background background;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -148,11 +149,14 @@ namespace OakHeart
             // TODO: use this.Content to load your game content here
             loadingdone = true;
             IsMouseVisible = true;
-            background = new Background(Content, new Vector2(0, 0), "images/game/Level_1_Background");
             player = new Player(new Vector2(0, 600));
             levels = new List<Map>();
-            for (int x = 1; x <= 4; x++)
+            backgrounds = new List<Background>();
+            for (int x = 1; x <= 3; x++)
+            {
                 levels.Add(new Map(x));
+                backgrounds.Add(new Background(Content, x));
+            }
         }
 
         /// <summary>
@@ -462,12 +466,22 @@ namespace OakHeart
             assetManager.PlaySound("voicelines/Oakheart/" + soundname, false);
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        private void Playercollisioncheck()
+        {
+            if (player.position.Y > 1500)
+            {
+                player.reset = true;
+            }
+        }
+
+    
+
+    /// <summary>
+    /// Allows the game to run logic such as updating the world,
+    /// checking for collisions, gathering input, and playing audio.
+    /// </summary>
+    /// <param name="gameTime">Provides a snapshot of timing values.</param>
+    protected override void Update(GameTime gameTime)
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -619,6 +633,8 @@ namespace OakHeart
                 else if (!player.isOnFloor && !player.wallslide) { 
                     player.velocity.Y += 10;
                 }
+                player.reset = false;
+                Playercollisioncheck();
                 player.playercol = false;
                 player.wallslide = false;
                 player.isOnFloor = false;
@@ -634,7 +650,7 @@ namespace OakHeart
                             player.isOnFloor = true;
                             player.walljumping = false;
                         }
-                        if (player.position.X <= platform.position.X || player.position.X + player.Width > platform.position.X + platform.Width)
+                        if (player.position.X + 10 >= platform.position.X + platform.Width || player.position.X + player.Width - 10 < platform.position.X)
                         {
                             player.wallslide = true;
                         }
@@ -839,6 +855,7 @@ namespace OakHeart
                             levelplaying = i;
                             IsMouseVisible = false;
                             level = levels[i - 1];
+                            background = backgrounds[i - 1];
                             LevelButtonClicked[i - 1] = false;
                             menusongfadeout = true;
                             levelselectfade = 0;
