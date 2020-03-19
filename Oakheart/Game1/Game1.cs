@@ -33,7 +33,7 @@ namespace OakHeart
         private SoundEffectInstance backgroundsongmenu;
         private Vector2[] menuleavespos = new Vector2[30], menuleavespos2 = new Vector2[200];
         List<SoundEffect> soundEffects;
-        List<bool> Played;
+        bool[] played = new bool[9];
         Player player;
         Camera camera;
         public int levelint, levelplaying;
@@ -1231,13 +1231,42 @@ namespace OakHeart
                 spriteBatch.DrawString(LevelSelectFont, "Press Up or the Spacebar to jump", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), Color.White);
                 CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press Up or the Spacebar to jump").Y));
             }
-            if (levelplaying == 2 && player.position.X == 600)
+            if (levelplaying == 2 && player.position.X == 600 && !played[0])
             {
                 if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
                 {
                     assetManager.PlaySound("voicelines/Tutorial/enemy", false);
+                    played[0] = true;
                 }
             }
+            if (levelplaying == 2 && player.position.X == 10000 && !played[1] && player.position.Y < 1000)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)) && gametimer < 8.5)
+                {
+                    assetManager.PlaySound("voicelines/level2/line2", false);
+                    played[1] = true;
+                }
+                spriteBatch.Draw(rectangle, new Rectangle(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2 - 20, 80, (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X + 40, (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").Y + 40), Color.ForestGreen);
+                spriteBatch.DrawString(LevelSelectFont, "Press S or Down to phase through bark", new Vector2(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100), Color.White);
+                CreateLeaves(new Point(width / 2 - (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100), new Point(width / 2 + (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").X / 2, 100 + (int)LevelSelectFont.MeasureString("Press S or Down to phase through bark").Y));
+            }
+            if (levelplaying == 2 && player.position.X == 10950 && !played[2] && player.position.Y < 1300)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/walljump", false);
+                    played[2] = true;
+                }
+            }
+            if (levelplaying == 1 && player.position.X == 16500 && !played[2] && player.position.Y < 900)
+            {
+                if ((assetManager.sound == null || (assetManager.sound != null && assetManager.sound.State != SoundState.Playing)))
+                {
+                    assetManager.PlaySound("voicelines/Tutorial/end", false);
+                    played[2] = true;
+                }
+            }
+
             Console.WriteLine(player.position);
             if (_state == GameState.Pause || _state == GameState.Settings)
             {
