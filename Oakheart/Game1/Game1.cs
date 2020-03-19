@@ -20,7 +20,7 @@ namespace OakHeart
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         InputHelper inputHelper;
-        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, placeholder, logo, levelselectbg1, levelselectbg2, levelselectbg3, cutscene11, cutscene12, cutscene13;
+        private Texture2D loadingleft, loadingright, rectangle, circle, pause1, pause2, menuleave, logo, levelselectbg1, levelselectbg2, levelselectbg3, cutscene11, cutscene12, cutscene13, cutscene21, cutscene22,cutscene31,cutscene32;
         private Texture2D[] levelselecttrees = new Texture2D[3];
         private SpriteFont KronaFont, LevelSelectFont, PacificoFont;
         private float menuposition, volume, timer, bottombarfade, levelselectfade, cutscenetimer, logoposition, gametimer;
@@ -97,10 +97,13 @@ namespace OakHeart
             cutscene11 = Content.Load<Texture2D>("images/cutscene/cutscene1.1");
             cutscene12 = Content.Load<Texture2D>("images/cutscene/cutscene1.2");
             cutscene13 = Content.Load<Texture2D>("images/cutscene/cutscene1.3");
+            cutscene21 = Content.Load<Texture2D>("images/cutscene/cutscene2.2");
+            cutscene22 = Content.Load<Texture2D>("images/cutscene/cutscene2.1");
+            cutscene31 = Content.Load<Texture2D>("images/cutscene/cutscene3.1");
+            cutscene32 = Content.Load<Texture2D>("images/cutscene/cutscene3.2");
             levelselectbg1 = Content.Load<Texture2D>("images/menu/background1");
             levelselectbg2 = Content.Load<Texture2D>("images/menu/background2");
             levelselectbg3 = Content.Load<Texture2D>("images/menu/background3");
-            placeholder = Content.Load<Texture2D>("images/cutscene/placeholder");
             logo = Content.Load<Texture2D>("images/menu/Logo");
             loadingleft = Content.Load<Texture2D>("images/menu/left");
             loadingright = Content.Load<Texture2D>("images/menu/right");
@@ -395,7 +398,7 @@ namespace OakHeart
                 {
                     AssetManager.PlaySound("voicelines/Level4/end1", false);
                 }
-                spriteBatch.Draw(placeholder, new Rectangle(0 - (int)(cutscenetimer / 210), 0 - (int)(cutscenetimer / 210), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                spriteBatch.Draw(cutscene31, new Rectangle(0 - (int)(cutscenetimer / 210), 0 - (int)(cutscenetimer / 210), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
             }
             else if (cutscenetimer < 31000)
             {
@@ -411,7 +414,7 @@ namespace OakHeart
                 {
                     AssetManager.PlaySound("voicelines/Level4/cool", false);
                 }
-                spriteBatch.Draw(placeholder, new Rectangle((int)(-(cutscenetimer) / 100), (int)(-(cutscenetimer) / 100), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 50), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 50)), Color.White * fade);
+                spriteBatch.Draw(cutscene32, new Rectangle((int)(-(cutscenetimer) / 100), (int)(-(cutscenetimer) / 100), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 50), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 50)), Color.White * fade);
             }
             else if (cutscenetimer >= 31000)
             {
@@ -540,7 +543,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene2/line1", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle((int)(-(cutscenetimer) / 140), (int)(-(cutscenetimer) / 140), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 70), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 70)), Color.White * fade);
+                    spriteBatch.Draw(cutscene21, new Rectangle((int)(-(cutscenetimer) / 140), (int)(-(cutscenetimer) / 140), graphics.PreferredBackBufferWidth + (int)((cutscenetimer) / 70), graphics.PreferredBackBufferHeight + (int)((cutscenetimer) / 70)), Color.White * fade);
                 }
                 else if (cutscenetimer < 15000)
                 {
@@ -556,7 +559,7 @@ namespace OakHeart
                     {
                         AssetManager.PlaySound("voicelines/Cutscene2/line2", false);
                     }
-                    spriteBatch.Draw(placeholder, new Rectangle(- (int)((cutscenetimer - 7000) / 80), - (int)((cutscenetimer - 7000) / 80), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
+                    spriteBatch.Draw(cutscene22, new Rectangle(- (int)((cutscenetimer - 7000) / 80), - (int)((cutscenetimer - 7000) / 80), graphics.PreferredBackBufferWidth + 100, graphics.PreferredBackBufferHeight + 100), Color.White * fade);
                     if (cutscenetimer > 14000)
                     {
                         _state = GameState.Game;
