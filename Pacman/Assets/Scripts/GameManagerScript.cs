@@ -125,8 +125,8 @@ public class GameManagerScript : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             Score.GetComponent<ScoreScript>().SetHighscore();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
@@ -198,6 +198,7 @@ public class GameManagerScript : MonoBehaviour
         {
             //TODO: Stop all movement
             victorySound.Play();
+            Score.GetComponent<ScoreScript>().SetHighscore();
             yield return new WaitForSeconds(5);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
