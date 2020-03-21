@@ -19680,6 +19680,7 @@ MonoBehaviour:
   Pinky: {fileID: 1900519875}
   Clyde: {fileID: 1789111516}
   PacMan: {fileID: 1329145727}
+  Score: {fileID: 1695616408}
   life1: {fileID: 829024815}
   life2: {fileID: 706905558}
   life3: {fileID: 1672808432}
@@ -26830,6 +26831,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1695616410}
+  HighscoreText: {fileID: 159944371}
   score: 0
 --- !u!1 &1702851089
 GameObject:
