@@ -120,7 +120,7 @@ public class GameManagerScript : MonoBehaviour
         StopAllCoroutines();
         if (lives > 0)
         {
-            StartCoroutine(DeathSequence());
+            StartCoroutine(DeathSequence(3));
         }
         else
         {
@@ -129,7 +129,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     //Starts the deathsequence which resets all ghost positions and restarts the startgamesequence
-    public IEnumerator DeathSequence()
+    public IEnumerator DeathSequence(int waittime)
     {
         PacMan.GetComponent<PacManMoveScript>().enabled = false;
         Blinky.GetComponent<BlinkyScript>().enabled = false;
@@ -137,7 +137,7 @@ public class GameManagerScript : MonoBehaviour
         Inky.GetComponent<InkyScript>().enabled = false;
         Clyde.GetComponent<ClydeScript>().enabled = false;
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(waittime);
 
         ResetGame();
 
@@ -194,7 +194,7 @@ public class GameManagerScript : MonoBehaviour
     {
         if(pelletsCollected == 240 && powerPelletsCollected == 4)
         {
-            //TODO: Stop all movement
+            StartCoroutine(DeathSequence(5));
             victorySound.Play();
             yield return new WaitForSeconds(5);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
