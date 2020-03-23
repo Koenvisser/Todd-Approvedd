@@ -11,6 +11,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject Pinky;
     public GameObject Clyde;
     public GameObject PacMan;
+    public GameObject Score;
 
     [HideInInspector]
     public int pelletsCollected { get; set; }
@@ -124,6 +125,7 @@ public class GameManagerScript : MonoBehaviour
         }
         else
         {
+            Score.GetComponent<ScoreScript>().SetHighscore();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
@@ -196,6 +198,7 @@ public class GameManagerScript : MonoBehaviour
         {
             StartCoroutine(DeathSequence(5));
             victorySound.Play();
+            Score.GetComponent<ScoreScript>().SetHighscore();
             yield return new WaitForSeconds(5);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
