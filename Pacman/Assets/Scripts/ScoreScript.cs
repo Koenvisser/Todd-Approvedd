@@ -41,6 +41,7 @@ public class ScoreScript : MonoBehaviour
             }
             else
             {
+                timer = 0;
                 Popup.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().SetText("You don't have enough score!");
             }
         }
