@@ -53,7 +53,13 @@ public class GameManagerScript : MonoBehaviour
 
         yield break;
     }
-
+    void Update()
+    {
+        if (Input.GetKeyDown("escape"))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
     //This Coroutine moves the ghost in the input out of the ghost house via 2 waypoints, then activates their script
     IEnumerator MoveFromHouse(GameObject ghost, Vector2 waypoint1, Vector2 waypoint2)
     {
