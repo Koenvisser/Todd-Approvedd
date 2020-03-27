@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ScoreScript : MonoBehaviour
 {
@@ -32,8 +33,16 @@ public class ScoreScript : MonoBehaviour
         if (popupChance < 0.01f)
         {
             Popup.SetActive(true);
-            Popup.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().SetText("You need to pay " + Math.Ceiling(expectedScore) + " to continue");
+            Popup.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().SetText("You need to pay " + Math.Ceiling(expectedScore) + " score to continue");
             PacMan.GetComponent<PacManMoveScript>().enabled = false;
+            if (score >= expectedScore)
+            {
+                Popup.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().SetText("Press SPACE to pay!");
+            }
+            else
+            {
+                Popup.transform.GetChild(2).gameObject.GetComponent<TextMeshProUGUI>().SetText("You don't have enough score!");
+            }
         }
     }
 
@@ -90,6 +99,11 @@ public class ScoreScript : MonoBehaviour
         else
         {
             timer += Time.deltaTime;
+            if (score < expectedScore && timer > 5)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
             if (timer % 1 > .5f)
             {
                 Popup.transform.GetChild(2).gameObject.SetActive(false);
