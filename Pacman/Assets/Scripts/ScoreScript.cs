@@ -11,6 +11,7 @@ public class ScoreScript : MonoBehaviour
     public TextMeshProUGUI CurrencyText;
     public int score;
     private int Highscore;
+    public double expectedScore = 0;
 
     public void Start()
     {
@@ -20,9 +21,14 @@ public class ScoreScript : MonoBehaviour
 
     public void ScorePellet()
     {
+        float popupChance = Random.value;
         score += 10;
         scoreText.text = score.ToString();
         SetHighScoreText(score);
+        if (popupChance < 0.01f)
+        {
+            //popup callen
+        }
     }
 
     public void ScorePowerPellet()
@@ -59,5 +65,18 @@ public class ScoreScript : MonoBehaviour
         {
             PlayerPrefs.SetInt("HighScore", score);
         }
+    }
+    void Update()
+    {
+        if (score < 1000)
+        {
+            expectedScore += 0.03 * Time.time;
+        }
+
+        if (score > 1000)
+        {
+            expectedScore += 0.01 * Time.time;
+        }
+
     }
 }
