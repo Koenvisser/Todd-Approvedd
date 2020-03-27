@@ -94,7 +94,8 @@ public class ScoreScript : MonoBehaviour
             if (score > 1000 && Popup.activeSelf == false)
             {
                 expectedScore += 0.01 * Time.time;
-            } 
+            }
+            Debug.Log(expectedScore);
         }
         else
         {
