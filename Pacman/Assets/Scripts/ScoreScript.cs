@@ -23,7 +23,6 @@ public class ScoreScript : MonoBehaviour
         score += 10;
         scoreText.text = score.ToString();
         SetHighScoreText(score);
-        SetCurrency(10);
     }
 
     public void ScorePowerPellet()
@@ -31,7 +30,6 @@ public class ScoreScript : MonoBehaviour
         score += 50;
         scoreText.text = score.ToString();
         SetHighScoreText(score);
-        SetCurrency(50);
     }
 
     public void ScoreGhost()
@@ -39,7 +37,6 @@ public class ScoreScript : MonoBehaviour
         score += 100;
         scoreText.text = score.ToString();
         SetHighScoreText(score);
-        SetCurrency(100);
     }
 
     private int GetHighScore()
@@ -54,13 +51,6 @@ public class ScoreScript : MonoBehaviour
             HighscoreText.SetText("High Score: " + highscore);
             Highscore = highscore;
         }
-    }
-
-    private void SetCurrency(int Currency)
-    {
-        Currency += PlayerPrefs.GetInt("Currency", 0);
-        CurrencyText.SetText("Currency: " + Currency);
-        PlayerPrefs.SetInt("Currency", Currency);
     }
 
     public void SetHighscore()
