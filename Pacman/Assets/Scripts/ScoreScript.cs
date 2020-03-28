@@ -96,7 +96,6 @@ public class ScoreScript : MonoBehaviour
             {
                 expectedScore += 0.01 * Time.time;
             }
-            Debug.Log(expectedScore);
         }
         else
         {
