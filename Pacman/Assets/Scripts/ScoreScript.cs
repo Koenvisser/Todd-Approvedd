@@ -87,14 +87,14 @@ public class ScoreScript : MonoBehaviour
     {
         if (Popup.activeSelf == false)
         {
-            if (score < 1000 && Popup.activeSelf == false)
+            if (expectedScore < 1000 && Popup.activeSelf == false)
             {
-                expectedScore += 0.05 * Time.time;
+                expectedScore += 0.05 * Time.timeSinceLevelLoad;
             }
 
-            if (score > 1000 && Popup.activeSelf == false)
+            if (expectedScore > 1000 && Popup.activeSelf == false)
             {
-                expectedScore += 0.01 * Time.time;
+                expectedScore += 0.01 * Time.timeSinceLevelLoad;
             }
         }
         else
