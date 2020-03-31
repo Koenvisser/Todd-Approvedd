@@ -175,6 +175,7 @@ public class GameManagerScript : MonoBehaviour
         Inky.GetComponent<InkyScript>().ResetGame();
         Pinky.GetComponent<PinkyScript>().ResetGame();
         Clyde.GetComponent<ClydeScript>().ResetGame();
+        Score.GetComponent<ScoreScript>().expectedScore = 0;
     }
 
     //Sets ghosts to scared behaviour for 8 seconds

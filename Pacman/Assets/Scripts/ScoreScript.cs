@@ -15,7 +15,7 @@ public class ScoreScript : MonoBehaviour
     public int score;
     private int Highscore;
     private float timer;
-    private double expectedScore = 0;
+    public double expectedScore = 0;
     public GameObject PacMan;
 
     public void Start()
@@ -30,7 +30,7 @@ public class ScoreScript : MonoBehaviour
         score += 10;
         scoreText.text = score.ToString();
         SetHighScoreText(score);
-        if (popupChance < 0.01f)
+        if (popupChance < 0.02f)
         {
             Popup.SetActive(true);
             Popup.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().SetText("You need to pay " + Math.Ceiling(expectedScore) + " score to continue");
@@ -89,7 +89,7 @@ public class ScoreScript : MonoBehaviour
         {
             if (score < 1000 && Popup.activeSelf == false)
             {
-                expectedScore += 0.03 * Time.time;
+                expectedScore += 0.05 * Time.time;
             }
 
             if (score > 1000 && Popup.activeSelf == false)
@@ -119,6 +119,7 @@ public class ScoreScript : MonoBehaviour
                 scoreText.text = score.ToString();
                 Popup.SetActive(false);
                 PacMan.GetComponent<PacManMoveScript>().enabled = true;
+                expectedScore = 0;
             }
         }
     }
